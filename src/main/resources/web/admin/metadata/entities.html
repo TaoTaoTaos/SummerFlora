@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <th:block th:replace="~{/_include/header}" />
+    <meta name="page-help" content="https://getrebuild.com/docs/admin/entity/" />
+    <title>[[${bundle.L('实体管理')}]]</title>
+    <style>
+      .card.entity {
+        position: relative;
+        margin-bottom: 20px;
+      }
+      .card.entity:hover {
+        background-color: rgba(255, 255, 255, 0.7);
+      }
+      .card.entity .card-body {
+        padding: 12px 20px;
+        color: #333;
+      }
+      .card.entity .card-body .float-left {
+        width: 30px;
+        text-align: center;
+      }
+      .card.entity .icon {
+        font-size: 32px;
+        color: #4285f4;
+      }
+      .card.entity i.badge {
+        position: absolute;
+        top: 11px;
+        right: 11px;
+        text-transform: uppercase;
+      }
+      .card.entity span {
+        margin-top: 2px;
+        display: block;
+      }
+      #entityList {
+        margin: 0 -10px;
+      }
+      #entityList > div {
+        padding-left: 10px;
+        padding-right: 10px;
+      }
+      .card.ph {
+        margin-left: 10px;
+        margin-top: 0;
+      }
+      #entityList > div.tag {
+        width: 100%;
+      }
+      #entityList > div.tag > h3 {
+        margin: 0 0 20px;
+        font-weight: normal;
+        line-height: 1;
+        font-size: 16px;
+        padding: 0;
+        color: #777;
+      }
+      .new-entity .card.entity .card-body {
+        padding: 7px;
+      }
+      .new-entity .card.entity .card-body .float-left,
+      .new-entity .card.entity .card-body .ml-7 {
+        display: block;
+        width: 100%;
+        clear: both;
+        margin: 0 !important;
+        text-align: center;
+      }
+      .new-entity .card.entity .card-body .ml-7 .text-muted {
+        display: none;
+      }
+      .entity-new2 .dialog-footer {
+        margin: 15px -35px 10px;
+        padding-top: 25px;
+      }
+
+      .entity-new2 .init-models {
+        margin-left: -10px;
+        margin-right: -10px;
+      }
+      .table.table-excel th,
+      .table.table-excel td {
+        vertical-align: text-top;
+      }
+      .table.table-excel thead th {
+        border: 0 none;
+      }
+      .table.table-excel {
+        border-bottom: 1px solid #dee2e6;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="rb-wrapper rb-fixed-sidebar rb-collapsible-sidebar rb-collapsible-sidebar-hide-logo rb-color-header" th:classappend="${sideCollapsedClazz}">
+      <th:block th:replace="~{/_include/nav-top}" />
+      <th:block th:replace="~{/_include/nav-left-admin(active='entities')}" />
+      <div class="rb-content">
+        <div class="main-content container-fluid" style="padding-bottom: 5px">
+          <div class="row" id="entityList">
+            <div class="card ph">
+              <div class="card-body">
+                <div class="ph-item">
+                  <div class="ph-col-12">
+                    <div class="ph-row">
+                      <div class="ph-col-8"></div>
+                      <div class="ph-col-4 empty"></div>
+                      <div class="ph-col-12"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script type="text/plain" id="entity-tmpl">
+      <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6">
+      	<a class="card entity">
+      		<div class="card-body">
+      			<div class="float-left"><i class="icon zmdi"></i></div>
+      			<div class="ml-7"><span class="text-truncate"></span><p class="text-muted text-truncate m-0"></p></div>
+      			<div class="clearfix"></div>
+      		</div>
+      	</a>
+      </div>
+    </script>
+    <th:block th:replace="~{/_include/footer}" />
+    <script>
+      window.__PageConfig = {
+        isSuperAdmin: '[[${isSuperAdmin}]]' === 'true',
+      }
+    </script>
+    <script th:src="@{/assets/js/admin/init-models.js}" type="text/babel"></script>
+    <script th:src="@{/assets/js/metadata/field-type.js}" type="text/babel"></script>
+    <script th:src="@{/assets/js/metadata/entity-new2.js}" type="text/babel"></script>
+    <script type="text/babel">
+      $(document).ready(function () {
+        const NO_TAG = '__'
+        $.get('/admin/entity/entity-list?bizz=true', function (res) {
+          $('#entityList').empty()
+
+          const groups = { [NO_TAG]: [] }
+          $(res.data).each(function () {
+            ;(this.tags || NO_TAG).split(',').forEach((tag) => {
+              let g = groups[tag]
+              if (!g) {
+                g = []
+                groups[tag] = g
+              }
+              g.push(this)
+            })
+          })
+
+          $(groups[NO_TAG]).each(function () {
+            if (this.builtin) render_entity(this)
+          })
+          $(groups[NO_TAG]).each(function () {
+            if (!this.builtin) render_entity(this)
+          })
+
+          let _EntityNew2
+          const $new = render_entity({
+            icon: 'plus',
+            entityLabel: $L('添加实体'),
+          })
+          $new
+            .addClass('new-entity')
+            .find('a.card')
+            .attr('href', 'javascript:;')
+            .on('click', function () {
+              if (window.__PageConfig.isSuperAdmin) {
+                if (_EntityNew2) {
+                  _EntityNew2.show()
+                } else {
+                  renderRbcomp18(
+                    <EntityNew2
+                      ref={function (o) {
+                        _EntityNew2 = o
+                      }}
+                    />
+                  )
+                }
+              } else {
+                RbHighbar.error('仅超级管理员可添加实体')
+              }
+            })
+            .find('.more-action')
+            .remove()
+
+          delete groups[NO_TAG]
+
+          const keys = Object.keys(groups).sort()
+          keys.forEach((tag) => {
+            $(`<div class="tag"><h3><i class="icon mdi mdi-widgets-outline mr-2"></i>${tag}</h3></div>`).appendTo('#entityList')
+            $(groups[tag]).each(function () {
+              render_entity(this)
+            })
+          })
+        })
+      })
+
+      const render_entity = function (item) {
+        const $t = $($('#entity-tmpl').html()).appendTo('#entityList')
+        $t.find('a.card').attr({
+          href: `entity/${item.entityName}/base`,
+          title: item.comments || null,
+        })
+        $t.find('.icon:eq(0)').addClass(`zmdi-${item.icon}`)
+        $t.find('span').text(item.entityLabel)
+        if (item.comments) $t.find('p').text(item.comments)
+        else $t.find('p').html('&nbsp;')
+
+        if (item.builtin) $(`<i class="badge badge-pill badge-secondary font-weight-light">${$L('内置')}</i>`).appendTo($t.find('a.card'))
+        if (item.detailEntity) $(`<i class="badge badge-pill badge-secondary font-weight-light">${$L('明细')}</i>`).appendTo($t.find('a.card'))
+        return $t
+      }
+    </script>
+  </body>
+</html>

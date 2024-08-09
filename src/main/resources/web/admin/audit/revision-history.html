@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <th:block th:replace="~{/_include/header}" />
+    <meta name="page-help" content="https://getrebuild.com/docs/admin/auditing#%E5%8F%98%E6%9B%B4%E5%8E%86%E5%8F%B2" />
+    <title>[[${bundle.L('变更历史')}]]</title>
+    <style>
+      .table.table-fixed td {
+        vertical-align: text-top;
+      }
+      .table.table-fixed td > div {
+        word-break: break-all;
+        max-height: 90px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .table.group-table > thead > tr > th {
+        border-bottom-width: 0;
+      }
+      .table tr.group-title > td {
+        padding: 0;
+      }
+      .table tr.group-title > td > h5 {
+        padding: 10px 10px 10px 28px;
+        margin: 0;
+        background-color: #eee;
+        border-radius: 0;
+        position: relative;
+      }
+      .table tr.group-title > td > h5,
+      .table tr.group-title > td > h5 * {
+        color: #777;
+        font-weight: normal;
+        line-height: 1;
+      }
+      .table tr.group-title > td > h5::before {
+        content: '';
+        position: absolute;
+        top: 10px;
+        left: 9px;
+        width: 12px;
+        height: 12px;
+        background-color: #fbbc05;
+        border-radius: 50px;
+        border: 2px solid #fff;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="rb-wrapper rb-fixed-sidebar rb-collapsible-sidebar rb-collapsible-sidebar-hide-logo rb-color-header" th:classappend="${sideCollapsedClazz}">
+      <th:block th:replace="~{/_include/nav-top}" />
+      <th:block th:replace="~{/_include/nav-left-admin(active='revision-history')}" />
+      <div class="rb-content">
+        <div class="main-content container-fluid">
+          <div class="card card-table">
+            <div class="card-body">
+              <div class="dataTables_wrapper container-fluid">
+                <div class="row rb-datatable-header">
+                  <div class="col-12 col-md-6">
+                    <div class="dataTables_filter">
+                      <div class="float-left mr-2 select2-sm">
+                        <div style="width: 212px; margin-bottom: 5px">
+                          <select class="form-control form-control-sm" id="belongEntity">
+                            <option value="$ALL$">[[${bundle.L('全部实体')}]]</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="input-group input-search">
+                        <input class="form-control" type="text" th:placeholder="${bundle.L('查询')}" maxlength="40" />
+                        <span class="input-group-btn">
+                          <button class="btn btn-secondary" type="button"><i class="icon zmdi zmdi-search"></i></button>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-12 col-md-6">
+                    <div class="dataTables_oper">
+                      <button class="btn btn-space btn-secondary J_details" type="button"><i class="icon mdi mdi-text-box-search-outline"></i> [[${bundle.L('详情')}]]</button>
+                    </div>
+                  </div>
+                </div>
+                <div id="react-list" class="rb-loading rb-loading-active data-list">
+                  <th:block th:replace="~{/_include/spinner}" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <th:block th:replace="~{/_include/footer}" />
+    <script th:src="@{/assets/js/general/rb-datalist.common.js}" type="text/babel"></script>
+    <script th:src="@{/assets/js/general/rb-datalist.js}" type="text/babel"></script>
+    <script th:src="@{/assets/js/admin/revision-history.js}" type="text/babel"></script>
+  </body>
+</html>

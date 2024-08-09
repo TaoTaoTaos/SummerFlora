@@ -1,0 +1,22 @@
+{
+  "editor.fontSize": 12,
+  "editor.tabSize": 2,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
+  "eslint.codeAction.showDocumentation": {
+    "enable": true
+  },
+  "eslint.onIgnoredFiles": "warn",
+  "eslint.validate": ["javascript", "javascriptreact"],
+
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+
+  "LineCount.excludes": ["**/.vscode/**", "**/.idea/**", "**/node_modules/**", "**/target/**", "**/assets/lib/**"],
+  "editor.formatOnSave": true,
+  "java.compile.nullAnalysis.mode": "automatic",
+  "java.debug.settings.onBuildFailureProceed": true
+}

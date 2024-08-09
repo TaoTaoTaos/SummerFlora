@@ -1,0 +1,45 @@
+# REBUILD
+rebuild:
+
+# TOMCAT (Built-in)
+server:
+  port: 18080
+  servlet:
+    context-path:
+    encoding:
+      charset: UTF-8
+      force: true
+    session:
+      tracking-modes: cookie
+      cookie:
+        same-site: lax
+        name: RBSESSION
+      timeout: 7200
+  error:
+    whitelabel.enabled: false
+  tomcat:
+    uri-encoding: UTF-8
+    threads.max: 400
+    relaxed-path-chars: <,`,^,\,|,{,[,],}
+  max-http-header-size: 32KB
+
+# SPRING
+spring:
+  servlet:
+    multipart.enabled: false
+  web:
+    resources:
+      static-locations: classpath:/web/assets/
+  mvc:
+    static-path-pattern: /assets/**
+  thymeleaf:
+    prefix: classpath:/web
+    cache: true
+    enable-spring-el-compiler: false
+  task:
+    scheduling:
+      thread-name-prefix: rbScheduler-
+      pool:
+        size: 10
+  main:
+    banner-mode: off

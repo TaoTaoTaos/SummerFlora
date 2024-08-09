@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <th:block th:replace="~{/_include/header}" />
+    <meta name="page-help" content="https://getrebuild.com/docs/admin/syscfg" />
+    <title>[[${bundle.L('通用配置')}]]</title>
+    <style>
+      .syscfg a.img-thumbnail {
+        display: inline-block;
+        padding: 0.4rem 0.5rem;
+        background-color: #fff;
+        cursor: default;
+        position: relative;
+      }
+      .syscfg.edit a.img-thumbnail,
+      .syscfg.edit a.img-thumbnail .logo-img {
+        cursor: pointer;
+      }
+      .syscfg a.img-thumbnail b {
+        position: absolute;
+        background: rgba(0, 0, 0, 0.4);
+        width: 24px;
+        height: 24px;
+        top: 2px;
+        right: 2px;
+        border-radius: 2px;
+        cursor: pointer;
+        display: none;
+        font-size: 1.4rem;
+        color: #fff;
+        text-align: center;
+        overflow: hidden;
+      }
+      .syscfg.edit a.img-thumbnail:hover b {
+        display: inline-block;
+      }
+      .bgimg-img {
+        display: inline-block;
+        width: 192px;
+        height: 108px;
+        background: #eee url(../assets/img/bg.jpg) repeat 0 0;
+        background-image: url(../commons/theme/use-bgimg);
+        background-size: cover;
+      }
+      .syscfg a[target='_blank']:hover {
+        text-decoration: underline;
+      }
+      td p > code {
+        background-color: rgb(245, 247, 249);
+        padding: 1px 3px;
+        border-radius: 2px;
+        margin-right: 3px;
+      }
+      .J_cloudAccount .icon {
+        font-size: 24px;
+        float: left;
+        color: #4285f4;
+        margin-right: 6px;
+      }
+      .unstyle.text-break {
+        white-space: pre-wrap !important;
+      }
+      .bg-white {
+        cursor: text !important;
+      }
+      .note {
+        background-color: rgba(0, 0, 0, 0.1);
+        border-radius: 4px;
+        margin-top: 15px;
+        padding: 10px 15px;
+        display: none;
+      }
+      td.td-MobileAppPath .J_MobileAppPath-del {
+        display: none;
+      }
+      td.td-MobileAppPath:hover .J_MobileAppPath-del {
+        display: inline-block;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="rb-wrapper rb-fixed-sidebar rb-collapsible-sidebar rb-collapsible-sidebar-hide-logo rb-color-header" th:classappend="${sideCollapsedClazz}">
+      <th:block th:replace="~{/_include/nav-top}" />
+      <th:block th:replace="~{/_include/nav-left-admin(active='systems')}" />
+      <div class="rb-content">
+        <div class="main-content container-fluid syscfg">
+          <div class="row">
+            <div class="col-lg-9 col-12">
+              <div class="card">
+                <div class="card-header pb-1">
+                  [[${bundle.L('通用配置')}]]
+                  <a href="###" class="float-right J_edit"><i class="icon zmdi zmdi-edit"></i> [[${bundle.L('修改')}]]</a>
+                  <a href="###" class="float-right J_save hide"><i class="icon zmdi zmdi-check text-bold"></i> [[${bundle.L('保存')}]]</a>
+                </div>
+                <div class="card-body">
+                  <h5>[[${bundle.L('通用')}]]</h5>
+                  <table class="table">
+                    <tbody>
+                      <tr>
+                        <td width="40%">[[${bundle.L('名称')}]]</td>
+                        <td th:data-id="AppName" th:data-value="${AppName}">[[${AppName}]]</td>
+                      </tr>
+                      <tr>
+                        <td>LOGO</td>
+                        <td class="fs-0 applogo">
+                          <a class="img-thumbnail" data-id="LOGO">
+                            <i class="logo-img"></i>
+                            <b th:title="${bundle.L('还原')}"><span class="zmdi zmdi-replay"></span></b>
+                          </a>
+                          <a class="img-thumbnail bg-primary ml-1" data-id="LOGOWhite">
+                            <i class="logo-img white"></i>
+                            <b th:title="${bundle.L('还原')}"><span class="zmdi zmdi-replay"></span></b>
+                          </a>
+                          <p class="mt-2 text-dark hide">
+                            [[${bundle.L('请分别上传深色与白色 LOGO，透明背景，建议尺寸 300 × 60')}]]
+                            <a class="ml-2 J_logo-gen hide" href="###genlogo"><i class="icon mdi mdi-pencil-ruler"></i> 制作 LOGO</a>
+                          </p>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>[[${bundle.L('主页地址/域名')}]]</td>
+                        <td data-id="HomeURL" th:data-value="${HomeURL}" th:data-form-text="${bundle.L('所有外部链接将以此作为前缀')}">[[${HomeURL}]]</td>
+                      </tr>
+                      
+                      <tr>
+                        <td>[[${bundle.L('页脚')}]]</td>
+                        <td
+                          data-id="PageFooter"
+                          th:data-value="${PageFooter}"
+                          data-optional="true"
+                          th:data-form-text="${bundle.L('仅适用于外部页面，支持 [MD 语法](https://getrebuild.com/docs/markdown-guide#%E5%9F%BA%E6%9C%AC%E8%AF%AD%E6%B3%95)')}"
+                        >
+                          <pre class="unstyle text-break">[[${PageFooter ?:bundle.L('无')}]]</pre>
+                        </td>
+                      </tr>
+                     
+                      <tr>
+                        <td>
+                          [[${bundle.L('自定义登录页图')}]]
+                          <i class="support-plat2 mdi mdi-monitor mt-0" th:title="${bundle.L('PC 端适用')}"></i>
+                        </td>
+                        <td class="fs-0 bgimg">
+                          <a class="img-thumbnail p-0 border-0" data-id="CustomWallpaper">
+                            <i class="bgimg-img"></i>
+                            <b th:title="${bundle.L('还原')}"><span class="zmdi zmdi-replay"></span></b>
+                          </a>
+                          <p class="mt-2 text-dark hide">[[${bundle.L('建议尺寸 1920 × 1080')}]]</p>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <h5>[[${bundle.L('安全使用')}]]</h5>
+                  <table class="table">
+                    <tbody>
+                     
+                      <tr>
+                        <td>[[${bundle.L('允许分享文件')}]]</td>
+                        <td data-id="FileSharable" th:data-value="${FileSharable}">[[${FileSharable ? bundle.L('是') : bundle.L('否')}]]</td>
+                      </tr>
+                      
+                      <tr>
+                        <td>[[${bundle.L('登录验证码显示模式')}]]</td>
+                        <td data-id="LoginCaptchaPolicy" th:data-value="${LoginCaptchaPolicy}">
+                          <th:block th:if="${LoginCaptchaPolicy == '1'}">[[${bundle.L('自动')}]]</th:block>
+                          <th:block th:if="${LoginCaptchaPolicy == '2'}">[[${bundle.L('总是显示')}]]</th:block>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>[[${bundle.L('登录密码等级')}]]</td>
+                        <td data-id="PasswordPolicy" th:data-value="${PasswordPolicy}">
+                          <th:block th:if="${PasswordPolicy == '1'}">[[${bundle.L('低 (最低6位，无字符类型限制)')}]]</th:block>
+                          <th:block th:if="${PasswordPolicy == '2'}">[[${bundle.L('中 (最低6位，必须同时包含数字、字母)')}]]</th:block>
+                          <th:block th:if="${PasswordPolicy == '3'}">[[${bundle.L('高 (最低10位，必须同时包含数字、字母、特殊字符)')}]]</th:block>
+                        </td>
+                      </tr>
+                      <tr>
+                   
+                     
+                      <tr>
+                        <td>[[${bundle.L('备份保留时间')}]]</td>
+                        <td data-id="DBBackupsKeepingDays" th:data-value="${DBBackupsKeepingDays}">[[${DBBackupsKeepingDays}]] [[${bundle.L('天')}]]</td>
+                      </tr>
+                      <tr>
+                        <td>[[${bundle.L('变更历史保留时间')}]]</td>
+                        <td data-id="RevisionHistoryKeepingDays" th:data-value="${RevisionHistoryKeepingDays}">[[${RevisionHistoryKeepingDays}]] [[${bundle.L('天')}]]</td>
+                      </tr>
+                      <tr>
+                        <td>[[${bundle.L('回收站保留时间')}]]</td>
+                        <td data-id="RecycleBinKeepingDays" th:data-value="${RecycleBinKeepingDays}">[[${RecycleBinKeepingDays}]] [[${bundle.L('天')}]]</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <h5>[[${bundle.L('其他')}]]</h5>
+                  <table class="table">
+                    <tbody>
+                      <tr>
+                        <td width="40%">[[${bundle.L('在详情页显示修改历史')}]]</td>
+                        <td data-id="ShowViewHistory" th:data-value="${ShowViewHistory}">[[${ShowViewHistory ? bundle.L('是') : bundle.L('否')}]]</td>
+                      </tr>
+                      <tr>
+                        <td>[[${bundle.L('文件上传大小限制')}]]</td>
+                        <td data-id="PortalUploadMaxSize" th:data-value="${PortalUploadMaxSize}" data-optional="true">[[${PortalUploadMaxSize}]] MB</td>
+                      </tr>
+                      <tr>
+                        
+                      <tr>
+                       
+                      </tr>
+                    </tbody>
+                  </table>
+                  <input type="file" class="hide file_4image" accept="image/*" data-maxsize="104857600" data-local="true" data-noname="true" />
+                  <input type="file" class="hide file_MobileAppPath" accept=".apk,.ipa" />
+                  <div class="edit-footer">
+                    <button class="btn btn-link" type="button">[[${bundle.L('取消')}]]</button>
+                    <button class="btn btn-primary" type="button">[[${bundle.L('保存')}]]</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+    <th:block th:replace="~{/_include/footer}" />
+    <script>
+      window.__PageConfig = {
+        _LANGS: [(${availableLangs})],
+      }
+    </script>
+    <script th:src="@{/assets/js/admin/syscfg.js}" type="text/babel"></script>
+    <script th:src="@{/assets/js/admin/system-cfg.js}" type="text/babel"></script>
+    <script th:src="@{/assets/js/rebuild-ucenter.js}" type="text/babel"></script>
+    <script th:src="@{/assets/lib/widget/flatpickr.min.js}"></script>
+    <script th:src="@{/assets/lib/widget/flatpickr.i10n-zh.js}"></script>
+  </body>
+</html>

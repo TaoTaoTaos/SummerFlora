@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <th:block th:replace="~{/_include/header}" />
+    <meta name="page-help" content="https://getrebuild.com/docs/admin/entity/" />
+    <title>[[${bundle.L('技术全览')}]]</title>
+    <style>
+      #overview,
+      #graph {
+        width: 100%;
+        height: 600px;
+        background-color: #fff;
+        border-radius: 6px;
+        overflow: hidden;
+        box-shadow: 0 18px 30px -16px rgba(157, 160, 170, 0.31);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="rb-wrapper rb-fixed-sidebar rb-collapsible-sidebar rb-collapsible-sidebar-hide-logo rb-aside rb-color-header" th:classappend="${sideCollapsedClazz}">
+      <th:block th:replace="~{/_include/nav-top}" />
+      <th:block th:replace="~{/_include/nav-left-admin(active='entities')}" />
+      <div class="rb-content">
+        <aside class="page-aside">
+          <div class="rb-scroller-aside rb-scroller">
+            <div class="aside-content">
+              <div class="content">
+                <div class="aside-header">
+                  <button class="navbar-toggle collapsed" type="button"><span class="icon zmdi zmdi-caret-down"></span></button>
+                  <span class="title">[[${entityLabel}]]</span>
+                  <p class="description">[[${comments}]]</p>
+                </div>
+              </div>
+              <div class="aside-nav collapse">
+                <ul class="nav">
+                  <li><a href="base">[[${bundle.L('基本信息')}]]</a></li>
+                  <li><a href="form-design">[[${bundle.L('表单设计')}]]</a></li>
+                  <li><a href="fields">[[${bundle.L('字段管理')}]]</a></li>
+                  <li><a href="advanced">[[${bundle.L('高级配置')}]]</a></li>
+                  <li class="active"><a href="overview">[[${bundle.L('技术全览')}]]</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </aside>
+        <div class="page-head">
+          <div class="page-head-title">[[${bundle.L('技术全览')}]]</div>
+        </div>
+        <div class="main-content container-fluid pt-1">
+          <div class="row">
+            <div class="col">
+              <h4 class="text-bold">[[${bundle.L('实体构成')}]]</h4>
+              <div id="overview"></div>
+            </div>
+            <div class="col">
+              <h4 class="text-bold">[[${bundle.L('引用关系')}]]</h4>
+              <div id="graph">
+                <iframe frameborder="0" scrolling="no" style="width: 100%; height: 100%"></iframe>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <th:block th:replace="~{/_include/footer}" />
+    <script>
+      window.__PageConfig = {
+        id: '[[${entityMetaId}]]',
+        entityName: '[[${entityName}]]',
+        entityLabel: '[[${entityLabel}]]',
+        overview: [(${overview})],
+      }
+    </script>
+    <script th:src="@{/assets/lib/charts/echarts.min.js?v=5.5.0}"></script>
+    <script th:src="@{/assets/js/charts/charts.js}" type="text/babel"></script>
+    <script th:src="@{/assets/js/metadata/entity-switch.js}" type="text/babel"></script>
+    <script type="text/babel">
+      const wpc = window.__PageConfig
+      $(document).ready(() => {
+        // #1
+        const LABELS = {
+          'FIELDS': [$L('字段'), location.href.replace('/overview', '/fields')],
+          'AUTOFILLINS': [$L('字段回填')],
+          'APPROVALS': [$L('审批流程'), `${rb.baseUrl}/admin/robot/approvals#entity=${wpc.entityName}`],
+          'TRANSFORMS': [$L('记录转换'), `${rb.baseUrl}/admin/robot/transforms#entity=${wpc.entityName}`],
+          'TRIGGERS': [$L('触发器'), `${rb.baseUrl}/admin/robot/triggers#entity=${wpc.entityName}`],
+          'EXTFORMS': [$L('外部表单'), `${rb.baseUrl}/admin/extforms#entity=${wpc.entityName}`],
+          'REPORTS': [$L('报表模板'), `${rb.baseUrl}/admin/data/report-templates#entity=${wpc.entityName}`],
+          'SOPS': [$L('业务进度'), `${rb.baseUrl}/admin/robot/sops#entity=${wpc.entityName}`],
+        }
+
+        const ovData = []
+        for (let name in wpc.overview) {
+          const value = wpc.overview[name].length
+          if (value === 0) continue
+          const L = LABELS[name]
+          ovData.push({ name: L[0] || name, value: value, link: L[1] ? L[1] : null })
+        }
+
+        const ovChart = echarts.init(document.getElementById('overview'))
+        const ovOption = {
+          ...$clone(ECHART_BASE),
+          series: [
+            {
+              type: 'treemap',
+              width: '100%',
+              height: '100%',
+              top: 0,
+              breadcrumb: { show: false },
+              nodeClick: 'link',
+              data: ovData,
+              roam: false, // Disabled drag and mouse wheel
+              levels: [
+                {
+                  itemStyle: {
+                    gapWidth: 1,
+                  },
+                },
+                {
+                  itemStyle: {
+                    gapWidth: 0,
+                  },
+                },
+                {
+                  itemStyle: {
+                    gapWidth: 0,
+                  },
+                },
+              ],
+            },
+          ],
+        }
+        ovChart.setOption(ovOption)
+
+        // #2
+        $('#graph iframe').attr('src', `../../entities/er?s=${wpc.entityName}`)
+      })
+    </script>
+  </body>
+</html>

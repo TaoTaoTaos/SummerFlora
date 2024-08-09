@@ -1,0 +1,250 @@
+{
+  "entity": "TESTALLFIELDS999",
+  "entityIcon": "texture",
+  "entityLabel": "TESTALLFIELDS999",
+  "comments": "1",
+  "nameField": "TESTALLFIELDSName",
+  "quickFields": "",
+  "fields": [
+    {
+      "field": "URL1",
+      "fieldLabel": "URL1",
+      "displayType": "URL",
+      "nullable": true,
+      "updatable": true,
+      "repeatable": true,
+      "queryable": true
+    },
+    {
+      "field": "PHONE",
+      "fieldLabel": "PHONE",
+      "displayType": "PHONE",
+      "nullable": true,
+      "updatable": true,
+      "repeatable": true,
+      "queryable": true
+    },
+    {
+      "field": "PICKLIST",
+      "fieldLabel": "PICKLIST",
+      "displayType": "PICKLIST",
+      "nullable": true,
+      "updatable": true,
+      "repeatable": true,
+      "queryable": true,
+      "items": [
+        [
+          "PP1",
+          false,
+          0
+        ],
+        [
+          "PP2",
+          false,
+          0
+        ],
+        [
+          "PP3",
+          false,
+          0
+        ]
+      ]
+    },
+    {
+      "field": "CLASSIFICATION",
+      "fieldLabel": "CLASSIFICATION",
+      "displayType": "CLASSIFICATION",
+      "nullable": true,
+      "updatable": true,
+      "repeatable": true,
+      "queryable": true,
+      "extConfig": {
+        "classification": "018-0000000000000001"
+      }
+    },
+    {
+      "field": "AVATAR1",
+      "fieldLabel": "AVATAR1",
+      "displayType": "AVATAR",
+      "nullable": true,
+      "updatable": true,
+      "repeatable": true,
+      "queryable": true
+    },
+    {
+      "field": "DECIMAL",
+      "fieldLabel": "DECIMAL",
+      "displayType": "DECIMAL",
+      "nullable": true,
+      "updatable": true,
+      "repeatable": true,
+      "queryable": true
+    },
+    {
+      "field": "FILE1",
+      "fieldLabel": "FILE1",
+      "displayType": "FILE",
+      "nullable": true,
+      "updatable": true,
+      "repeatable": true,
+      "queryable": true
+    },
+    {
+      "field": "N2NREFERENCE",
+      "fieldLabel": "N2NREFERENCE",
+      "displayType": "N2NREFERENCE",
+      "nullable": true,
+      "updatable": true,
+      "repeatable": true,
+      "queryable": true,
+      "refEntity": "TESTALLFIELDS999"
+    },
+    {
+      "field": "EMAIL1",
+      "fieldLabel": "EMAIL1",
+      "displayType": "EMAIL",
+      "nullable": true,
+      "updatable": true,
+      "repeatable": true,
+      "queryable": true
+    },
+    {
+      "field": "TESTALLFIELDSName",
+      "fieldLabel": "TESTALLFIELDS名称",
+      "displayType": "TEXT",
+      "nullable": false,
+      "updatable": true,
+      "repeatable": true,
+      "queryable": true
+    },
+    {
+      "field": "IMAGE",
+      "fieldLabel": "IMAGE",
+      "displayType": "IMAGE",
+      "nullable": true,
+      "updatable": true,
+      "repeatable": true,
+      "queryable": true
+    },
+    {
+      "field": "BARCODE",
+      "fieldLabel": "BARCODE",
+      "displayType": "BARCODE",
+      "nullable": true,
+      "updatable": false,
+      "repeatable": true,
+      "queryable": true
+    },
+    {
+      "field": "SERIES",
+      "fieldLabel": "SERIES",
+      "displayType": "SERIES",
+      "nullable": false,
+      "updatable": false,
+      "repeatable": false,
+      "queryable": true
+    },
+    {
+      "field": "NUMBER",
+      "fieldLabel": "NUMBER",
+      "displayType": "NUMBER",
+      "nullable": true,
+      "updatable": true,
+      "repeatable": true,
+      "queryable": true
+    },
+    {
+      "field": "MULTISELECT",
+      "fieldLabel": "MULTISELECT",
+      "displayType": "MULTISELECT",
+      "nullable": true,
+      "updatable": true,
+      "repeatable": true,
+      "queryable": true,
+      "items": [
+        [
+          "1哈哈",
+          false,
+          1
+        ],
+        [
+          "2Abc",
+          true,
+          2
+        ],
+        [
+          "3",
+          true,
+          4
+        ]
+      ]
+    },
+    {
+      "field": "NTEXT",
+      "fieldLabel": "NTEXT",
+      "displayType": "NTEXT",
+      "nullable": true,
+      "updatable": true,
+      "repeatable": true,
+      "queryable": true
+    },
+    {
+      "field": "BOOL",
+      "fieldLabel": "BOOL",
+      "displayType": "BOOL",
+      "nullable": true,
+      "updatable": true,
+      "repeatable": true,
+      "queryable": true
+    },
+    {
+      "field": "TEXT",
+      "fieldLabel": "TEXT",
+      "displayType": "TEXT",
+      "nullable": true,
+      "updatable": true,
+      "repeatable": true,
+      "queryable": true
+    },
+    {
+      "field": "DATE1",
+      "fieldLabel": "DATE1",
+      "displayType": "DATE",
+      "nullable": true,
+      "updatable": true,
+      "repeatable": true,
+      "queryable": true
+    },
+    {
+      "field": "DATETIME",
+      "fieldLabel": "DATETIME",
+      "displayType": "DATETIME",
+      "nullable": true,
+      "updatable": true,
+      "repeatable": true,
+      "queryable": true
+    },
+    {
+      "field": "STATE",
+      "fieldLabel": "STATE",
+      "displayType": "STATE",
+      "nullable": true,
+      "updatable": true,
+      "repeatable": true,
+      "queryable": true,
+      "extConfig": {
+        "stateClass": "com.rebuild.core.support.state.HowtoState"
+      }
+    },
+    {
+      "field": "REFERENCE",
+      "fieldLabel": "REFERENCE",
+      "displayType": "REFERENCE",
+      "nullable": true,
+      "updatable": true,
+      "repeatable": true,
+      "queryable": true,
+      "refEntity": "TESTALLFIELDS999"
+    }
+  ]
+}
