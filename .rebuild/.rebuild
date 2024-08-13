@@ -1,0 +1,6 @@
+#REBUILD INSTALLER MAGIC !!! DO NOT EDIT !!!
+#Fri Aug 02 16:25:44 HKT 2024
+db.CacheHost=0
+db.passwd=AES(WpmXbpnwYWW+hiuyRr2PTw\=\=)
+db.url=jdbc\:mysql\://127.0.0.1\:3306/rebuild30?characterEncoding\=UTF8&useUnicode\=true&zeroDateTimeBehavior\=convertToNull&useSSL\=false&serverTimezone\=Asia/Hong_Kong
+db.user=root

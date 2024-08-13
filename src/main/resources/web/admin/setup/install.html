@@ -108,10 +108,8 @@
                 <b>·</b>
                 <a href="https://getrebuild.com/learn/install" target="_blank" class="link link-icon">[[${bundle.L('安装指南')}]]</a>
               </div>
-              <div
-                class="mt-1 license link"
-                th:utext="${bundle.L( 使用 GPL-3.0 开源许可和商业授权双重授权协议，安装/使用即表示你已阅读并同意[《用户服务协议》](https://getrebuild.com/legal/service-terms)。')}"
-              ></div>
+              <div th:utext="${bundle.L('(https://getrebuild.com/legal/service-terms)')}"></div>
+
               <div class="mt-2">
                 <a class="select-lang dropdown-toggle" data-toggle="dropdown"><i class="icon zmdi zmdi-globe-alt"></i> <span>[[${currentLang}]]</span></a>
                 <div class="dropdown-menu">
