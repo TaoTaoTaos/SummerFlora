@@ -35,10 +35,9 @@ public class SysbaseHeartbeat {
 
     private static final String CKEY_DANGERS = "_DANGERS";
 
-    private static final String HasUpdate = "HasUpdate";
     private static final String AdminMsg = "AdminMsg";
     private static final String UsersMsg = "UsersMsg";
-    private static final String CommercialNoRbv = "CommercialNoRbv";
+
     private static final String DateNotSync = "DateNotSync";
 
     public static final String DatabaseBackupFail = "DatabaseBackupFail";
@@ -53,32 +52,6 @@ public class SysbaseHeartbeat {
         LinkedHashMap<String, String> dangers = getDangersList();
 
         // #1
-        JSONObject checkBuild = License.siteApi("api/authority/check-build");
-        if (checkBuild != null && checkBuild.getIntValue("build") > Application.BUILD) {
-            dangers.put(HasUpdate,
-                    checkBuild.getString("version") + CommonsUtils.COMM_SPLITER + checkBuild.getString("releaseUrl"));
-        } else {
-            dangers.remove(HasUpdate);
-        }
-
-        // #2
-        JSONObject echoValidity = License.siteApiNoCache("api/authority/echo?once=" + ServerStatus.STARTUP_ONCE);
-        if (echoValidity != null && !echoValidity.isEmpty()) {
-            String adminMsg = echoValidity.getString("adminMsg");
-            if (adminMsg == null)
-                dangers.remove(AdminMsg);
-            else
-                dangers.put(AdminMsg, adminMsg);
-
-            String usersMsg = echoValidity.getString("usersMsg");
-            if (usersMsg == null)
-                dangers.remove(UsersMsg);
-            else
-                dangers.put(UsersMsg, usersMsg);
-
-        } else {
-            dangers.remove(UsersMsg);
-        }
 
         // #3
         final Date networkDate = OshiUtils.getNetworkDate();
@@ -120,11 +93,6 @@ public class SysbaseHeartbeat {
      */
     public static Collection<String> getAdminDanger() {
         LinkedHashMap<String, String> dangers = getDangersList();
-
-        if (License.isCommercial() && !License.isRbvAttached()) {
-            dangers.put(CommercialNoRbv,
-                    Language.L("系统检测到功能包未安装"));
-        }
 
         if (dangers.isEmpty())
             return null;

@@ -18,5 +18,6 @@
   "LineCount.excludes": ["**/.vscode/**", "**/.idea/**", "**/node_modules/**", "**/target/**", "**/assets/lib/**"],
   "editor.formatOnSave": true,
   "java.compile.nullAnalysis.mode": "automatic",
-  "java.debug.settings.onBuildFailureProceed": true
+  "java.debug.settings.onBuildFailureProceed": true,
+  "java.configuration.updateBuildConfiguration": "interactive"
 }

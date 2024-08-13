@@ -144,8 +144,8 @@ public class Application implements ApplicationListener<ApplicationStartedEvent>
                         public void run() {
                             String localUrl = BootApplication.getLocalUrl(null);
                             String banner = RebuildBanner.formatSimple(
-                                    "Rebuild (" + VER + ") started successfully in " + time2 + " ms.",
-                                    "    License : " + License.queryAuthority().values(),
+                                    "夏花系统started successfully in " + time2 + " ms.",
+
                                     "Access URLs : ",
                                     "      Local : " + localUrl,
                                     "   External : " + localUrl.replace("localhost", OshiUtils.getLocalIp()),
