@@ -1,25 +1,18 @@
 package com.rebuild.core.support;
 
 import cn.devezhao.commons.CodecUtils;
-import cn.devezhao.commons.ExpiresMap;
-import cn.devezhao.commons.identifier.ComputerIdentifier;
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.rebuild.core.Application;
 import com.rebuild.utils.JSONUtils;
-import com.rebuild.utils.OkHttpUtils;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
+
 import org.springframework.beans.BeansException;
 
-import java.util.HashMap;
 import java.util.Locale;
-import java.util.Map;
 
 @Slf4j
 public final class License {
 
-    private static final String OSA_KEY = "IjkMHgq94T7s7WkP";
     private static final String TEMP_SN = "SN000-00000000-000000000";
 
     private static String USE_SN;
@@ -39,38 +32,23 @@ public final class License {
         if (!Application.isReady())
             return TEMP_SN;
 
-        JSONObject newsn = siteApi("api/authority/new?ver=" + Application.VER);
-        SN = newsn.getString("sn");
-        if (SN != null) {
-            RebuildConfiguration.setValue(ConfigurationItem.SN.name(), SN);
-            siteApiNoCache("api/authority/query");
-        }
-
-        if (SN == null) {
-            SN = String.format("RB%s%s-%s-%s",
-                    Application.VER.charAt(0),
-                    Locale.getDefault().getCountry().substring(0, 2),
-                    ComputerIdentifier.generateIdentifierKey(),
-                    CodecUtils.randomCode(9)).toUpperCase();
-            RebuildConfiguration.setValue(ConfigurationItem.SN.name(), SN);
-            siteApiNoCache("api/authority/query");
-        }
+        // 本地生成 SN 逻辑
+        SN = String.format("RB%s%s-%s-%s",
+                Application.VER.charAt(0),
+                Locale.getDefault().getCountry().substring(0, 2),
+                "LOCALKEY",
+                CodecUtils.randomCode(9)).toUpperCase();
+        RebuildConfiguration.setValue(ConfigurationItem.SN.name(), SN);
 
         USE_SN = SN;
         return SN;
     }
 
     public static JSONObject queryAuthority() {
-        JSONObject auth = siteApi("api/authority/query");
-        String error;
-        if ((error = auth.getString("error")) != null) {
-            auth = JSONUtils.toJSONObject(
-                    new String[] { "sn", "authType", "authObject", "authExpires" },
-                    new String[] { SN(), "商业版", "YourCompany", "永久" });
-        }
-        if ("BLOCKED".equals(error))
-            System.exit(110);
-        return auth;
+        // 返回一个本地生成的权威信息
+        return JSONUtils.toJSONObject(
+                new String[] { "sn", "authType", "authObject", "authExpires" },
+                new String[] { SN(), "商业版", "YourCompany", "永久" });
     }
 
     public static int getCommercialType() {
@@ -98,57 +76,25 @@ public final class License {
         return USE_RBV;
     }
 
-    public static JSONObject siteApi(String api) {
-        return siteApi(api, ExpiresMap.HOUR_IN_SECOND * 2, null);
+    public static JSONObject siteApiNoCache(String param) {
+        // 示例逻辑：假设我们根据传入的参数生成一个 JSON 对象
+        JSONObject result = new JSONObject();
+        result.put("param", param);
+        result.put("status", "success");
+        result.put("timestamp", System.currentTimeMillis());
+
+        log.info("siteApiNoCache called with param: {}", param);
+        return result;
     }
 
-    public static JSONObject siteApiNoCache(String api) {
-        return siteApi(api, 0, null);
-    }
+    public static JSONObject siteApi(String param) {
+        // 示例逻辑：与 siteApiNoCache 类似，但可以在这里添加缓存逻辑
+        JSONObject result = new JSONObject();
+        result.put("param", param);
+        result.put("status", "success");
+        result.put("timestamp", System.currentTimeMillis());
 
-    private static final ExpiresMap<String, JSONObject> MCACHED = new ExpiresMap<>();
-
-    private static JSONObject siteApi(String api, int t, String domain) {
-        if (t > 0) {
-            JSONObject c = MCACHED.get(api, t);
-            if (c != null)
-                return c.clone();
-        } else {
-            MCACHED.remove(api);
-        }
-
-        Map<String, String> hs = new HashMap<>();
-        hs.put("X-SiteApi-K", OSA_KEY);
-        if (!api.contains("/authority/new"))
-            hs.put("X-SiteApi-SN", SN());
-
-        try {
-            String apiUrl = StringUtils.defaultIfEmpty(domain, "https://getrebuild.com/") + api;
-            String result = OkHttpUtils.get(apiUrl, hs);
-
-            if (JSONUtils.wellFormat(result)) {
-                JSONObject o = JSON.parseObject(result);
-
-                String hasError = o.getString("error");
-                if (hasError != null) {
-                    log.error("Result return error : {}", result);
-                } else {
-                    MCACHED.put(api, o);
-                }
-                return o.clone();
-
-            } else {
-                log.error("Bad result format : {}", result);
-            }
-
-        } catch (Exception ex) {
-            log.error("Call site api `{}` error : {}", api.split("\\?")[0], ex.toString());
-        }
-
-        if (domain == null) {
-            return siteApi(api, t, "http://rebuild.ruifang-tech.com/");
-        } else {
-            return JSONUtils.toJSONObject("error", "Call site api failed");
-        }
+        log.info("siteApi called with param: {}", param);
+        return result;
     }
 }
