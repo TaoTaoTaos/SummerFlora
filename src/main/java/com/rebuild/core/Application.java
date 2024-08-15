@@ -156,7 +156,7 @@ public class Application implements ApplicationListener<ApplicationStartedEvent>
                                 String thanks = RebuildBanner.formatSimple(
                                         "**********",
 
-                                        "云南夏花-李锦涛",
+                                        "云南夏花-锦涛",
 
                                         "**********");
                                 System.out.println(thanks);
@@ -207,7 +207,7 @@ public class Application implements ApplicationListener<ApplicationStartedEvent>
 
         if (!(_READY = ServerStatus.checkAll())) {
             log.error(RebuildBanner.formatBanner(
-                    "REBUILD STARTUP FILAED DURING THE STATUS CHECK.", "PLEASE VIEW LOGS FOR MORE DETAILS."));
+                    "STARTUP FILAED DURING THE STATUS CHECK.", "PLEASE VIEW LOGS FOR MORE DETAILS."));
             return false;
         }
 
