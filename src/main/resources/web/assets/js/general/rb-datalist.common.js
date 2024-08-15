@@ -686,10 +686,7 @@ class BatchApprove extends BatchOperator {
   }
 
   handleConfirm() {
-    if (rb.commercial < 10) {
-      RbHighbar.error(WrapHtml($L(' 不支持批量审批功能 [()](')))
-      return
-    }
+   
 
     if (!this.state.approveState) return RbHighbar.create($L('请选择审批结果'))
 
