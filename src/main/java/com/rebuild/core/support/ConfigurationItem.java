@@ -58,7 +58,7 @@ public enum ConfigurationItem {
     RecycleBinKeepingDays(180),
 
     // 启用数据库备份
-    DBBackupsEnable(false),
+    DBBackupsEnable(true),
 
     // 数据备份保留时间（0为禁用）
     DBBackupsKeepingDays(180),
