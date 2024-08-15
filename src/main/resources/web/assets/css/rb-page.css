@@ -4187,9 +4187,7 @@ h3.modal-title > .rbv {
   outline: 2px solid #4285f4;
 }
 
-.use-theme ul li a.theme-default {
-  background-color: #ddd !important;
-}
+
 
 .use-theme ul li a.theme-purple {
   background-color: #9b52de !important;
