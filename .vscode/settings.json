@@ -1,6 +1,12 @@
 {
   "editor.fontSize": 12,
   "editor.tabSize": 2,
+  
+
+
+
+  
+  "terminal.integrated.fontFamily": "Lucida Console",
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "explicit"
   },
@@ -19,5 +25,14 @@
   "editor.formatOnSave": true,
   "java.compile.nullAnalysis.mode": "automatic",
   "java.debug.settings.onBuildFailureProceed": true,
-  "java.configuration.updateBuildConfiguration": "interactive"
+  "java.configuration.updateBuildConfiguration": "interactive",
+  "terminal.integrated.cursorBlinking": true
+
+
+  {
+
+    "terminal.integrated.shellArgs.windows": ["/K chcp 65001 >nul"],
+
+}
+
 }
