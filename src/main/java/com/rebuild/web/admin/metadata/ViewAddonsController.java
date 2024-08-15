@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.web.admin.metadata;
 
@@ -88,16 +82,20 @@ public class ViewAddonsController extends BaseController {
         List<String[]> allRefs = new ArrayList<>();
         for (Field field : entityMeta.getReferenceToFields(Boolean.FALSE, Boolean.TRUE)) {
             Entity e = field.getOwnEntity();
-            if (!MetadataHelper.isBusinessEntity(e)) continue;
-            if (ArrayUtils.contains(entityMeta.getDetialEntities(), e)) continue;
+            if (!MetadataHelper.isBusinessEntity(e))
+                continue;
+            if (ArrayUtils.contains(entityMeta.getDetialEntities(), e))
+                continue;
 
             // 新建项无明细
             if (ViewAddonsManager.TYPE_ADD.equals(applyType)) {
-                if (e.getMainEntity() != null) continue;
+                if (e.getMainEntity() != null)
+                    continue;
             }
 
             String label = EasyMetaFactory.getLabel(e);
-            if (mfRefs.contains(e)) label = EasyMetaFactory.getLabel(field) + " (" + label + ")";
+            if (mfRefs.contains(e))
+                label = EasyMetaFactory.getLabel(field) + " (" + label + ")";
 
             allRefs.add(new String[] { e.getName() + ViewAddonsManager.EF_SPLIT + field.getName(), label });
         }

@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.privileges;
 
@@ -220,10 +214,12 @@ public class PrivilegesManager {
         }
 
         // 审批无权限校验
-        if (action == InternalPermission.APPROVAL) return true;
+        if (action == InternalPermission.APPROVAL)
+            return true;
 
         Boolean a = userAllow(user);
-        if (a != null) return a;
+        if (a != null)
+            return a;
 
         Role role = theUserStore.getUser(user).getOwningRole();
         if (RoleService.ADMIN_ROLE.equals(role.getIdentity())) {
@@ -270,8 +266,8 @@ public class PrivilegesManager {
      * 是否对指定记录有指定权限
      *
      * @param user
-     * @param target 目标记录
-     * @param action 权限动作
+     * @param target       目标记录
+     * @param action       权限动作
      * @param ignoreShared 是否忽略通过共享得到的权限
      * @return
      */
@@ -285,7 +281,8 @@ public class PrivilegesManager {
         }
 
         Boolean a = userAllow(user);
-        if (a != null) return a;
+        if (a != null)
+            return a;
 
         Role role = theUserStore.getUser(user).getOwningRole();
         if (RoleService.ADMIN_ROLE.equals(role.getIdentity())) {
@@ -416,8 +413,10 @@ public class PrivilegesManager {
      * @see RoleBaseQueryFilter#buildCustomFilter(Privileges, Field)
      */
     private boolean andPassCustomFilter(ID user, ID target, Permission action, Privileges ep) {
-        if (!(ep instanceof CustomEntityPrivileges)) return true;
-        if (((CustomEntityPrivileges) ep).getCustomFilter(action) == null) return true;
+        if (!(ep instanceof CustomEntityPrivileges))
+            return true;
+        if (((CustomEntityPrivileges) ep).getCustomFilter(action) == null)
+            return true;
 
         // TODO 性能优化
 
@@ -474,8 +473,10 @@ public class PrivilegesManager {
      * @return
      */
     private Boolean userAllow(ID user) {
-        if (UserHelper.isAdmin(user)) return Boolean.TRUE;
-        if (!theUserStore.getUser(user).isActive()) return Boolean.FALSE;
+        if (UserHelper.isAdmin(user))
+            return Boolean.TRUE;
+        if (!theUserStore.getUser(user).isActive())
+            return Boolean.FALSE;
         return null;
     }
 
@@ -490,7 +491,8 @@ public class PrivilegesManager {
      */
     public boolean allow(ID user, ZeroEntry entry) {
         Boolean a = userAllow(user);
-        if (a != null) return a;
+        if (a != null)
+            return a;
 
         Role role = theUserStore.getUser(user).getOwningRole();
         if (RoleService.ADMIN_ROLE.equals(role.getIdentity())) {

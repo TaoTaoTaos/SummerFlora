@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.web.user;
 
@@ -44,7 +38,7 @@ public class UCenterController extends BaseController {
 
         String hasError = res.getString("error");
         if (hasError == null) {
-            License.siteApiNoCache("api/ucenter/bind-query");  // clear
+            License.siteApiNoCache("api/ucenter/bind-query"); // clear
             return RespBody.ok();
         } else {
             return RespBody.error(hasError);

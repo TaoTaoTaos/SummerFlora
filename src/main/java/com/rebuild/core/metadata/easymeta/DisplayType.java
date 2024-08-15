@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.metadata.easymeta;
 
@@ -62,12 +56,14 @@ public enum DisplayType {
     private final boolean importable;
     private final boolean exportable;
 
-    DisplayType(Class<? extends EasyField> easyClass, String displayName, Type fieldType, int maxLength, String defaultFormat) {
+    DisplayType(Class<? extends EasyField> easyClass, String displayName, Type fieldType, int maxLength,
+            String defaultFormat) {
         this(easyClass, displayName, fieldType, maxLength, defaultFormat, true, true);
     }
 
-    DisplayType(Class<? extends EasyField> easyClass, String displayName, Type fieldType, int maxLength, String defaultFormat,
-                boolean importable, boolean exportable) {
+    DisplayType(Class<? extends EasyField> easyClass, String displayName, Type fieldType, int maxLength,
+            String defaultFormat,
+            boolean importable, boolean exportable) {
         this.easyClass = easyClass;
         this.displayName = displayName;
         this.fieldType = fieldType;

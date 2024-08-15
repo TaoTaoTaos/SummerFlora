@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.web.admin.bizz;
 
@@ -48,7 +42,7 @@ public class DepartmentController extends EntityController {
 
     @PostMapping("dept-delete")
     public RespBody deptDelete(@IdParam ID deptId, HttpServletRequest request) {
-        ID transferTo = getIdParameter(request, "transfer");  // TODO 转移到新部门
+        ID transferTo = getIdParameter(request, "transfer"); // TODO 转移到新部门
         Application.getBean(DepartmentService.class).deleteAndTransfer(deptId, transferTo);
         return RespBody.ok();
     }
@@ -87,9 +81,12 @@ public class DepartmentController extends EntityController {
     private void sortByName(BusinessUnit[] depts) {
         // 排序 a-z
         Arrays.sort(depts, (o1, o2) -> {
-            if (DepartmentService.ROOT_DEPT.equals(o1.getIdentity())) return -1;
-            else if (DepartmentService.ROOT_DEPT.equals(o2.getIdentity())) return 1;
-            else return o1.getName().compareTo(o2.getName());
+            if (DepartmentService.ROOT_DEPT.equals(o1.getIdentity()))
+                return -1;
+            else if (DepartmentService.ROOT_DEPT.equals(o2.getIdentity()))
+                return 1;
+            else
+                return o1.getName().compareTo(o2.getName());
         });
     }
 }

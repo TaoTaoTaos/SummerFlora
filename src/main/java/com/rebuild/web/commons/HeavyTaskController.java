@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.web.commons;
 
@@ -86,7 +80,8 @@ public class HeavyTaskController extends BaseController {
         state.put("isInterrupted", task.isInterruptState());
         state.put("elapsedTime", task.getElapsedTime());
         state.put("hasError", task.getErrorMessage());
-        if (task.isCompleted() || task.isInterruptState()) state.put("execResults", task.getExecResults());
+        if (task.isCompleted() || task.isInterruptState())
+            state.put("execResults", task.getExecResults());
         return state;
     }
 }

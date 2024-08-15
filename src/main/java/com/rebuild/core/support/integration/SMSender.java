@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.support.integration;
 
@@ -113,7 +107,8 @@ public class SMSender {
      * @return
      * @throws ConfigurationException
      */
-    public static String sendMail(String to, String subject, String content, File[] attach, boolean useTemplate, String[] specAccount) throws ConfigurationException {
+    public static String sendMail(String to, String subject, String content, File[] attach, boolean useTemplate,
+            String[] specAccount) throws ConfigurationException {
         if (specAccount == null || specAccount.length < 6
                 || StringUtils.isBlank(specAccount[0]) || StringUtils.isBlank(specAccount[1])
                 || StringUtils.isBlank(specAccount[2]) || StringUtils.isBlank(specAccount[3])) {
@@ -135,7 +130,8 @@ public class SMSender {
             // 处理变量
             String htmlContent = mailbody.html();
             htmlContent = htmlContent.replace("%TO%", to);
-            htmlContent = htmlContent.replace("%TIME%", CalendarUtils.getUTCDateTimeFormat().format(CalendarUtils.now()));
+            htmlContent = htmlContent.replace("%TIME%",
+                    CalendarUtils.getUTCDateTimeFormat().format(CalendarUtils.now()));
             htmlContent = htmlContent.replace("%APPURL%", RebuildConfiguration.getHomeUrl());
             htmlContent = htmlContent.replace("%APPLOGO%", RebuildConfiguration.getHomeUrl("commons/theme/use-logo"));
             if (License.isRbvAttached()) {
@@ -174,8 +170,10 @@ public class SMSender {
         params.put("appid", specAccount[0]);
         params.put("signature", specAccount[1]);
         params.put("to", to);
-        if (StringUtils.isNotBlank(specAccount[4])) params.put("cc", specAccount[4]);
-        if (StringUtils.isNotBlank(specAccount[5])) params.put("bcc", specAccount[5]);
+        if (StringUtils.isNotBlank(specAccount[4]))
+            params.put("cc", specAccount[4]);
+        if (StringUtils.isNotBlank(specAccount[5]))
+            params.put("bcc", specAccount[5]);
         params.put("from", specAccount[2]);
         params.put("from_name", specAccount[3]);
         params.put("subject", subject);
@@ -204,7 +202,8 @@ public class SMSender {
                 map.put("data", base64);
                 atta.add(map);
             }
-            if (!atta.isEmpty()) params.put("atta", atta);
+            if (!atta.isEmpty())
+                params.put("atta", atta);
         }
 
         JSONObject rJson;
@@ -239,11 +238,14 @@ public class SMSender {
      * @return
      * @throws ConfigurationException
      */
-    protected static String sendMailViaSmtp(String to, String subject, String htmlContent, File[] attach, String[] specAccount) throws EmailException {
+    protected static String sendMailViaSmtp(String to, String subject, String htmlContent, File[] attach,
+            String[] specAccount) throws EmailException {
         HtmlEmail email = new HtmlEmail();
         email.addTo(to);
-        if (StringUtils.isNotBlank(specAccount[4])) email.addCc(specAccount[4]);
-        if (StringUtils.isNotBlank(specAccount[5])) email.addBcc(specAccount[5]);
+        if (StringUtils.isNotBlank(specAccount[4]))
+            email.addCc(specAccount[4]);
+        if (StringUtils.isNotBlank(specAccount[5]))
+            email.addBcc(specAccount[5]);
         email.setSubject(subject);
         email.setHtmlMsg(htmlContent);
 
@@ -253,7 +255,8 @@ public class SMSender {
         // HOST[:PORT:SSL|TLS]
         String[] hostPortSsl = specAccount[6].split(":");
         email.setHostName(hostPortSsl[0]);
-        if (hostPortSsl.length > 1) email.setSmtpPort(Integer.parseInt(hostPortSsl[1]));
+        if (hostPortSsl.length > 1)
+            email.setSmtpPort(Integer.parseInt(hostPortSsl[1]));
         if (hostPortSsl.length > 2) {
             if ("ssl".equalsIgnoreCase(hostPortSsl[2])) {
                 email.setSSLOnConnect(true);
@@ -264,7 +267,8 @@ public class SMSender {
         }
 
         if (attach != null) {
-            for (File a : attach) email.attach(a);
+            for (File a : attach)
+                email.attach(a);
         }
 
         email.addHeader("X-User-Agent", OkHttpUtils.RB_UA);
@@ -273,11 +277,13 @@ public class SMSender {
     }
 
     private static Element MT_CACHE = null;
+
     /**
      * @return
      */
     protected static Element getMailTemplate() {
-        if (MT_CACHE != null) return MT_CACHE.clone();
+        if (MT_CACHE != null)
+            return MT_CACHE.clone();
 
         String content = CommonsUtils.getStringOfRes("i18n/email.zh_CN.html");
         Assert.notNull(content, "Cannot load template of email");
@@ -365,7 +371,8 @@ public class SMSender {
 
     // @see com.rebuild.core.support.CommonsLog
     private static void createLog(String to, String content, int type, String sentid, String error) {
-        if (!Application.isReady()) return;
+        if (!Application.isReady())
+            return;
 
         Record slog = EntityHelper.forNew(EntityHelper.SmsendLog, UserService.SYSTEM_USER);
         slog.setString("to", to);

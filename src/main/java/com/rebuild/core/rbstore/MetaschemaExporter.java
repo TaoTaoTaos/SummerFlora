@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.rbstore;
 
@@ -224,7 +218,8 @@ public class MetaschemaExporter {
         JSONArray filters = new JSONArray();
         for (Object[] o : array) {
             JSONObject filterConfig = (JSONObject) parseJSON(o[1]);
-            if (filterConfig == null) continue;
+            if (filterConfig == null)
+                continue;
 
             JSON config = JSONUtils.toJSONObject(
                     new String[] { "filterName", "config" },
@@ -243,10 +238,12 @@ public class MetaschemaExporter {
         JSONArray triggers = new JSONArray();
         for (Object[] o : array) {
             JSON actionContent = parseJSON(o[4]);
-            if (actionContent == null) continue;
+            if (actionContent == null)
+                continue;
 
             JSON config = JSONUtils.toJSONObject(
-                    new String[] { "when", "whenTimer", "whenFilter", "actionType", "actionContent", "priority", "name" },
+                    new String[] { "when", "whenTimer", "whenFilter", "actionType", "actionContent", "priority",
+                            "name" },
                     new Object[] { o[0], o[1], parseJSON(o[2]), o[3], actionContent, o[5], o[6] });
             triggers.add(config);
         }
@@ -262,7 +259,8 @@ public class MetaschemaExporter {
         JSONArray approvals = new JSONArray();
         for (Object[] o : array) {
             JSON flowDefinition = parseJSON(o[1]);
-            if (flowDefinition == null) continue;
+            if (flowDefinition == null)
+                continue;
 
             JSON config = JSONUtils.toJSONObject(
                     new String[] { "name", "flowDefinition" },
@@ -281,12 +279,14 @@ public class MetaschemaExporter {
         JSONArray transforms = new JSONArray();
         for (Object[] o : array) {
             JSON mappingConfig = parseJSON(o[2]);
-            if (mappingConfig == null) continue;
+            if (mappingConfig == null)
+                continue;
 
             JSONObject config = JSONUtils.toJSONObject(
                     new String[] { "targetEntity", "name", "config" },
                     new Object[] { o[0], o[1], mappingConfig });
-            if (this.keepId) config.put(KEEP_ID, o[3]);
+            if (this.keepId)
+                config.put(KEEP_ID, o[3]);
 
             transforms.add(config);
         }
@@ -294,11 +294,15 @@ public class MetaschemaExporter {
     }
 
     private JSON parseJSON(Object content) {
-        if (content == null) return null;
+        if (content == null)
+            return null;
 
         JSON config = (JSON) JSON.parse(content.toString());
-        if (config instanceof JSONObject && ((JSONObject) config).isEmpty()) return null;
-        else if (config instanceof JSONArray && ((JSONArray) config).isEmpty()) return null;
-        else return config;
+        if (config instanceof JSONObject && ((JSONObject) config).isEmpty())
+            return null;
+        else if (config instanceof JSONArray && ((JSONArray) config).isEmpty())
+            return null;
+        else
+            return config;
     }
 }

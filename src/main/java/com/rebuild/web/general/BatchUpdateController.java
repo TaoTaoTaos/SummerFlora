@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.web.general;
 
@@ -70,10 +64,12 @@ public class BatchUpdateController extends BaseController {
 
         List<JSONObject> updatableFields = new ArrayList<>();
         for (Field field : MetadataSorter.sortFields(entityMeta)) {
-            if (!field.isUpdatable()) continue;
+            if (!field.isUpdatable())
+                continue;
 
             EasyField easyField = EasyMetaFactory.valueOf(field);
-            if (!easyField.isUpdatable()) continue;
+            if (!easyField.isUpdatable())
+                continue;
 
             DisplayType dt = easyField.getDisplayType();
             // 不支持的字段

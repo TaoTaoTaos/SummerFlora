@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.service.dashboard.charts;
 
@@ -30,8 +24,8 @@ public class IndexChart extends ChartData {
         Numerical num = nums[0];
         Object[] dataRaw = createQuery(buildSql(num, true)).unique();
         JSONObject index = JSONUtils.toJSONObject(
-                new String[]{"data", "label"},
-                new Object[]{wrapAxisValue(num, dataRaw[0], true), num.getLabel()});
+                new String[] { "data", "label" },
+                new Object[] { wrapAxisValue(num, dataRaw[0], true), num.getLabel() });
 
         // 对比
         if (nums.length > 1) {
@@ -42,10 +36,11 @@ public class IndexChart extends ChartData {
         }
 
         JSONObject renderOption = config.getJSONObject("option");
-        if (renderOption == null) renderOption = new JSONObject();
+        if (renderOption == null)
+            renderOption = new JSONObject();
 
         return JSONUtils.toJSONObject(
-                new String[]{"index", "_renderOption"},
-                new Object[]{index, renderOption});
+                new String[] { "index", "_renderOption" },
+                new Object[] { index, renderOption });
     }
 }

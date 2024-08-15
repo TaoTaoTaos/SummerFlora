@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.api.sdk;
 
@@ -101,7 +95,7 @@ public class OpenApiSDK {
             sortMap.putAll(reqParams);
         }
         sortMap.put("appid", this.appId);
-        sortMap.put("timestamp", System.currentTimeMillis() / 1000);  // in sec
+        sortMap.put("timestamp", System.currentTimeMillis() / 1000); // in sec
         sortMap.put("sign_type", signType);
 
         StringBuilder sign = new StringBuilder();
@@ -210,9 +204,11 @@ public class OpenApiSDK {
      */
     private String buildApiUrl(String apiName, Map<String, Object> reqParams) {
         StringBuilder apiUrl = new StringBuilder(baseUrl);
-        if (!baseUrl.endsWith("/")) apiUrl.append('/');
+        if (!baseUrl.endsWith("/"))
+            apiUrl.append('/');
 
-        if (apiName.startsWith("/")) apiName = apiName.substring(1);
+        if (apiName.startsWith("/"))
+            apiName = apiName.substring(1);
         apiUrl.append(apiName);
 
         apiUrl.append('?').append(sign(reqParams));
@@ -223,7 +219,7 @@ public class OpenApiSDK {
      * 文件下载
      *
      * @param filePath 文件（相对）路径
-     * @param dest 存储到指定文件
+     * @param dest     存储到指定文件
      * @throws IOException
      */
     public boolean fileDownload(String filePath, File dest) throws IOException {

@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.web.general;
 
@@ -64,17 +58,21 @@ public class GeneralListController extends EntityController {
             throws IOException {
         final ID user = getRequestUser(request);
         int status = getCanAccessStatus(entity, user, response);
-        if (status > 0) return null;
+        if (status > 0)
+            return null;
 
         final Entity listEntity = MetadataHelper.getEntity(entity);
         final EasyEntity easyEntity = EasyMetaFactory.valueOf(listEntity);
 
         int listMode = ObjectUtils.toInt(easyEntity.getExtraAttr(EasyEntityConfigProps.ADVLIST_MODE), 1);
         int listModeForce = getIntParameter(request, "mode", 0);
-        if (listModeForce >= 1 && listModeForce <= 3) listMode = listModeForce;
+        if (listModeForce >= 1 && listModeForce <= 3)
+            listMode = listModeForce;
         String listPage = listEntity.getMainEntity() != null ? "/general/detail-list" : "/general/record-list";
-        if (listMode == 2) listPage = "/general/record-list2";  // Mode2
-        if (listMode == 3) listPage = "/general/record-list3";  // Mode3
+        if (listMode == 2)
+            listPage = "/general/record-list2"; // Mode2
+        if (listMode == 3)
+            listPage = "/general/record-list3"; // Mode3
 
         ModelAndView mv = createModelAndView(listPage, entity, user);
 
@@ -112,7 +110,8 @@ public class GeneralListController extends EntityController {
             mv.getModel().put(EasyEntityConfigProps.ADVLIST_SHOWCATEGORY, StringUtils.isNotBlank(advListShowCategory));
 
             mv.getModel().put("hideAside",
-                    BooleanUtils.toBoolean(advListHideFilters) && BooleanUtils.toBoolean(advListHideCharts) && StringUtils.isBlank(advListShowCategory));
+                    BooleanUtils.toBoolean(advListHideFilters) && BooleanUtils.toBoolean(advListHideCharts)
+                            && StringUtils.isBlank(advListShowCategory));
 
             // 查询面板
 
@@ -123,17 +122,19 @@ public class GeneralListController extends EntityController {
                 JSONArray paneFields = new JSONArray();
                 for (String field : DataListManager.instance.getListFilterPaneFields(user, entity)) {
                     if (AdvFilterParser.VF_ACU.equals(field)) {
-//                        JSONObject vf = (JSONObject) EasyMetaFactory.valueOf(listEntity.getField(EntityHelper.ApprovalLastUser)).toJSON();
-//                        vf.put("name", AdvFilterParser.VF_ACU);
-//                        vf.put("label", Language.L("当前审批人"));
-//                        paneFields.add(vf);
+                        // JSONObject vf = (JSONObject)
+                        // EasyMetaFactory.valueOf(listEntity.getField(EntityHelper.ApprovalLastUser)).toJSON();
+                        // vf.put("name", AdvFilterParser.VF_ACU);
+                        // vf.put("label", Language.L("当前审批人"));
+                        // paneFields.add(vf);
                         log.warn("{} is deprecated", AdvFilterParser.VF_ACU);
                     } else {
                         paneFields.add(EasyMetaFactory.valueOf(listEntity.getField(field)).toJSON());
                     }
                 }
 
-                if (!paneFields.isEmpty()) mv.getModel().put("paneFields", paneFields);
+                if (!paneFields.isEmpty())
+                    mv.getModel().put("paneFields", paneFields);
             }
 
             // v3.3 查询页签
@@ -151,12 +152,14 @@ public class GeneralListController extends EntityController {
         } else if (listMode == 2) {
             listConfig = DataListManager.instance.getFieldsLayoutMode2(listEntity);
             // 明细
-            if (listEntity.getMainEntity() != null) mv.getModel().put("DataListType", "DetailList");
+            if (listEntity.getMainEntity() != null)
+                mv.getModel().put("DataListType", "DetailList");
 
         } else if (listMode == 3) {
             listConfig = DataListManager.instance.getFieldsLayoutMode3(listEntity);
             // 明细
-            if (listEntity.getMainEntity() != null) mv.getModel().put("DataListType", "DetailList");
+            if (listEntity.getMainEntity() != null)
+                mv.getModel().put("DataListType", "DetailList");
 
             // 侧栏
             String advListShowFilters = easyEntity.getExtraAttr(EasyEntityConfigProps.ADVLIST_MODE3_SHOWFILTERS);
@@ -188,7 +191,8 @@ public class GeneralListController extends EntityController {
 
         } catch (Exception ex) {
             String known = KnownExceptionConverter.convert2ErrorMsg(ex);
-            if (known != null) return RespBody.error(known);
+            if (known != null)
+                return RespBody.error(known);
 
             log.error(null, ex);
             return RespBody.error(ex.getLocalizedMessage());
@@ -206,8 +210,10 @@ public class GeneralListController extends EntityController {
 
         List<String> quickFieldsLabel = new ArrayList<>();
         for (String qf : quickFields) {
-            if (qf.equalsIgnoreCase(EntityHelper.QuickCode)) continue;
-            if (qf.startsWith("&")) qf = qf.substring(1);
+            if (qf.equalsIgnoreCase(EntityHelper.QuickCode))
+                continue;
+            if (qf.startsWith("&"))
+                qf = qf.substring(1);
             quickFieldsLabel.add(EasyMetaFactory.getLabel(entity, qf));
         }
 

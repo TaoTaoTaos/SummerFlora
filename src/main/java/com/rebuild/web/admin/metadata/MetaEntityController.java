@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.web.admin.metadata;
 
@@ -206,7 +200,8 @@ public class MetaEntityController extends EntityController {
 
         try {
             String entityName = new Entity2Schema().createEntity(
-                    null, label, comments, mainEntity, getBoolParameter(request, "nameField"), getBoolParameter(request, "seriesField"));
+                    null, label, comments, mainEntity, getBoolParameter(request, "nameField"),
+                    getBoolParameter(request, "seriesField"));
             return RespBody.ok(entityName);
         } catch (Exception ex) {
             log.error("entity-new", ex);
@@ -267,7 +262,8 @@ public class MetaEntityController extends EntityController {
         final Entity entity = getEntityById(getIdParameterNotNull(request, "id"));
 
         File dest = RebuildConfiguration.getFileOfTemp("schema-" + entity.getName() + ".json");
-        if (dest.exists()) FileUtils.deleteQuietly(dest);
+        if (dest.exists())
+            FileUtils.deleteQuietly(dest);
 
         new MetaschemaExporter(entity, true).export(dest);
 
@@ -335,19 +331,21 @@ public class MetaEntityController extends EntityController {
         Set<String> specList = null;
         if (StringUtils.isNotBlank(spec)) {
             specList = new HashSet<>();
-            for (String s : spec.split(",")) specList.add(s.trim().toUpperCase());
+            for (String s : spec.split(","))
+                specList.add(s.trim().toUpperCase());
         }
 
         List<Object[]> entities = new ArrayList<>();
         for (Entity e : MetadataHelper.getEntities()) {
-            if (specList != null && !specList.contains(e.getName().toUpperCase())) continue;
+            if (specList != null && !specList.contains(e.getName().toUpperCase()))
+                continue;
 
             final EasyEntity ee = EasyMetaFactory.valueOf(e);
-            if (ee.isBuiltin() && !MetadataHelper.isBizzEntity(e)) continue;
+            if (ee.isBuiltin() && !MetadataHelper.isBizzEntity(e))
+                continue;
 
             List<Object[]> fields = new ArrayList<>();
-            fields.add(new Object[]
-                    { "ID", e.getName() + "Id", DisplayType.ID.getDisplayName(), "-", "-", "N/N/N/N" });
+            fields.add(new Object[] { "ID", e.getName() + "Id", DisplayType.ID.getDisplayName(), "-", "-", "N/N/N/N" });
 
             for (Field f : MetadataSorter.sortFields(e)) {
                 final EasyField ef = EasyMetaFactory.valueOf(f);
@@ -365,13 +363,15 @@ public class MetaEntityController extends EntityController {
                 if (dt == DisplayType.PICKLIST) {
                     ConfigBean[] cbs = PickListManager.instance.getPickListRaw(f, Boolean.TRUE);
                     List<String> texts = new ArrayList<>();
-                    for (ConfigBean cb : cbs) texts.add(cb.getID("id") + ":" + cb.getString("text"));
+                    for (ConfigBean cb : cbs)
+                        texts.add(cb.getID("id") + ":" + cb.getString("text"));
                     opt = StringUtils.join(texts, "//");
                 }
 
                 fields.add(new Object[] {
                         ef.getLabel(), f.getName(), ef.getDisplayType().getDisplayName(), ref, opt,
-                        (ef.isCreatable() ? "Y" : "N") + (ef.isUpdatable() ? "/Y" : "/N") + (ef.isNullable() ? "/Y" : "/N") + (ef.isRepeatable() ? "/Y" : "/N") });
+                        (ef.isCreatable() ? "Y" : "N") + (ef.isUpdatable() ? "/Y" : "/N")
+                                + (ef.isNullable() ? "/Y" : "/N") + (ef.isRepeatable() ? "/Y" : "/N") });
             }
 
             entities.add(new Object[] { e.getName(), e.getEntityCode(), ee.getLabel(), fields });

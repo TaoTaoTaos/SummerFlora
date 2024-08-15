@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.configuration;
 
@@ -60,7 +54,8 @@ public abstract class BaseConfigurationService extends InternalPersistService {
      */
     protected void throwIfNotSelf(ID cfgid) throws DataSpecificationException {
         final ID user = UserContextHolder.getUser();
-        if (UserHelper.isAdmin(user)) return;
+        if (UserHelper.isAdmin(user))
+            return;
 
         if (!UserHelper.isSelf(user, cfgid)) {
             throw new DataSpecificationException(Language.L("无权操作他人配置"));
@@ -101,12 +96,15 @@ public abstract class BaseConfigurationService extends InternalPersistService {
      */
     protected Record putCreateBy4ShareTo(Record cfgRecord) {
         final ID user = ObjectUtils.defaultIfNull(cfgRecord.getEditor(), UserContextHolder.getUser());
-        if (UserService.ADMIN_USER.equals(user)) return cfgRecord;
-        if (!cfgRecord.hasValue("shareTo")) return cfgRecord;
+        if (UserService.ADMIN_USER.equals(user))
+            return cfgRecord;
+        if (!cfgRecord.hasValue("shareTo"))
+            return cfgRecord;
 
         if (cfgRecord.getPrimary() != null) {
             Object createBy = QueryHelper.queryFieldValue(cfgRecord.getPrimary(), EntityHelper.CreatedBy);
-            if (UserService.ADMIN_USER.equals(createBy)) return cfgRecord;
+            if (UserService.ADMIN_USER.equals(createBy))
+                return cfgRecord;
         }
 
         String shareTo = cfgRecord.getString("shareTo");

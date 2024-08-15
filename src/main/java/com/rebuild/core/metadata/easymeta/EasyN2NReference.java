@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.metadata.easymeta;
 
@@ -58,18 +52,23 @@ public class EasyN2NReference extends EasyReference implements MultiValue {
     @Override
     public Object exprDefaultValue() {
         String valueExpr = (String) getRawMeta().getDefaultValue();
-        if (StringUtils.isBlank(valueExpr)) return null;
+        if (StringUtils.isBlank(valueExpr))
+            return null;
 
         if (valueExpr.contains(VAR_CURRENT)) {
             Object id = exprCurrent();
-            if (id == null) return null;
-            else if (id instanceof ID[]) return id;
-            else return new ID[] {(ID) id};
+            if (id == null)
+                return null;
+            else if (id instanceof ID[])
+                return id;
+            else
+                return new ID[] { (ID) id };
         }
 
         List<ID> idArray = new ArrayList<>();
         for (String id : valueExpr.split(MV_SPLIT.trim())) {
-            if (ID.isId(id)) idArray.add(ID.valueOf(id));
+            if (ID.isId(id))
+                idArray.add(ID.valueOf(id));
         }
         return idArray.toArray(new ID[0]);
     }
@@ -91,7 +90,7 @@ public class EasyN2NReference extends EasyReference implements MultiValue {
 
         List<String> texts = new ArrayList<>();
         for (Object item : arrayValue) {
-            texts.add(((JSONObject) item).getString ("text"));
+            texts.add(((JSONObject) item).getString("text"));
         }
         return StringUtils.join(texts, MV_SPLIT);
     }

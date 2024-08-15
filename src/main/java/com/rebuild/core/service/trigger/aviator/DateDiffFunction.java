@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.service.trigger.aviator;
 
@@ -67,11 +61,16 @@ public class DateDiffFunction extends AbstractFunction {
 
         if (isUseMysql) {
             String mysqlUnit = "DAY";
-            if (AviatorDate.DU_YEAR.equalsIgnoreCase($du)) mysqlUnit = "YEAR";
-            else if (AviatorDate.DU_MONTH.equalsIgnoreCase($du)) mysqlUnit = "MONTH";
-            else if (AviatorDate.DU_HOUR.equalsIgnoreCase($du)) mysqlUnit = "HOUR";
-            else if (AviatorDate.DU_MINUTE.equalsIgnoreCase($du)) mysqlUnit = "MINUTE";
-            else if (AviatorDate.DU_SECOND.equalsIgnoreCase($du)) mysqlUnit = "SECOND";
+            if (AviatorDate.DU_YEAR.equalsIgnoreCase($du))
+                mysqlUnit = "YEAR";
+            else if (AviatorDate.DU_MONTH.equalsIgnoreCase($du))
+                mysqlUnit = "MONTH";
+            else if (AviatorDate.DU_HOUR.equalsIgnoreCase($du))
+                mysqlUnit = "HOUR";
+            else if (AviatorDate.DU_MINUTE.equalsIgnoreCase($du))
+                mysqlUnit = "MINUTE";
+            else if (AviatorDate.DU_SECOND.equalsIgnoreCase($du))
+                mysqlUnit = "SECOND";
 
             // 利用 MySQL 计算，可预期
             String mysql = String.format("select TIMESTAMPDIFF(%s, '%s', '%s')",
@@ -87,12 +86,18 @@ public class DateDiffFunction extends AbstractFunction {
             long res = 0;
             DateBetween between = DateBetween.create($date1, $date2, Boolean.FALSE);
 
-            if (AviatorDate.DU_YEAR.equalsIgnoreCase($du)) res = between.betweenYear(Boolean.TRUE);
-            else if (AviatorDate.DU_MONTH.equalsIgnoreCase($du)) res = between.betweenMonth(Boolean.TRUE);
-            else if (AviatorDate.DU_DAY.equalsIgnoreCase($du)) res = between.between(DateUnit.DAY);
-            else if (AviatorDate.DU_HOUR.equalsIgnoreCase($du)) res = between.between(DateUnit.HOUR);
-            else if (AviatorDate.DU_MINUTE.equalsIgnoreCase($du)) res = between.between(DateUnit.MINUTE);
-            else if (AviatorDate.DU_SECOND.equalsIgnoreCase($du)) res = between.between(DateUnit.SECOND);
+            if (AviatorDate.DU_YEAR.equalsIgnoreCase($du))
+                res = between.betweenYear(Boolean.TRUE);
+            else if (AviatorDate.DU_MONTH.equalsIgnoreCase($du))
+                res = between.betweenMonth(Boolean.TRUE);
+            else if (AviatorDate.DU_DAY.equalsIgnoreCase($du))
+                res = between.between(DateUnit.DAY);
+            else if (AviatorDate.DU_HOUR.equalsIgnoreCase($du))
+                res = between.between(DateUnit.HOUR);
+            else if (AviatorDate.DU_MINUTE.equalsIgnoreCase($du))
+                res = between.between(DateUnit.MINUTE);
+            else if (AviatorDate.DU_SECOND.equalsIgnoreCase($du))
+                res = between.between(DateUnit.SECOND);
 
             return AviatorLong.valueOf(res);
         }

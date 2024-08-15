@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.service.datareport;
 
@@ -73,9 +67,10 @@ public class EasyExcelListGenerator extends EasyExcelGenerator {
             }
         }
 
-        if (validFields.isEmpty()) return Collections.emptyMap();
+        if (validFields.isEmpty())
+            return Collections.emptyMap();
 
-        queryData.put("fields", validFields);  // 使用模板字段
+        queryData.put("fields", validFields); // 使用模板字段
 
         QueryParser queryParser = new QueryParser(queryData);
         int[] limits = queryParser.getSqlLimit();
@@ -91,10 +86,14 @@ public class EasyExcelListGenerator extends EasyExcelGenerator {
             phNumber++;
         }
 
-        if (varsMap.containsKey(PH__CURRENTUSER)) phValues.put(PH__CURRENTUSER, getPhValue(PH__CURRENTUSER));
-        if (varsMap.containsKey(PH__CURRENTBIZUNIT)) phValues.put(PH__CURRENTBIZUNIT, getPhValue(PH__CURRENTBIZUNIT));
-        if (varsMap.containsKey(PH__CURRENTDATE)) phValues.put(PH__CURRENTDATE, getPhValue(PH__CURRENTDATE));
-        if (varsMap.containsKey(PH__CURRENTDATETIME)) phValues.put(PH__CURRENTDATETIME, getPhValue(PH__CURRENTDATETIME));
+        if (varsMap.containsKey(PH__CURRENTUSER))
+            phValues.put(PH__CURRENTUSER, getPhValue(PH__CURRENTUSER));
+        if (varsMap.containsKey(PH__CURRENTBIZUNIT))
+            phValues.put(PH__CURRENTBIZUNIT, getPhValue(PH__CURRENTBIZUNIT));
+        if (varsMap.containsKey(PH__CURRENTDATE))
+            phValues.put(PH__CURRENTDATE, getPhValue(PH__CURRENTDATE));
+        if (varsMap.containsKey(PH__CURRENTDATETIME))
+            phValues.put(PH__CURRENTDATETIME, getPhValue(PH__CURRENTDATETIME));
 
         Map<String, List<Map<String, Object>>> datasMap = new HashMap<>();
         datasMap.put(REFKEY_LIST, datas);

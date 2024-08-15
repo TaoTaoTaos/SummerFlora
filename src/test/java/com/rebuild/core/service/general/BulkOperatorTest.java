@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.service.general;
 
@@ -27,7 +21,7 @@ class BulkOperatorTest extends TestSupport {
 
         // 共享
         BulkContext contextOfShare = new BulkContext(
-                UserService.ADMIN_USER, BizzPermission.SHARE, SIMPLE_USER, null, new ID[]{recordNew});
+                UserService.ADMIN_USER, BizzPermission.SHARE, SIMPLE_USER, null, new ID[] { recordNew });
         Application.getGeneralEntityService().bulk(contextOfShare);
 
         // 清理
@@ -41,12 +35,12 @@ class BulkOperatorTest extends TestSupport {
 
         // 分配
         BulkContext contextOfAssign = new BulkContext(
-                UserService.ADMIN_USER, BizzPermission.ASSIGN, SIMPLE_USER, null, new ID[]{recordNew});
+                UserService.ADMIN_USER, BizzPermission.ASSIGN, SIMPLE_USER, null, new ID[] { recordNew });
         Application.getGeneralEntityService().bulk(contextOfAssign);
 
         // 删除
         BulkContext contextOfDelete = new BulkContext(
-                UserService.ADMIN_USER, BizzPermission.DELETE, null, null, new ID[]{recordNew});
+                UserService.ADMIN_USER, BizzPermission.DELETE, null, null, new ID[] { recordNew });
         Application.getGeneralEntityService().bulk(contextOfDelete);
     }
 }

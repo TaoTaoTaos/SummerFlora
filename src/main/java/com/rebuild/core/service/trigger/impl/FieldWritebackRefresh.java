@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.service.trigger.impl;
 
@@ -39,8 +33,10 @@ public class FieldWritebackRefresh {
     /**
      */
     public void refresh() {
-        if (beforeValue instanceof ID[] && ((ID[]) beforeValue).length == 0) return;
-        if (NullValue.isNull(beforeValue)) return;
+        if (beforeValue instanceof ID[] && ((ID[]) beforeValue).length == 0)
+            return;
+        if (NullValue.isNull(beforeValue))
+            return;
 
         ID triggerUser = UserService.SYSTEM_USER;
         ActionContext parentAc = parent.getActionContext();
@@ -53,12 +49,15 @@ public class FieldWritebackRefresh {
         fa.targetEntity = parent.targetEntity;
 
         fa.targetRecordIds = new HashSet<>();
-        if (beforeValue instanceof ID[]) CollectionUtils.addAll(fa.targetRecordIds, (ID[]) beforeValue);
-        else fa.targetRecordIds.add((ID) beforeValue);
+        if (beforeValue instanceof ID[])
+            CollectionUtils.addAll(fa.targetRecordIds, (ID[]) beforeValue);
+        else
+            fa.targetRecordIds.add((ID) beforeValue);
 
         ID fakeSourceId = EntityHelper.newUnsavedId(fa.sourceEntity.getEntityCode());
         Record fakeSourceRecord = EntityHelper.forUpdate(fakeSourceId, triggerUser, false);
-        OperatingContext oCtx = OperatingContext.create(triggerUser, BizzPermission.NONE, fakeSourceRecord, fakeSourceRecord);
+        OperatingContext oCtx = OperatingContext.create(triggerUser, BizzPermission.NONE, fakeSourceRecord,
+                fakeSourceRecord);
         fa.targetRecordData = fa.buildTargetRecordData(oCtx, true);
 
         try {

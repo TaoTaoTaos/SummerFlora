@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.privileges;
 
@@ -92,7 +86,7 @@ public class DepartmentService extends BaseService {
         if (ROOT_DEPT.equals(deptId)) {
             throw new OperationDeniedException(Language.L("内置部门禁止删除"));
         }
-        
+
         checkAdminGuard(BizzPermission.DELETE, null);
 
         Department dept = Application.getUserStore().getDepartment(deptId);
@@ -114,7 +108,8 @@ public class DepartmentService extends BaseService {
      */
     private void checkAdminGuard(Permission action, ID dept) {
         final ID currentUser = UserContextHolder.getUser();
-        if (UserHelper.isAdmin(currentUser)) return;
+        if (UserHelper.isAdmin(currentUser))
+            return;
 
         if (action == BizzPermission.CREATE || action == BizzPermission.DELETE) {
             throw new PrivilegesException(Language.L("无操作权限"));

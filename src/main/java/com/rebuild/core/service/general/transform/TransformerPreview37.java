@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.service.general.transform;
 
@@ -47,14 +41,18 @@ public class TransformerPreview37 extends TransformerPreview {
         }
 
         // 兼容
-        if (detailName == null) return super.buildForm(null);
-        if (fieldsMapping.get("_") == null) return super.buildForm(detailName);
+        if (detailName == null)
+            return super.buildForm(null);
+        if (fieldsMapping.get("_") == null)
+            return super.buildForm(detailName);
 
         JSONArray fieldsMappingDetails = transConfig.getJSONArray("fieldsMappingDetails");
         if (fieldsMappingDetails == null || fieldsMappingDetails.isEmpty()) {
             // 兼容:源为明细
-            if (sourceEntity.getMainEntity() != null) return super.buildForm(detailName);
-            else return JSONUtils.EMPTY_ARRAY;
+            if (sourceEntity.getMainEntity() != null)
+                return super.buildForm(detailName);
+            else
+                return JSONUtils.EMPTY_ARRAY;
         }
 
         Entity targetEntity = MetadataHelper.getEntity(config.getString("target"));
@@ -67,17 +65,20 @@ public class TransformerPreview37 extends TransformerPreview {
         for (Object o : fieldsMappingDetails) {
             JSONObject fmd = (JSONObject) o;
             Entity[] fmdEntity = RecordTransfomer37.checkEntity(fmd);
-            if (fmdEntity == null) continue;
+            if (fmdEntity == null)
+                continue;
 
             Entity dTargetEntity = fmdEntity[0];
             Entity dSourceEntity = fmdEntity[1];
 
             // ND 指定明细的
-            if (!detailName.equalsIgnoreCase(dTargetEntity.getName())) continue;
+            if (!detailName.equalsIgnoreCase(dTargetEntity.getName()))
+                continue;
 
             String querySourceSql = RecordTransfomer37.buildDetailsSourceSql(dSourceEntity, sourceId);
             String filter = RecordTransfomer37.appendFilter(fmd);
-            if (filter != null) querySourceSql = querySourceSql.replace("(1=1)", filter);
+            if (filter != null)
+                querySourceSql = querySourceSql.replace("(1=1)", filter);
 
             Object[][] dArray = Application.createQueryNoFilter(querySourceSql).array();
 
@@ -90,7 +91,8 @@ public class TransformerPreview37 extends TransformerPreview {
 
                     fillLabelOfReference(targetRecord);
 
-                    JSON model = UseFormsBuilder.instance.buildNewForm(dTargetEntity, targetRecord, FormsBuilder.DV_MAINID, user);
+                    JSON model = UseFormsBuilder.instance.buildNewForm(dTargetEntity, targetRecord,
+                            FormsBuilder.DV_MAINID, user);
                     detailModels.add(model);
                 }
 

@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.service.general;
 
@@ -49,22 +43,24 @@ public class BulkContext {
     final private Entity mainEntity;
 
     /**
-     * @param opUser 操作用户
-     * @param action 动作
-     * @param toUser 目标用户
-     * @param cascades 级联实体
-     * @param records 操作记录
-     * @param recordMain 主记录
+     * @param opUser      操作用户
+     * @param action      动作
+     * @param toUser      目标用户
+     * @param cascades    级联实体
+     * @param records     操作记录
+     * @param recordMain  主记录
      * @param extraParams
      */
-    BulkContext(ID opUser, Permission action, ID toUser, String[] cascades, ID[] records, ID recordMain, Map<String, Object> extraParams) {
+    BulkContext(ID opUser, Permission action, ID toUser, String[] cascades, ID[] records, ID recordMain,
+            Map<String, Object> extraParams) {
         this.opUser = opUser;
         this.action = action;
         this.toUser = toUser;
         this.records = records;
         this.targetRecord = recordMain;
         this.cascades = cascades;
-        if (extraParams != null) this.extraParams.putAll(extraParams);
+        if (extraParams != null)
+            this.extraParams.putAll(extraParams);
         this.mainEntity = detecteMainEntity();
     }
 

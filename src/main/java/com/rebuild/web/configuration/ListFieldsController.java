@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.web.configuration;
 
@@ -58,7 +52,7 @@ public class ListFieldsController extends BaseController implements ShareTo {
 
     @PostMapping("list-fields")
     public void sets(@PathVariable String entity,
-                     HttpServletRequest request, HttpServletResponse response) {
+            HttpServletRequest request, HttpServletResponse response) {
         final ID user = getRequestUser(request);
         RbAssert.isAllow(
                 Application.getPrivilegesManager().allow(user, ZeroEntry.AllowCustomDataList),
@@ -95,7 +89,7 @@ public class ListFieldsController extends BaseController implements ShareTo {
 
     @GetMapping("list-fields")
     public void gets(@PathVariable String entity,
-                     HttpServletRequest request, HttpServletResponse response) {
+            HttpServletRequest request, HttpServletResponse response) {
         final ID user = getRequestUser(request);
         final Entity entityMeta = MetadataHelper.getEntity(entity);
 
@@ -107,7 +101,8 @@ public class ListFieldsController extends BaseController implements ShareTo {
         }
 
         // 明细关联字段
-        final Field dtmField = entityMeta.getMainEntity() == null ? null : MetadataHelper.getDetailToMainField(entityMeta);
+        final Field dtmField = entityMeta.getMainEntity() == null ? null
+                : MetadataHelper.getDetailToMainField(entityMeta);
 
         // 引用实体的字段
         for (Field field : MetadataSorter.sortFields(entityMeta, DisplayType.REFERENCE)) {
@@ -154,12 +149,13 @@ public class ListFieldsController extends BaseController implements ShareTo {
 
     @GetMapping("list-fields/alist")
     public void getsList(@PathVariable String entity,
-                         HttpServletRequest request, HttpServletResponse response) {
+            HttpServletRequest request, HttpServletResponse response) {
         final ID user = getRequestUser(request);
 
         String sql = "select configId,configName,shareTo,createdBy from LayoutConfig where ";
         if (UserHelper.isAdmin(user)) {
-            sql += String.format("belongEntity = '%s' and applyType = '%s' and createdBy.roleId = '%s' order by configName",
+            sql += String.format(
+                    "belongEntity = '%s' and applyType = '%s' and createdBy.roleId = '%s' order by configName",
                     entity, DataListManager.TYPE_DATALIST, RoleService.ADMIN_ROLE);
         } else {
             // 普通用户可用的

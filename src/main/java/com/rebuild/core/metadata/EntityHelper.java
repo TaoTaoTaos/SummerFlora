@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.metadata;
 
@@ -69,7 +63,7 @@ public class EntityHelper {
      *
      * @param data
      * @param user
-     * @param safetyUrl 附件/图片字段值是否不允许外链（默认是）
+     * @param safetyUrl   附件/图片字段值是否不允许外链（默认是）
      * @param forceFillin 是否强制表单回填（默认否）
      * @return
      * @see EntityRecordCreator
@@ -226,7 +220,8 @@ public class EntityHelper {
             }
             if (entity.containsField(EntityHelper.OwningDept)) {
                 com.rebuild.core.privileges.bizz.User user = r.getEditor() == null
-                        ? null : Application.getUserStore().getUser(r.getEditor());
+                        ? null
+                        : Application.getUserStore().getUser(r.getEditor());
                 if (user == null || user.getOwningDept() == null) {
                     throw new PrivilegesException("Bad member! No dept found in user : " + r.getEditor());
                 }
@@ -243,7 +238,8 @@ public class EntityHelper {
      * @see #isUnsavedId(Object)
      */
     public static ID newUnsavedId(int entityCode) {
-        if (entityCode == 0) return UNSAVED_ID;
+        if (entityCode == 0)
+            return UNSAVED_ID;
         return ID.valueOf(String.format("%03d", entityCode) + UNSAVED_ID_SUFFIX);
     }
 
@@ -254,10 +250,11 @@ public class EntityHelper {
      */
     public static boolean isUnsavedId(Object id) {
         boolean s = ID.isId(id) && (UNSAVED_ID.equals(id) || id.toString().endsWith(UNSAVED_ID_SUFFIX));
-        if (!s) return false;
+        if (!s)
+            return false;
         return !UserService.SYSTEM_USER.equals(id);
     }
-    
+
     // 公共字段/保留字段
 
     public static final String CreatedOn = "createdOn";

@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.service.project;
 
@@ -66,7 +60,8 @@ public class ProjectManager implements ConfigManager {
                 if (isArchived) {
                     // 仅负责人
                     boolean isPrincipal = user.equals(e.getID("principal"));
-                    if (isAdmin || isPrincipal) alist.add(e.clone());
+                    if (isAdmin || isPrincipal)
+                        alist.add(e.clone());
                 } else {
                     alist.add(e.clone());
                 }
@@ -202,7 +197,8 @@ public class ProjectManager implements ConfigManager {
         }
 
         for (ConfigBean e : getPlansOfProject(projectId)) {
-            if (e.getID("id").equals(planId)) return e;
+            if (e.getID("id").equals(planId))
+                return e;
         }
         throw new ConfigurationException(Language.L("无效任务面板 (%s)", planId));
     }

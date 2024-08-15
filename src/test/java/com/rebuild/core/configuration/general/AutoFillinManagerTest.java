@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.configuration.general;
 
@@ -27,54 +21,55 @@ import org.junit.jupiter.api.Test;
  */
 public class AutoFillinManagerTest extends TestSupport {
 
-    @Test
-    void testConversionCompatibleValue() {
-        Entity test = MetadataHelper.getEntity(TestAllFields);
-        Field textField = test.getField("text");
+        @Test
+        void testConversionCompatibleValue() {
+                Entity test = MetadataHelper.getEntity(TestAllFields);
+                Field textField = test.getField("text");
 
-        System.out.println(AutoFillinManager.instance.
-                conversionCompatibleValue(test.getField("reference"), textField, ID.newId(test.getEntityCode())));
-        System.out.println(AutoFillinManager.instance.
-                conversionCompatibleValue(test.getField("classification"), textField, ID.newId(EntityHelper.ClassificationData)));
-        System.out.println(AutoFillinManager.instance.
-                conversionCompatibleValue(test.getField("picklist"), textField, ID.newId(EntityHelper.PickList)));
-        System.out.println(AutoFillinManager.instance.
-                conversionCompatibleValue(test.getField("datetime"), textField, CalendarUtils.now()));
-        System.out.println(AutoFillinManager.instance.
-                conversionCompatibleValue(test.getField("datetime"), test.getField("date1"), CalendarUtils.now()));
-    }
-
-    @Test
-    void testGetFillinValueAndFillinRecord() {
-        final String setField = "REFERENCE";
-
-        Record config = EntityHelper.forNew(EntityHelper.AutoFillinConfig, UserService.SYSTEM_USER);
-        config.setString("belongEntity", TestAllFields);
-        config.setString("belongField", setField);
-        config.setString("sourceField", "TEXT");
-        config.setString("targetField", "TEXT");
-        config.setString("extConfig", "{'whenCreate':true,'whenUpdate':true,'fillinForce':true}");
-        config = Application.getCommonsService().create(config, false);
-
-        try {
-            Entity test = MetadataHelper.getEntity(TestAllFields);
-            ID recordId = addRecordOfTestAllFields(SIMPLE_USER);
-
-            // GetFillinValue
-            JSONArray fillins = AutoFillinManager.instance.getFillinValue(test.getField(setField), recordId);
-            System.out.println("Fillins : " + fillins);
-
-            // FillinRecord
-            Record test2 = RecordBuilder.builder(MetadataHelper.getEntity(TestAllFields))
-                    .add("TestAllFieldsName", "TestAllFieldsName")
-                    .add(setField, recordId)
-                    .build(UserService.SYSTEM_USER);
-            AutoFillinManager.instance.fillinRecord(test2, true);
-            System.out.println(test2);
-
-        } finally {
-            Application.getCommonsService().delete(config.getPrimary(), false);
+                System.out.println(AutoFillinManager.instance.conversionCompatibleValue(test.getField("reference"),
+                                textField, ID.newId(test.getEntityCode())));
+                System.out.println(AutoFillinManager.instance.conversionCompatibleValue(test.getField("classification"),
+                                textField, ID.newId(EntityHelper.ClassificationData)));
+                System.out.println(AutoFillinManager.instance.conversionCompatibleValue(test.getField("picklist"),
+                                textField, ID.newId(EntityHelper.PickList)));
+                System.out.println(AutoFillinManager.instance.conversionCompatibleValue(test.getField("datetime"),
+                                textField, CalendarUtils.now()));
+                System.out.println(AutoFillinManager.instance.conversionCompatibleValue(test.getField("datetime"),
+                                test.getField("date1"), CalendarUtils.now()));
         }
-    }
+
+        @Test
+        void testGetFillinValueAndFillinRecord() {
+                final String setField = "REFERENCE";
+
+                Record config = EntityHelper.forNew(EntityHelper.AutoFillinConfig, UserService.SYSTEM_USER);
+                config.setString("belongEntity", TestAllFields);
+                config.setString("belongField", setField);
+                config.setString("sourceField", "TEXT");
+                config.setString("targetField", "TEXT");
+                config.setString("extConfig", "{'whenCreate':true,'whenUpdate':true,'fillinForce':true}");
+                config = Application.getCommonsService().create(config, false);
+
+                try {
+                        Entity test = MetadataHelper.getEntity(TestAllFields);
+                        ID recordId = addRecordOfTestAllFields(SIMPLE_USER);
+
+                        // GetFillinValue
+                        JSONArray fillins = AutoFillinManager.instance.getFillinValue(test.getField(setField),
+                                        recordId);
+                        System.out.println("Fillins : " + fillins);
+
+                        // FillinRecord
+                        Record test2 = RecordBuilder.builder(MetadataHelper.getEntity(TestAllFields))
+                                        .add("TestAllFieldsName", "TestAllFieldsName")
+                                        .add(setField, recordId)
+                                        .build(UserService.SYSTEM_USER);
+                        AutoFillinManager.instance.fillinRecord(test2, true);
+                        System.out.println(test2);
+
+                } finally {
+                        Application.getCommonsService().delete(config.getPrimary(), false);
+                }
+        }
 
 }

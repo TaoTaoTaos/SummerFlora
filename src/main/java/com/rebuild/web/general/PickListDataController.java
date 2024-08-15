@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.web.general;
 
@@ -38,7 +32,7 @@ import javax.servlet.http.HttpServletRequest;
 public class PickListDataController extends BaseController {
 
     // for PickList/MultiSelect/State
-    @GetMapping({"picklist", "field-options"})
+    @GetMapping({ "picklist", "field-options" })
     public JSON fetchOptions(HttpServletRequest request) {
         final String entity = getParameterNotNull(request, "entity");
         final String field = getParameterNotNull(request, "field");
@@ -80,12 +74,14 @@ public class PickListDataController extends BaseController {
 
         ID parent = getIdParameter(request, "parent");
         String sql = "select itemId,name from ClassificationData where dataId = ? and isHide = 'F' and ";
-        if (parent != null) sql += "parent = '" + parent + "'";
-        else sql += "parent is null";
+        if (parent != null)
+            sql += "parent = '" + parent + "'";
+        else
+            sql += "parent is null";
 
         Object[][] data = Application.createQueryNoFilter(sql + " order by code,name")
                 .setParameter(1, useClassification)
-                .setLimit(2000)  // 最多显示
+                .setLimit(2000) // 最多显示
                 .array();
 
         return RespBody.ok(data);

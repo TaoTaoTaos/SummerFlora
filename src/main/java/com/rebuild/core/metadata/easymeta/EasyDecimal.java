@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.metadata.easymeta;
 
@@ -54,7 +48,8 @@ public class EasyDecimal extends EasyField {
     public Object exprDefaultValue() {
         String valueExpr = (String) getRawMeta().getDefaultValue();
         return StringUtils.isBlank(valueExpr)
-                ? null : BigDecimal.valueOf(NumberUtils.toDouble(valueExpr));
+                ? null
+                : BigDecimal.valueOf(NumberUtils.toDouble(valueExpr));
     }
 
     @Override
@@ -66,9 +61,12 @@ public class EasyDecimal extends EasyField {
         // 0, %, etc.
         String type = getExtraAttr(EasyFieldConfigProps.DECIMAL_TYPE);
         if (type != null && !"0".equals(type)) {
-            if ("%".equals(type)) n += "%";
-            else if (type.contains("%s")) n = String.format(type, n); // %s万元
-            else n = type + " " + n;
+            if ("%".equals(type))
+                n += "%";
+            else if (type.contains("%s"))
+                n = String.format(type, n); // %s万元
+            else
+                n = type + " " + n;
         }
         return n;
     }
@@ -82,7 +80,8 @@ public class EasyDecimal extends EasyField {
         String format = StringUtils.defaultIfBlank(
                 getExtraAttr(EasyFieldConfigProps.DECIMAL_FORMAT), getDisplayType().getDefaultFormat());
         int dotIndex = format.lastIndexOf(".");
-        if (dotIndex == -1) return 0;
+        if (dotIndex == -1)
+            return 0;
         return format.substring(dotIndex).length() - 1;
     }
 
@@ -118,6 +117,7 @@ public class EasyDecimal extends EasyField {
     }
 
     private static final Pattern PATT_CF = Pattern.compile("-?\\d+(,\\d+)*(.\\d+)?");
+
     /**
      * 清除数字符号（包括千分位分隔符）
      *
@@ -125,9 +125,11 @@ public class EasyDecimal extends EasyField {
      * @return
      */
     public static String clearFlaged(Object flagedValue) {
-        if (flagedValue == null) return null;
+        if (flagedValue == null)
+            return null;
         Matcher m = PATT_CF.matcher(flagedValue.toString());
-        if (m.find()) return m.group().replaceAll(",", "");
+        if (m.find())
+            return m.group().replaceAll(",", "");
         return null;
     }
 }

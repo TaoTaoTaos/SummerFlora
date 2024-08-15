@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.support;
 
@@ -63,7 +57,8 @@ public class I18nGettextParser extends TestSupport {
         log.info("Found {} items", into.size());
         // Bad text
         for (String text : into) {
-            if (text.contains(",") || text.contains("'") || text.contains("\"")) System.err.println(text);
+            if (text.contains(",") || text.contains("'") || text.contains("\""))
+                System.err.println(text);
         }
 
         File target = new File(root, "lang.zh_CN.json");
@@ -74,7 +69,8 @@ public class I18nGettextParser extends TestSupport {
 
         for (String text : into) {
             text = text.trim();
-            if (contents.containsKey(text)) continue;
+            if (contents.containsKey(text))
+                continue;
             contents.put(text, text);
         }
 
@@ -145,17 +141,22 @@ public class I18nGettextParser extends TestSupport {
     static void sysDefined(JSONObject into) {
         into.put("_", "中文");
 
-        for (DisplayType o : DisplayType.values()) into.put(o.getDisplayName(), o.getDisplayName());
-        for (ActionType o : ActionType.values()) into.put(o.getDisplayName(), o.getDisplayName());
-        for (ApprovalState s : ApprovalState.values()) into.put(s.getName(), s.getName());
+        for (DisplayType o : DisplayType.values())
+            into.put(o.getDisplayName(), o.getDisplayName());
+        for (ActionType o : ActionType.values())
+            into.put(o.getDisplayName(), o.getDisplayName());
+        for (ApprovalState s : ApprovalState.values())
+            into.put(s.getName(), s.getName());
 
         // 实体元数据
 
         for (Entity entity : Application.getPersistManagerFactory().getMetadataFactory().getEntities()) {
-            if (!EasyMetaFactory.valueOf(entity).isBuiltin()) continue;
+            if (!EasyMetaFactory.valueOf(entity).isBuiltin())
+                continue;
             sysDefinedMeta(entity, into);
             for (Field field : entity.getFields()) {
-                if (!EasyMetaFactory.valueOf(field).isBuiltin()) continue;
+                if (!EasyMetaFactory.valueOf(field).isBuiltin())
+                    continue;
                 sysDefinedMeta(field, into);
             }
         }
@@ -166,7 +167,8 @@ public class I18nGettextParser extends TestSupport {
         String text = meta.getDescription();
         if (StringUtils.isNotBlank(text)) {
             text = text.split("\\(")[0].trim();
-            if (StringUtils.isNotBlank(text)) into.put(text, text);
+            if (StringUtils.isNotBlank(text))
+                into.put(text, text);
         }
     }
 }

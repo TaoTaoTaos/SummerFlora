@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.service.trigger.impl;
 
@@ -82,7 +76,7 @@ public class FieldWriteback extends FieldAggregation {
     public static final String ONE2ONE_MODE = "one2one";
 
     private static final String DATE_EXPR = "#";
-    private static final String CODE_PREFIX = "{{{{";  // ends with }}}}
+    private static final String CODE_PREFIX = "{{{{"; // ends with }}}}
 
     protected Set<ID> targetRecordIds;
     protected Record targetRecordData;
@@ -112,7 +106,8 @@ public class FieldWriteback extends FieldAggregation {
         final String chainName = String.format("%s:%s:%s", actionContext.getConfigId(),
                 operatingContext.getFixedRecordId(), operatingContext.getAction().getName());
         final List<String> tschain = checkTriggerChain(chainName);
-        if (tschain == null) return TriggerResult.triggerOnce();
+        if (tschain == null)
+            return TriggerResult.triggerOnce();
 
         this.prepare(operatingContext);
 
@@ -127,7 +122,8 @@ public class FieldWriteback extends FieldAggregation {
         }
 
         final boolean forceUpdate = ((JSONObject) actionContext.getActionContent()).getBooleanValue("forceUpdate");
-        final boolean stopPropagation = ((JSONObject) actionContext.getActionContent()).getBooleanValue("stopPropagation");
+        final boolean stopPropagation = ((JSONObject) actionContext.getActionContent())
+                .getBooleanValue("stopPropagation");
 
         List<ID> affected = new ArrayList<>();
         boolean targetSame = false;
@@ -170,7 +166,8 @@ public class FieldWriteback extends FieldAggregation {
             List<String> tschainCurrentLoop = new ArrayList<>(tschain);
             tschainCurrentLoop.add(chainName);
             TRIGGER_CHAIN.set(tschainCurrentLoop);
-            if (CommonsUtils.DEVLOG) System.out.println("[dev] Use current-loop tschain : " + tschainCurrentLoop);
+            if (CommonsUtils.DEVLOG)
+                System.out.println("[dev] Use current-loop tschain : " + tschainCurrentLoop);
 
             try {
                 if (stopPropagation) {
@@ -182,21 +179,26 @@ public class FieldWriteback extends FieldAggregation {
 
             } finally {
                 PrivilegesGuardContextHolder.getSkipGuardOnce();
-                if (forceUpdate) GeneralEntityServiceContextHolder.isAllowForceUpdateOnce();
+                if (forceUpdate)
+                    GeneralEntityServiceContextHolder.isAllowForceUpdateOnce();
                 GeneralEntityServiceContextHolder.getRepeatedCheckModeOnce();
             }
         }
 
-        if (targetSame && affected.isEmpty()) return TriggerResult.targetSame();
-        else return TriggerResult.success(affected);
+        if (targetSame && affected.isEmpty())
+            return TriggerResult.targetSame();
+        else
+            return TriggerResult.success(affected);
     }
 
     @Override
     public void prepare(OperatingContext operatingContext) throws TriggerException {
-        if (targetRecordIds != null) return;
+        if (targetRecordIds != null)
+            return;
 
         // FIELD.ENTITY
-        String[] targetFieldEntity = ((JSONObject) actionContext.getActionContent()).getString("targetEntity").split("\\.");
+        String[] targetFieldEntity = ((JSONObject) actionContext.getActionContent()).getString("targetEntity")
+                .split("\\.");
         sourceEntity = actionContext.getSourceEntity();
         targetEntity = MetadataHelper.getEntity(targetFieldEntity[1]);
 
@@ -218,7 +220,8 @@ public class FieldWriteback extends FieldAggregation {
         // 1:1
         else if (isOne2One) {
             Record afterRecord = operatingContext.getAfterRecord();
-            if (afterRecord == null) return;
+            if (afterRecord == null)
+                return;
 
             if (afterRecord.hasValue(targetFieldEntity[0])) {
                 Object o = afterRecord.getObjectValue(targetFieldEntity[0]);
@@ -233,7 +236,8 @@ public class FieldWriteback extends FieldAggregation {
                 boolean clearFields = ((JSONObject) actionContext.getActionContent()).getBooleanValue("clearFields");
                 if (clearFields) {
                     Record beforeRecord = operatingContext.getBeforeRecord();
-                    Object beforeValue = beforeRecord == null ? null : beforeRecord.getObjectValue(targetFieldEntity[0]);
+                    Object beforeValue = beforeRecord == null ? null
+                            : beforeRecord.getObjectValue(targetFieldEntity[0]);
                     if (beforeValue != null && !beforeValue.equals(o)) {
                         fieldWritebackRefresh = new FieldWritebackRefresh(this, beforeValue);
                     }
@@ -289,7 +293,8 @@ public class FieldWriteback extends FieldAggregation {
     protected Record buildTargetRecordData(OperatingContext operatingContext, Boolean fromRefresh) {
         // v3.3 源字段为空时置空目标字段
         final boolean clearFields = ((JSONObject) actionContext.getActionContent()).getBooleanValue("clearFields");
-        final boolean forceVNull = fromRefresh || (clearFields && operatingContext.getAction() == InternalPermission.DELETE_BEFORE);
+        final boolean forceVNull = fromRefresh
+                || (clearFields && operatingContext.getAction() == InternalPermission.DELETE_BEFORE);
 
         final Record targetRecord = EntityHelper.forNew(targetEntity.getEntityCode(), UserService.SYSTEM_USER, false);
         final JSONArray items = ((JSONObject) actionContext.getActionContent()).getJSONArray("items");
@@ -335,10 +340,12 @@ public class FieldWriteback extends FieldAggregation {
                         StringUtils.join(fieldVars, ","),
                         sourceEntity.getPrimaryField().getName(),
                         sourceEntity.getName());
-                useSourceData = Application.createQueryNoFilter(sql).setParameter(1, actionContext.getSourceRecord()).record();
+                useSourceData = Application.createQueryNoFilter(sql).setParameter(1, actionContext.getSourceRecord())
+                        .record();
             }
             if (!fieldVarsN2NPath.isEmpty()) {
-                if (useSourceData == null) useSourceData = new StandardRecord(sourceEntity, null);
+                if (useSourceData == null)
+                    useSourceData = new StandardRecord(sourceEntity, null);
                 fieldVars.addAll(fieldVarsN2NPath);
 
                 for (String field : fieldVarsN2NPath) {
@@ -351,7 +358,8 @@ public class FieldWriteback extends FieldAggregation {
         for (Object o : items) {
             JSONObject item = (JSONObject) o;
             String targetField = item.getString("targetField");
-            if (!MetadataHelper.checkAndWarnField(targetEntity, targetField)) continue;
+            if (!MetadataHelper.checkAndWarnField(targetEntity, targetField))
+                continue;
 
             EasyField targetFieldEasy = EasyMetaFactory.valueOf(targetEntity.getField(targetField));
 
@@ -371,7 +379,8 @@ public class FieldWriteback extends FieldAggregation {
             // 字段
             else if ("FIELD".equalsIgnoreCase(updateMode)) {
                 Field sourceFieldMeta = MetadataHelper.getLastJoinField(sourceEntity, sourceAny);
-                if (sourceFieldMeta == null) continue;
+                if (sourceFieldMeta == null)
+                    continue;
 
                 Object value = Objects.requireNonNull(useSourceData).getObjectValue(sourceAny);
                 Object newValue = value == null ? null
@@ -397,11 +406,13 @@ public class FieldWriteback extends FieldAggregation {
                 if (sourceAny.contains(DATE_EXPR) && !useCode) {
                     String fieldName = sourceAny.split(DATE_EXPR)[0];
                     Field sourceField2 = MetadataHelper.getLastJoinField(sourceEntity, fieldName);
-                    if (sourceField2 == null) continue;
+                    if (sourceField2 == null)
+                        continue;
 
                     Object value = useSourceData.getObjectValue(fieldName);
                     Object newValue = value == null ? null
-                            : ((EasyDateTime) EasyMetaFactory.valueOf(sourceField2)).convertCompatibleValue(value, targetFieldEasy, sourceAny);
+                            : ((EasyDateTime) EasyMetaFactory.valueOf(sourceField2)).convertCompatibleValue(value,
+                                    targetFieldEasy, sourceAny);
                     if (newValue != null) {
                         targetRecord.setObjectValue(targetField, newValue);
                     } else if (clearFields) {
@@ -415,9 +426,9 @@ public class FieldWriteback extends FieldAggregation {
                     String clearFormula = useCode
                             ? sourceAny.substring(4, sourceAny.length() - 4)
                             : sourceAny
-                                .replace("×", "*")
-                                .replace("÷", "/")
-                                .replace("`", "\"");  // compatible: v2.4
+                                    .replace("×", "*")
+                                    .replace("÷", "/")
+                                    .replace("`", "\""); // compatible: v2.4
 
                     Map<String, Object> envMap = new HashMap<>();
 
@@ -444,17 +455,21 @@ public class FieldWriteback extends FieldAggregation {
                         // fix: 3.5.4
                         Field varField = MetadataHelper.getLastJoinField(sourceEntity, fieldName);
                         EasyField easyVarField = varField == null ? null : EasyMetaFactory.valueOf(varField);
-                        boolean isMultiField = easyVarField != null && (easyVarField.getDisplayType() == DisplayType.MULTISELECT
-                                || easyVarField.getDisplayType() == DisplayType.TAG || easyVarField.getDisplayType() == DisplayType.N2NREFERENCE);
+                        boolean isMultiField = easyVarField != null
+                                && (easyVarField.getDisplayType() == DisplayType.MULTISELECT
+                                        || easyVarField.getDisplayType() == DisplayType.TAG
+                                        || easyVarField.getDisplayType() == DisplayType.N2NREFERENCE);
 
                         if (value instanceof Date) {
                             value = CalendarUtils.getUTCDateTimeFormat().format(value);
                         } else if (value == null) {
                             // N2N 保持 `NULL`
-                            Field isN2NField = sourceEntity.containsField(fieldName) ? sourceEntity.getField(fieldName) : null;
+                            Field isN2NField = sourceEntity.containsField(fieldName) ? sourceEntity.getField(fieldName)
+                                    : null;
                             // 数字字段置 `0`
                             if (varField != null
-                                    && (varField.getType() == FieldType.LONG || varField.getType() == FieldType.DECIMAL)) {
+                                    && (varField.getType() == FieldType.LONG
+                                            || varField.getType() == FieldType.DECIMAL)) {
                                 value = 0L;
                             } else if (fieldVarsN2NPath.contains(fieldName)
                                     || (isN2NField != null && isN2NField.getType() == FieldType.REFERENCE_LIST)) {
@@ -469,7 +484,8 @@ public class FieldWriteback extends FieldAggregation {
                                 value = StringUtils.join((ID[]) value, MultiValue.MV_SPLIT);
                             } else {
                                 // force `TEXT`
-                                EasyField fakeTextField = EasyMetaFactory.valueOf(MetadataHelper.getField("User", "fullName"));
+                                EasyField fakeTextField = EasyMetaFactory
+                                        .valueOf(MetadataHelper.getField("User", "fullName"));
                                 value = easyVarField.convertCompatibleValue(value, fakeTextField);
                             }
                         } else if (value instanceof ID || forceUseQuote) {
@@ -477,7 +493,8 @@ public class FieldWriteback extends FieldAggregation {
                         }
 
                         // v3.6.3 整数/小数强制使用 BigDecimal 高精度
-                        if (value instanceof Long) value = BigDecimal.valueOf((Long) value);
+                        if (value instanceof Long)
+                            value = BigDecimal.valueOf((Long) value);
 
                         envMap.put(fieldName, value);
                     }
@@ -495,8 +512,10 @@ public class FieldWriteback extends FieldAggregation {
                                 targetRecord.setDate(targetField, (Date) newValue);
                             } else {
                                 Date newValueCast = CalendarUtils.parse(newValue.toString());
-                                if (newValueCast == null) log.warn("Cannot cast string to date : {}", newValue);
-                                else targetRecord.setDate(targetField, newValueCast);
+                                if (newValueCast == null)
+                                    log.warn("Cannot cast string to date : {}", newValue);
+                                else
+                                    targetRecord.setDate(targetField, newValueCast);
                             }
                         } else {
                             newValue = checkoutFieldValue(newValue, targetFieldEasy);
@@ -531,11 +550,14 @@ public class FieldWriteback extends FieldAggregation {
             if (id != null) {
                 int entityCode = id.getEntityCode();
                 if (dt == DisplayType.PICKLIST) {
-                    if (entityCode == EntityHelper.PickList) newValue = id;
+                    if (entityCode == EntityHelper.PickList)
+                        newValue = id;
                 } else if (dt == DisplayType.CLASSIFICATION) {
-                    if (entityCode == EntityHelper.ClassificationData) newValue = id;
+                    if (entityCode == EntityHelper.ClassificationData)
+                        newValue = id;
                 } else if (dt == DisplayType.REFERENCE) {
-                    if (field.getRawMeta().getReferenceEntity().getEntityCode() == entityCode) newValue = id;
+                    if (field.getRawMeta().getReferenceEntity().getEntityCode() == entityCode)
+                        newValue = id;
                 } else {
                     newValue = id;
                 }
@@ -546,7 +568,7 @@ public class FieldWriteback extends FieldAggregation {
             // v3.7 增强兼容
             Object[] ids;
             if (value instanceof Collection) {
-                //noinspection unchecked
+                // noinspection unchecked
                 ids = ((Collection<Object>) value).toArray(new Object[0]);
             } else if (value instanceof Object[]) {
                 ids = (Object[]) value;
@@ -557,7 +579,8 @@ public class FieldWriteback extends FieldAggregation {
             Set<ID> idsSet = new LinkedHashSet<>();
             for (Object id : ids) {
                 id = id.toString().trim();
-                if (ID.isId(id)) idsSet.add(ID.valueOf(id.toString()));
+                if (ID.isId(id))
+                    idsSet.add(ID.valueOf(id.toString()));
             }
             // v3.5.5: 目标值为多引用时保持 `ID[]`
             newValue = idsSet.toArray(new ID[0]);

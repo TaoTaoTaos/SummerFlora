@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.web.general;
 
@@ -119,7 +113,7 @@ public class RelatedListController extends BaseController {
             Object[] count = QueryHelper.createQuery(sql, relatedEntity).unique();
             countMap.put(related, ObjectUtils.toInt(count[0]));
         }
-        return  countMap;
+        return countMap;
     }
 
     private String buildBaseSql(ID mainid, String relatedExpr, String q, boolean count, ID user) {

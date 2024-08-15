@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.web.commons;
 
@@ -58,7 +52,8 @@ public class FileShareController extends BaseController {
                 Language.L("不允许分享文件"));
 
         String shareUrl4del = getParameter(request, "shareUrl");
-        if (shareUrl4del != null && shareUrl4del.contains("/s/")) ShortUrls.invalid(shareUrl4del.split("/s/")[1]);
+        if (shareUrl4del != null && shareUrl4del.contains("/s/"))
+            ShortUrls.invalid(shareUrl4del.split("/s/")[1]);
 
         String fileUrl = getParameterNotNull(request, "url");
         int time = getIntParameter(request, "time", 5);
@@ -70,7 +65,7 @@ public class FileShareController extends BaseController {
 
     @GetMapping("/s/{shareKey}")
     public ModelAndView viewSharedFile(@PathVariable String shareKey,
-                                       HttpServletResponse response) throws IOException {
+            HttpServletResponse response) throws IOException {
         if (!RebuildConfiguration.getBool(ConfigurationItem.FileSharable)) {
             response.sendError(403, Language.L("不允许分享文件"));
             return null;

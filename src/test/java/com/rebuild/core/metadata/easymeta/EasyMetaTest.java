@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.metadata.easymeta;
 
@@ -43,8 +37,8 @@ class EasyMetaTest extends TestSupport {
         Assertions.assertFalse(EasyPhone.isPhone("021-123456789"));
         Assertions.assertTrue(EasyPhone.isPhone("021-12345678-1"));
         Assertions.assertTrue(EasyPhone.isPhone("021-12345678-12"));
-        Assertions.assertTrue(EasyPhone.isPhone("021-12345678-12345"));  // -分机
-        Assertions.assertTrue(EasyPhone.isPhone("(86)021-12345678-12345"));  // (国际区号)
+        Assertions.assertTrue(EasyPhone.isPhone("021-12345678-12345")); // -分机
+        Assertions.assertTrue(EasyPhone.isPhone("(86)021-12345678-12345")); // (国际区号)
         // 手机
         Assertions.assertTrue(EasyPhone.isPhone("13712345678"));
         Assertions.assertFalse(EasyPhone.isPhone("1171234567"));

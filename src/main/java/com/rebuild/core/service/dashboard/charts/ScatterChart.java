@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.service.dashboard.charts;
 
@@ -44,8 +38,8 @@ public class ScatterChart extends ChartData {
             }
 
             JSONObject item = JSONUtils.toJSONObject(
-                    new String[]{"data"},
-                    new Object[]{dataRaw});
+                    new String[] { "data" },
+                    new Object[] { dataRaw });
             series.add(item);
 
         } else {
@@ -60,8 +54,8 @@ public class ScatterChart extends ChartData {
                 }
 
                 JSONObject item = JSONUtils.toJSONObject(
-                        new String[]{"data", "name"},
-                        new Object[]{dataRaw, dim.getLabel()});
+                        new String[] { "data", "name" },
+                        new Object[] { dataRaw, dim.getLabel() });
                 series.add(item);
             }
         }
@@ -73,11 +67,12 @@ public class ScatterChart extends ChartData {
         }
 
         JSONObject renderOption = config.getJSONObject("option");
-        if (renderOption == null) renderOption = new JSONObject();
+        if (renderOption == null)
+            renderOption = new JSONObject();
         renderOption.put("dataFlags", dataFlags);
 
         return JSONUtils.toJSONObject(
-                new String[]{"series", "dataLabel", "_renderOption"},
-                new Object[]{series, dataLabel, renderOption});
+                new String[] { "series", "dataLabel", "_renderOption" },
+                new Object[] { series, dataLabel, renderOption });
     }
 }

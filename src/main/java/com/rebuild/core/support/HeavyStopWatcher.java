@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.support;
 
@@ -20,7 +14,8 @@ import org.springframework.util.StopWatch;
 @Slf4j
 public class HeavyStopWatcher {
 
-    private HeavyStopWatcher() {}
+    private HeavyStopWatcher() {
+    }
 
     private static final ThreadLocal<StopWatch> WATCHER = new NamedThreadLocal<>("HeavyTaskWatcher");
 
@@ -43,7 +38,8 @@ public class HeavyStopWatcher {
      */
     public static StopWatch createWatcher(String watcherName, String taskName) {
         // 未启用
-        if (!CommandArgs.getBoolean(CommandArgs._HeavyStopWatcher)) return null;
+        if (!CommandArgs.getBoolean(CommandArgs._HeavyStopWatcher))
+            return null;
 
         StopWatch sw = new StopWatch(watcherName);
         WATCHER.set(sw);
@@ -75,9 +71,11 @@ public class HeavyStopWatcher {
      */
     public static StopWatch clean(long printIfTimeout) {
         StopWatch sw = getCurrentWatcher();
-        if (sw == null) return null;
+        if (sw == null)
+            return null;
 
-        if (sw.isRunning()) sw.stop();
+        if (sw.isRunning())
+            sw.stop();
 
         if (sw.getTotalTimeMillis() > printIfTimeout) {
             log.info("\n" + sw.prettyPrint());
@@ -93,15 +91,18 @@ public class HeavyStopWatcher {
      */
     public static StopWatch start(String taskName) {
         StopWatch sw = getCurrentWatcher();
-        if (sw == null) return null;
+        if (sw == null)
+            return null;
 
         if (sw.isRunning()) {
             log.debug("stop after start");
             sw.stop();
         }
 
-        if (taskName == null) taskName = (sw.getTaskCount() + 1) + ":TASK";
-        else taskName = (sw.getTaskCount() + 1) + ":" + taskName;
+        if (taskName == null)
+            taskName = (sw.getTaskCount() + 1) + ":TASK";
+        else
+            taskName = (sw.getTaskCount() + 1) + ":" + taskName;
 
         sw.start(taskName);
         return sw;
@@ -112,9 +113,11 @@ public class HeavyStopWatcher {
      */
     public static StopWatch stop() {
         StopWatch sw = getCurrentWatcher();
-        if (sw == null) return null;
+        if (sw == null)
+            return null;
 
-        if (sw.isRunning()) sw.stop();
+        if (sw.isRunning())
+            sw.stop();
         return sw;
     }
 }

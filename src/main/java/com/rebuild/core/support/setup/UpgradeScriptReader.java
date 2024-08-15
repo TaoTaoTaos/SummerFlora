@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.support.setup;
 
@@ -58,7 +52,7 @@ public class UpgradeScriptReader {
                 }
 
                 // reset
-                String ver = sl.substring(TAG_STARTS.length()).split(" ")[0];  // eg: -- #2 abc
+                String ver = sl.substring(TAG_STARTS.length()).split(" ")[0]; // eg: -- #2 abc
                 oneVer = ObjectUtils.toInt(ver);
                 sqlBatch = new ArrayList<>();
 
@@ -66,7 +60,7 @@ public class UpgradeScriptReader {
                 // IGNORE COMMENTS
             } else {
                 sqlLine.append(sl).append("\n");
-                if (sl.endsWith(";")) {  // SQL end by `;`
+                if (sl.endsWith(";")) { // SQL end by `;`
                     sqlBatch.add(sqlLine.toString());
                     sqlLine = new StringBuilder();
                 }

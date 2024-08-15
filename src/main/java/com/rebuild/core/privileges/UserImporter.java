@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.privileges;
 
@@ -57,7 +51,8 @@ public class UserImporter extends HeavyTask<Integer> {
         this.setTotal(data.size());
 
         for (Cell[] row : data) {
-            if (isInterruptState()) break;
+            if (isInterruptState())
+                break;
 
             String loginName = cellAsString(row, 0);
             String password = cellAsString(row, 1);
@@ -88,16 +83,22 @@ public class UserImporter extends HeavyTask<Integer> {
             newUser.setString("password", password);
 
             ID deptId = findDepartment(deptName);
-            if (deptId != null) newUser.setID("deptId", deptId);
+            if (deptId != null)
+                newUser.setID("deptId", deptId);
 
             ID roleId = findRole(roleName);
-            if (roleId != null) newUser.setID("roleId", roleId);
+            if (roleId != null)
+                newUser.setID("roleId", roleId);
 
-            if (EasyPhone.isPhone(workphone)) newUser.setString("workphone", workphone);
-            if (EasyEmail.isEmail(email)) newUser.setString("email", email);
+            if (EasyPhone.isPhone(workphone))
+                newUser.setString("workphone", workphone);
+            if (EasyEmail.isEmail(email))
+                newUser.setString("email", email);
 
-            if (StringUtils.isNotBlank(fullName)) newUser.setString("fullName", fullName);
-            if (StringUtils.isNotBlank(jobTitle)) newUser.setString("jobTitle", jobTitle);
+            if (StringUtils.isNotBlank(fullName))
+                newUser.setString("fullName", fullName);
+            if (StringUtils.isNotBlank(jobTitle))
+                newUser.setString("jobTitle", jobTitle);
 
             try {
                 newUser = Application.getBean(UserService.class).create(newUser);
@@ -140,15 +141,19 @@ public class UserImporter extends HeavyTask<Integer> {
     private String cellAsString(Cell[] row, int index) {
         if (row.length >= index + 1) {
             Cell cell = row[index];
-            if (cell == null || cell.asString() == null) return null;
-            else return cell.asString().trim();
+            if (cell == null || cell.asString() == null)
+                return null;
+            else
+                return cell.asString().trim();
         }
         return null;
     }
 
     private void sendEmailNotify(User to, String passwordPlain) {
-        if (!SMSender.availableMail()) return;
-        if (to.getEmail() == null) return;
+        if (!SMSender.availableMail())
+            return;
+        if (to.getEmail() == null)
+            return;
 
         String appName = RebuildConfiguration.get(ConfigurationItem.AppName);
         String homeUrl = RebuildConfiguration.getHomeUrl();

@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.web.commons;
 
@@ -80,7 +74,8 @@ public class UseThemeController extends BaseController {
 
         String themeHash = EncryptUtils.toMD5Hex(theme);
         Etag etag = new Etag(themeHash, response);
-        if (!etag.isNeedWrite(request)) return;
+        if (!etag.isNeedWrite(request))
+            return;
 
         ServletUtils.setContentType(response, "text/css");
         try (InputStream is = CommonsUtils.getStreamOfRes(theme)) {
@@ -104,7 +99,8 @@ public class UseThemeController extends BaseController {
     public void useLogo(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String dimgHash = getDimgHash(ConfigurationController.ETAG_DIMGLOGOTIME);
         Etag etag = new Etag(dimgHash, response);
-        if (!etag.isNeedWrite(request)) return;
+        if (!etag.isNeedWrite(request))
+            return;
 
         boolean isWhite = request.getRequestURI().contains("-white");
         String logo = RebuildConfiguration.get(isWhite ? ConfigurationItem.LOGOWhite : ConfigurationItem.LOGO);
@@ -135,7 +131,8 @@ public class UseThemeController extends BaseController {
     public void useBgimg(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String dimgHash = getDimgHash(ConfigurationController.ETAG_DIMGBGIMGTIME);
         Etag etag = new Etag(dimgHash, response);
-        if (!etag.isNeedWrite(request)) return;
+        if (!etag.isNeedWrite(request))
+            return;
 
         String bgimg = RebuildConfiguration.get(ConfigurationItem.CustomWallpaper);
 

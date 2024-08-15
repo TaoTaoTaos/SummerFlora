@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.privileges;
 
@@ -527,7 +521,8 @@ public class UserStore implements Initialization {
             }
         }
 
-        if (actived.isEmpty()) return;
+        if (actived.isEmpty())
+            return;
         new CombinedRole(user, actived);
     }
 
@@ -536,11 +531,13 @@ public class UserStore implements Initialization {
      */
     private void refreshRoleAppends(ID roleId) {
         // 初始化时无需处理
-        if (!isLoaded) return;
+        if (!isLoaded)
+            return;
 
         for (User user : USERS.values()) {
             Role role = user.getOwningRole();
-            if (role == null) continue;
+            if (role == null)
+                continue;
 
             if (role.getIdentity().equals(roleId)
                     || (role instanceof CombinedRole && ((CombinedRole) role).getRoleAppends().contains(roleId))) {

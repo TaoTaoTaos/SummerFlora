@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.service.trigger.impl;
 
@@ -185,9 +179,12 @@ public class AggregationEvaluator {
 
             Object value = useSourceData.getObjectValue(fieldAndFunc[0]);
 
-            if (n2nFields.contains(fieldKey)) value = new Object[0];
-            else if (value == null) value = numFields.contains(fieldKey) ? 0 : StringUtils.EMPTY;
-            else if (value instanceof Date) value = CalendarUtils.getUTCDateTimeFormat().format(value);
+            if (n2nFields.contains(fieldKey))
+                value = new Object[0];
+            else if (value == null)
+                value = numFields.contains(fieldKey) ? 0 : StringUtils.EMPTY;
+            else if (value instanceof Date)
+                value = CalendarUtils.getUTCDateTimeFormat().format(value);
 
             envMap.put(fieldKey, value);
         }
@@ -211,7 +208,8 @@ public class AggregationEvaluator {
         String ql = String.format("select %s,%s from %s where %s",
                 sourceField, sourceEntity.getPrimaryField().getName(), sourceEntity.getName(), filterSql);
         Object[][] array = Application.createQueryNoFilter(ql).array();
-        if (array.length == 0) return new Object[0];
+        if (array.length == 0)
+            return new Object[0];
 
         EasyField easyField = EasyMetaFactory.valueOf(field);
 
@@ -219,14 +217,16 @@ public class AggregationEvaluator {
         Map<Object, Integer> countList = null;
         if (mode == 2 || mode == 3) {
             nvList = new LinkedHashSet<>();
-            if (mode == 3) countList = new HashMap<>();  // 仅文本有效 *N
+            if (mode == 3)
+                countList = new HashMap<>(); // 仅文本有效 *N
         } else {
             nvList = new ArrayList<>();
         }
 
         for (Object[] o : array) {
             Object n = o[0];
-            if (n == null) continue;
+            if (n == null)
+                continue;
 
             // *N
             boolean xN3 = false;
@@ -240,13 +240,14 @@ public class AggregationEvaluator {
                 CollectionUtils.addAll(nvList, (ID[]) n);
             } else if (n instanceof ID) {
                 if (field.getType() == FieldType.PRIMARY) {
-                    nvList.add(n.toString());  // 保持主键为文本
+                    nvList.add(n.toString()); // 保持主键为文本
                 } else {
                     nvList.add(n);
                 }
             } else {
                 Object v = xN3 ? n : easyField.wrapValue(n);
-                if (v == null) continue;
+                if (v == null)
+                    continue;
 
                 DisplayType dt = easyField.getDisplayType();
                 if (dt == DisplayType.MULTISELECT) {
@@ -257,7 +258,8 @@ public class AggregationEvaluator {
                     if (countList != null) {
                         for (Object item : a) {
                             Integer c = countList.get(item);
-                            if (c == null) c = 0;
+                            if (c == null)
+                                c = 0;
                             countList.put(item, ++c);
                         }
                     }
@@ -270,7 +272,8 @@ public class AggregationEvaluator {
                     // TEXT*N
                     if (countList != null) {
                         Integer c = countList.get(v);
-                        if (c == null) c = 0;
+                        if (c == null)
+                            c = 0;
                         countList.put(v, ++c);
                     }
                 }

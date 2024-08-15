@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.support.general;
 
@@ -115,19 +109,22 @@ public class ProtocolFilterParser {
      */
     protected String parseVia(String viaId, String refField) {
         final ID anyId = ID.isId(viaId) ? ID.valueOf(viaId) : null;
-        if (anyId == null) return null;
+        if (anyId == null)
+            return null;
 
         JSONObject filterExp = null;
 
         // via Charts
         if (anyId.getEntityCode() == EntityHelper.ChartConfig) {
             ConfigBean chart = ChartManager.instance.getChart(anyId);
-            if (chart != null) filterExp = ((JSONObject) chart.getJSON("config")).getJSONObject("filter");
+            if (chart != null)
+                filterExp = ((JSONObject) chart.getJSON("config")).getJSONObject("filter");
         }
         // via AdvFilter
         else if (anyId.getEntityCode() == EntityHelper.FilterConfig) {
             ConfigBean filter = AdvFilterManager.instance.getAdvFilter(anyId);
-            if (filter != null) filterExp = (JSONObject) filter.getJSON("filter");
+            if (filter != null)
+                filterExp = (JSONObject) filter.getJSON("filter");
         }
         // via OTHERS
         else if (refField != null) {
@@ -170,7 +167,8 @@ public class ProtocolFilterParser {
         JSONObject fieldFilter = getFieldDataFilter(field);
         if (ParseHelper.validAdvFilter(fieldFilter)) {
             String s = new AdvFilterParser(fieldFilter).toSqlWhere();
-            if (StringUtils.isNotBlank(s)) sqls.add(s);
+            if (StringUtils.isNotBlank(s))
+                sqls.add(s);
         }
 
         // 父级级联字段
@@ -179,7 +177,8 @@ public class ProtocolFilterParser {
             String cascadingFieldParent = field.getExtraAttrs().getString("_cascadingFieldParent");
             String cascadingFieldChild = field.getExtraAttrs().getString("_cascadingFieldChild");
             // v35 多个使用第一个
-            if (cascadingFieldChild != null) cascadingFieldChild = cascadingFieldChild.split(";")[0];
+            if (cascadingFieldChild != null)
+                cascadingFieldChild = cascadingFieldChild.split(";")[0];
 
             ID cascadingValueId = ID.valueOf(cascadingValue);
             List<String> parentAndChind = new ArrayList<>();
@@ -199,7 +198,7 @@ public class ProtocolFilterParser {
                     parentAndChind.add(String.format("%s = '%s'", fs[1], cascadingValueId));
                 }
             }
-            
+
             if (StringUtils.isNotBlank(cascadingFieldChild)) {
                 String[] fs = cascadingFieldChild.split(MetadataHelper.SPLITER_RE);
                 Entity refEntity;
@@ -220,7 +219,8 @@ public class ProtocolFilterParser {
                 }
             }
 
-            if (!parentAndChind.isEmpty()) sqls.add("( " + StringUtils.join(parentAndChind, " or ") + " )");
+            if (!parentAndChind.isEmpty())
+                sqls.add("( " + StringUtils.join(parentAndChind, " or ") + " )");
         }
 
         return sqls.isEmpty() ? null
@@ -237,7 +237,8 @@ public class ProtocolFilterParser {
     protected String parseCategory(String entity, String value) {
         Entity rootEntity = MetadataHelper.getEntity(entity);
         Field categoryField = DataListCategory.instance.getFieldOfCategory(rootEntity);
-        if (categoryField == null || StringUtils.isBlank(value)) return "(9=9)";
+        if (categoryField == null || StringUtils.isBlank(value))
+            return "(9=9)";
 
         DisplayType dt = EasyMetaFactory.getDisplayType(categoryField);
         value = CommonsUtils.escapeSql(value);
@@ -263,9 +264,12 @@ public class ProtocolFilterParser {
             int level = ClassificationManager.instance.getOpenLevel(categoryField);
             List<String> parentSql = new ArrayList<>();
             parentSql.add(String.format("%s = '%s'", categoryField.getName(), value));
-            if (level > 0) parentSql.add(String.format("%s.parent = '%s'", categoryField.getName(), value));
-            if (level > 1) parentSql.add(String.format("%s.parent.parent = '%s'", categoryField.getName(), value));
-            if (level > 2) parentSql.add(String.format("%s.parent.parent.parent = '%s'", categoryField.getName(), value));
+            if (level > 0)
+                parentSql.add(String.format("%s.parent = '%s'", categoryField.getName(), value));
+            if (level > 1)
+                parentSql.add(String.format("%s.parent.parent = '%s'", categoryField.getName(), value));
+            if (level > 2)
+                parentSql.add(String.format("%s.parent.parent.parent = '%s'", categoryField.getName(), value));
 
             return "( " + StringUtils.join(parentSql, " or ") + " )";
         }
@@ -278,7 +282,8 @@ public class ProtocolFilterParser {
      * @param mainid
      * @return
      * @see #P_RELATED
-     * @see com.rebuild.web.general.RelatedListController#buildBaseSql(ID, String, String, boolean, ID)
+     * @see com.rebuild.web.general.RelatedListController#buildBaseSql(ID, String,
+     *      String, boolean, ID)
      */
     public String parseRelated(String relatedExpr, ID mainid) {
         // format: Entity.Field
@@ -339,7 +344,7 @@ public class ProtocolFilterParser {
         String dataFilter = EasyMetaFactory.valueOf(field).getExtraAttr(EasyFieldConfigProps.REFERENCE_DATAFILTER);
         if (JSONUtils.wellFormat(dataFilter) && dataFilter.length() > 10) {
             JSONObject advFilter = JSON.parseObject(dataFilter);
-            if (advFilter.get("items") != null && !advFilter.getJSONArray ("items").isEmpty()) {
+            if (advFilter.get("items") != null && !advFilter.getJSONArray("items").isEmpty()) {
                 return advFilter;
             }
         }

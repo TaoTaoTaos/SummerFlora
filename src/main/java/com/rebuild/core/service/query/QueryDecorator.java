@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.service.query;
 
@@ -37,7 +31,8 @@ public class QueryDecorator extends AjqlQuery {
 
         // 仅业务实体或BIZZ
         if (be) {
-            if (result == null) result = new ResultDecorator(this);
+            if (result == null)
+                result = new ResultDecorator(this);
             return result;
         } else {
             return super.result();

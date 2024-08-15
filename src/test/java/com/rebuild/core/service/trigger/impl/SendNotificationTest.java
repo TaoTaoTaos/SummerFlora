@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.service.trigger.impl;
 
@@ -43,7 +37,8 @@ class SendNotificationTest extends TestSupport {
         triggerConfig.setString("belongEntity", TestAllFields);
         triggerConfig.setInt("when", TriggerWhen.CREATE.getMaskValue() + TriggerWhen.DELETE.getMaskValue());
         triggerConfig.setString("actionType", ActionType.SENDNOTIFICATION.name());
-        String content = String.format("{ type:1, sendTo:['%s'], content:'SENDNOTIFICATION {createdBy} {3782732}' }", toUser);
+        String content = String.format("{ type:1, sendTo:['%s'], content:'SENDNOTIFICATION {createdBy} {3782732}' }",
+                toUser);
         triggerConfig.setString("actionContent", content);
         Application.getBean(RobotTriggerConfigService.class).create(triggerConfig);
 

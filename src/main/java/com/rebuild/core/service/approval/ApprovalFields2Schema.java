@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.service.approval;
 
@@ -70,9 +64,11 @@ public class ApprovalFields2Schema extends Field2Schema {
         }
 
         Field apporvalId = createUnsafeField(entity, EntityHelper.ApprovalId, Language.L("审批流程"),
-                DisplayType.REFERENCE, true, false, false, true, true, null, "RobotApprovalConfig", CascadeModel.Ignore, null, null);
+                DisplayType.REFERENCE, true, false, false, true, true, null, "RobotApprovalConfig", CascadeModel.Ignore,
+                null, null);
         Field apporvalState = createUnsafeField(entity, EntityHelper.ApprovalState, Language.L("审批状态"),
-                DisplayType.STATE, true, false, false, true, true, null, null, null, null, ApprovalState.DRAFT.getState());
+                DisplayType.STATE, true, false, false, true, true, null, null, null, null,
+                ApprovalState.DRAFT.getState());
         Field apporvalStepNode = createUnsafeField(entity, EntityHelper.ApprovalStepNode, Language.L("审批步骤"),
                 DisplayType.TEXT, true, false, false, true, false, null, null, null, null, null);
 
@@ -109,7 +105,8 @@ public class ApprovalFields2Schema extends Field2Schema {
     // v3.7 当前审批人
     private Field buildApprovalStepUsers(Entity entity) {
         return createUnsafeField(entity, EntityHelper.ApprovalStepUsers, Language.L("当前审批人"),
-                DisplayType.N2NREFERENCE, true, false, false, true, true, null, "User", CascadeModel.Ignore, null, null);
+                DisplayType.N2NREFERENCE, true, false, false, true, true, null, "User", CascadeModel.Ignore, null,
+                null);
     }
 
     // v3.7 当前审批步骤
@@ -144,7 +141,8 @@ public class ApprovalFields2Schema extends Field2Schema {
         List<String> drops = new ArrayList<>();
         List<ID> metas = new ArrayList<>();
         for (String s : approvalFields) {
-            if (!entity.containsField(s)) continue;
+            if (!entity.containsField(s))
+                continue;
 
             Field field = entity.getField(s);
             drops.add(String.format("drop column `%s`", field.getPhysicalName()));

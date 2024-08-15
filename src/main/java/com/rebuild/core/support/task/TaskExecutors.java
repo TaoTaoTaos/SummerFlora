@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.support.task;
 
@@ -139,7 +133,8 @@ public class TaskExecutors extends DistributedJobLock {
 
     @Scheduled(fixedRate = 300000, initialDelay = 300000)
     public void executeJob() {
-        if (!tryLock()) return;
+        if (!tryLock())
+            return;
 
         if (!ASYNC_TASKS.isEmpty()) {
             int completed = 0;
@@ -158,7 +153,7 @@ public class TaskExecutors extends DistributedJobLock {
             }
             log.info("{} task(s) in the queue. {} are completed (will clean-up later)", ASYNC_TASKS.size(), completed);
         }
-        
+
         Queue<Runnable> queue = ((ThreadPoolExecutor) SINGLE_QUEUE).getQueue();
         if (!queue.isEmpty()) {
             log.info("{} command(s) in the single-queue", queue.size());

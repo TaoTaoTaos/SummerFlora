@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.configuration.general;
 
@@ -46,7 +40,8 @@ public class DataListCategory {
 
     public static final DataListCategory instance = new DataListCategory();
 
-    private DataListCategory() {}
+    private DataListCategory() {
+    }
 
     /**
      * NOTE 有 5m 缓存
@@ -56,7 +51,8 @@ public class DataListCategory {
      */
     public JSON datas(Entity entity) {
         final Field categoryField = getFieldOfCategory(entity);
-        if (categoryField == null) return null;
+        if (categoryField == null)
+            return null;
 
         String conf = EasyMetaFactory.valueOf(entity).getExtraAttr(EasyEntityConfigProps.ADVLIST_SHOWCATEGORY);
         String[] ff = conf.split(":");
@@ -65,8 +61,10 @@ public class DataListCategory {
 
         final String ckey = "DataListCategory-" + conf;
         Object cached = Application.getCommonsCache().getx(ckey);
-        if (Application.devMode()) cached = null;
-        if (cached != null) return (JSON) cached;
+        if (Application.devMode())
+            cached = null;
+        if (cached != null)
+            return (JSON) cached;
 
         EasyField easyField = EasyMetaFactory.valueOf(categoryField);
         DisplayType dt = easyField.getDisplayType();
@@ -80,7 +78,8 @@ public class DataListCategory {
             ConfigBean[] cbs = MultiSelectManager.instance.getPickListRaw(categoryField, true);
             for (ConfigBean cb : cbs) {
                 Object id = cb.getID("id");
-                if (dt == DisplayType.MULTISELECT) id = cb.getLong("mask");
+                if (dt == DisplayType.MULTISELECT)
+                    id = cb.getLong("mask");
                 dataList.add(new Item(id, cb.getString("text")));
             }
 
@@ -88,7 +87,8 @@ public class DataListCategory {
             // 分类
             dataList = datasClassification(categoryField, ffFormat);
 
-        } else if (dt == DisplayType.REFERENCE && ffFormat != null && categoryField.getReferenceEntity().containsField(ffFormat)) {
+        } else if (dt == DisplayType.REFERENCE && ffFormat != null
+                && categoryField.getReferenceEntity().containsField(ffFormat)) {
             // 引用-父级
             dataList = datasReference(categoryField, ffFormat);
             dataListSort = 1;
@@ -137,7 +137,8 @@ public class DataListCategory {
         }
 
         JSONArray res = new JSONArray();
-        for (Item i : dataList) res.add(i.toJSON(dataListSort));
+        for (Item i : dataList)
+            res.add(i.toJSON(dataListSort));
 
         // 排序
         if (dataListSort == 2 || dataListSort == 1) {
@@ -155,6 +156,7 @@ public class DataListCategory {
 
     /**
      * Max. 4L
+     * 
      * @param field
      * @param format
      * @return
@@ -163,7 +165,8 @@ public class DataListCategory {
         final ID classid = ClassificationManager.instance.getUseClassification(field, false);
         int level = ClassificationManager.instance.getOpenLevel(field);
         int levelSpec = format == null ? level : ObjectUtils.toInt(format);
-        if (levelSpec < level) level = levelSpec;
+        if (levelSpec < level)
+            level = levelSpec;
 
         Collection<Item> dataList = new LinkedHashSet<>();
 
@@ -204,8 +207,10 @@ public class DataListCategory {
     // 分类子级
     private Object[][] getClassificationItems(ID classid, ID parent) {
         String sql = "select itemId,name from ClassificationData where dataId = ? and parent";
-        if (parent != null) sql += " = '" + parent + "'";
-        else sql += " is null";
+        if (parent != null)
+            sql += " = '" + parent + "'";
+        else
+            sql += " is null";
 
         sql += " order by code,fullName";
         return Application.createQueryNoFilter(sql).setParameter(1, classid).array();
@@ -213,6 +218,7 @@ public class DataListCategory {
 
     /**
      * Max. 9L
+     * 
      * @param field
      * @param format
      * @return
@@ -287,8 +293,10 @@ public class DataListCategory {
                 parentField.getOwnEntity().getPrimaryField().getName(),
                 parentField.getOwnEntity().getName(),
                 parentField.getName());
-        if (parent == null) sql += " is null";
-        else sql += " = '" + parent + "'";
+        if (parent == null)
+            sql += " is null";
+        else
+            sql += " = '" + parent + "'";
 
         return Application.createQueryNoFilter(sql).array();
     }
@@ -301,13 +309,15 @@ public class DataListCategory {
      */
     public Field getFieldOfCategory(Entity entity) {
         String categoryField = EasyMetaFactory.valueOf(entity).getExtraAttr(EasyEntityConfigProps.ADVLIST_SHOWCATEGORY);
-        if (categoryField != null) categoryField = categoryField.split(":")[0];
-        if (categoryField != null && entity.containsField(categoryField)) return entity.getField(categoryField);
+        if (categoryField != null)
+            categoryField = categoryField.split(":")[0];
+        if (categoryField != null && entity.containsField(categoryField))
+            return entity.getField(categoryField);
         return null;
     }
 
     // Bean
-    @EqualsAndHashCode(of = {"id"})
+    @EqualsAndHashCode(of = { "id" })
     protected static class Item implements Serializable {
         private static final long serialVersionUID = 6317330509242709409L;
 
@@ -334,24 +344,27 @@ public class DataListCategory {
 
         Item addChild(Object id, String text) {
             Item c = new Item(id, text);
-            if (children == null) children = new ArrayList<>();
+            if (children == null)
+                children = new ArrayList<>();
             children.add(c);
             return c;
         }
 
         JSONObject toJSON(int sort) {
-            JSONObject item = JSONUtils.toJSONObject(new String[] { "text", "id" }, new Object[] { text, id } );
-            if (children == null || children.isEmpty()) return item;
+            JSONObject item = JSONUtils.toJSONObject(new String[] { "text", "id" }, new Object[] { text, id });
+            if (children == null || children.isEmpty())
+                return item;
 
             // 排序
             if (sort == 2) {
-                children.sort((o1, o2) -> o2.text.compareTo(o1.text));  // desc
+                children.sort((o1, o2) -> o2.text.compareTo(o1.text)); // desc
             } else if (sort == 1) {
-                children.sort(Comparator.comparing(o -> o.text));  // asc
+                children.sort(Comparator.comparing(o -> o.text)); // asc
             }
 
             JSONArray cs = new JSONArray();
-            for (Item c : children) cs.add(c.toJSON(sort));
+            for (Item c : children)
+                cs.add(c.toJSON(sort));
             item.put("children", cs);
             return item;
         }

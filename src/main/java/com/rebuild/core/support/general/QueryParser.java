@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.support.general;
 
@@ -72,8 +66,8 @@ public class QueryParser {
     protected QueryParser(JSONObject queryExpr, DataListBuilder dataListBuilder) {
         this.queryExpr = queryExpr;
         this.dataListBuilder = dataListBuilder;
-        this.entity = dataListBuilder != null ?
-                dataListBuilder.getEntity() : MetadataHelper.getEntity(queryExpr.getString("entity"));
+        this.entity = dataListBuilder != null ? dataListBuilder.getEntity()
+                : MetadataHelper.getEntity(queryExpr.getString("entity"));
     }
 
     /**
@@ -138,7 +132,8 @@ public class QueryParser {
      * 解析 SQL
      */
     private void doParseIfNeed() {
-        if (sql != null) return;
+        if (sql != null)
+            return;
 
         StringBuilder fullSql = new StringBuilder("select ");
 
@@ -190,27 +185,31 @@ public class QueryParser {
         String protocolFilter = queryExpr.getString("protocolFilter");
         if (StringUtils.isNotBlank(protocolFilter)) {
             String where = new ProtocolFilterParser(protocolFilter).toSqlWhere();
-            if (StringUtils.isNotBlank(where)) wheres.add(where);
+            if (StringUtils.isNotBlank(where))
+                wheres.add(where);
         }
 
         // append: AdvFilter
         String advFilter = queryExpr.getString("advFilter");
         if (ID.isId(advFilter)) {
             String where = parseAdvFilter(ID.valueOf(advFilter));
-            if (StringUtils.isNotBlank(where)) wheres.add(where);
+            if (StringUtils.isNotBlank(where))
+                wheres.add(where);
         }
 
         // append: QuickQuery
         JSONObject quickFilter = queryExpr.getJSONObject("filter");
         if (quickFilter != null) {
             String where = new AdvFilterParser(quickFilter, entity).toSqlWhere();
-            if (StringUtils.isNotBlank(where)) wheres.add(where);
+            if (StringUtils.isNotBlank(where))
+                wheres.add(where);
         }
         // v3.3
         JSONObject quickFilterAnd = queryExpr.getJSONObject("filterAnd");
         if (quickFilterAnd != null) {
             String where = new AdvFilterParser(quickFilterAnd, entity).toSqlWhere();
-            if (StringUtils.isNotBlank(where)) wheres.add(where);
+            if (StringUtils.isNotBlank(where))
+                wheres.add(where);
         }
 
         final String sqlWhere = wheres.isEmpty() ? "1=1" : StringUtils.join(wheres.iterator(), " and ");
@@ -227,7 +226,8 @@ public class QueryParser {
         } else if (entity.containsField(EntityHelper.CreatedOn)) {
             sortSql = EntityHelper.CreatedOn + " desc";
         }
-        if (StringUtils.isNotBlank(sortSql)) fullSql.append(" order by ").append(sortSql);
+        if (StringUtils.isNotBlank(sortSql))
+            fullSql.append(" order by ").append(sortSql);
 
         this.sql = fullSql.toString();
         this.countSql = this.buildCountSql(pkName) + sqlWhere;
@@ -249,16 +249,19 @@ public class QueryParser {
      * @return
      */
     private String parseSort(String sort) {
-        if (sort.length() < 5) return null;
+        if (sort.length() < 5)
+            return null;
 
         StringBuilder sb = new StringBuilder();
         String[] sorts = sort.split("[,;]");
         for (String s : sorts) {
             String[] split = s.split(":");
-            if (StringUtils.isBlank(split[0])) return null;
+            if (StringUtils.isBlank(split[0]))
+                return null;
 
             sb.append(split[0]);
-            if (split.length > 1) sb.append("desc".equalsIgnoreCase(split[1]) ? " desc" : " asc");
+            if (split.length > 1)
+                sb.append("desc".equalsIgnoreCase(split[1]) ? " desc" : " asc");
             sb.append(", ");
         }
 

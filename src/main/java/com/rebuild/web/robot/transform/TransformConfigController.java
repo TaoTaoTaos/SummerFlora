@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.web.robot.transform;
 
@@ -132,7 +126,7 @@ public class TransformConfigController extends BaseController {
         List<String[]> allowedSourceFields = new ArrayList<>();
         for (Field field : MetadataSorter.sortFields(sourceEntity, DisplayType.REFERENCE)) {
             String type = "REFERENCE:" + field.getReferenceEntity().getName();
-            allowedSourceFields.add(new String[]{ field.getName(), EasyMetaFactory.getLabel(field), type });
+            allowedSourceFields.add(new String[] { field.getName(), EasyMetaFactory.getLabel(field), type });
         }
         if (sourceEntityMain != null) {
             Field dtmfField = MetadataHelper.getDetailToMainField(sourceEntity);
@@ -141,7 +135,7 @@ public class TransformConfigController extends BaseController {
 
             for (Field field : MetadataSorter.sortFields(sourceEntityMain, DisplayType.REFERENCE)) {
                 String type = "REFERENCE:" + field.getReferenceEntity().getName();
-                allowedSourceFields.add(new String[]{
+                allowedSourceFields.add(new String[] {
                         namePrefix + field.getName(), labelPrefix + EasyMetaFactory.getLabel(field), type });
             }
         }
@@ -154,10 +148,11 @@ public class TransformConfigController extends BaseController {
         String labelPrefix = EasyMetaFactory.getLabel(dtmfField) + ".";
 
         for (Field field : MetadataSorter.sortFields(targetEntityMain, DisplayType.REFERENCE)) {
-            if (MetadataHelper.isCommonsField(field)) continue;
+            if (MetadataHelper.isCommonsField(field))
+                continue;
 
             String type = "REFERENCE:" + field.getReferenceEntity().getName();
-            allowedTargetFields.add(new String[]{ namePrefix + field.getName(),
+            allowedTargetFields.add(new String[] { namePrefix + field.getName(),
                     labelPrefix + EasyMetaFactory.getLabel(field), type });
         }
 
@@ -179,7 +174,8 @@ public class TransformConfigController extends BaseController {
                 if (field instanceof EasyField) {
                     EasyField easyField = (EasyField) field;
                     int c = easyField.getDisplayType() == DisplayType.REFERENCE
-                            ? easyField.getRawMeta().getReferenceEntity().getEntityCode() : 0;
+                            ? easyField.getRawMeta().getReferenceEntity().getEntityCode()
+                            : 0;
 
                     return easyField.getDisplayType() == DisplayType.BARCODE
                             || c == EntityHelper.RobotApprovalConfig;
@@ -222,7 +218,8 @@ public class TransformConfigController extends BaseController {
         String belongEntity = getParameter(request, "entity");
         String q = getParameter(request, "q");
 
-        String sql = "select configId,belongEntity,belongEntity,targetEntity,targetEntity,modifiedOn,name,isDisabled from TransformConfig" +
+        String sql = "select configId,belongEntity,belongEntity,targetEntity,targetEntity,modifiedOn,name,isDisabled from TransformConfig"
+                +
                 " where (1=1) and (2=2)" +
                 " order by modifiedOn desc, name";
 

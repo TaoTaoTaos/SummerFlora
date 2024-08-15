@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.privileges;
 
@@ -50,6 +44,7 @@ public class RoleBaseQueryFilter implements Filter, QueryFilter {
      */
     public static final Filter DENIED = new RoleBaseQueryFilter() {
         private static final long serialVersionUID = -1841438304452108874L;
+
         @Override
         public String evaluate(Entity entity) {
             return "( 1 = 0 )";
@@ -61,6 +56,7 @@ public class RoleBaseQueryFilter implements Filter, QueryFilter {
      */
     public static final Filter ALLOWED = new RoleBaseQueryFilter() {
         private static final long serialVersionUID = -1300184338130890817L;
+
         @Override
         public String evaluate(Entity entity) {
             return "( 1 = 1 )";
@@ -187,7 +183,8 @@ public class RoleBaseQueryFilter implements Filter, QueryFilter {
      * @return
      */
     private String buildShareFilter(Entity entity, Field dtmField) {
-        if (user == null) return null;
+        if (user == null)
+            return null;
 
         String shareFilter = "exists (select rights from ShareAccess where belongEntity = '%s' and shareTo = '%s' and recordId = ^%s)";
 
@@ -213,10 +210,12 @@ public class RoleBaseQueryFilter implements Filter, QueryFilter {
      */
     private String buildCustomFilter(Privileges ep, Field dtmField) {
         if (user == null || useAction == null
-                || !(ep instanceof CustomEntityPrivileges)) return null;
+                || !(ep instanceof CustomEntityPrivileges))
+            return null;
 
         JSONObject hasFilter = ((CustomEntityPrivileges) ep).getCustomFilter(useAction);
-        if (hasFilter == null) return null;
+        if (hasFilter == null)
+            return null;
 
         // 兼容转换（明细实体）
         if (dtmField != null) {

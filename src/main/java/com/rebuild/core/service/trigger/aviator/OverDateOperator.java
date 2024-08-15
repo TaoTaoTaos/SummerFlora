@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.service.trigger.aviator;
 
@@ -25,7 +19,8 @@ import java.util.Map;
  */
 public class OverDateOperator {
 
-    private OverDateOperator() {}
+    private OverDateOperator() {
+    }
 
     // -- 计算
 
@@ -34,6 +29,7 @@ public class OverDateOperator {
      */
     static class DateAdd extends AbstractFunction {
         private static final long serialVersionUID = -7871678038170332371L;
+
         @Override
         public String getName() {
             return OperatorType.ADD.getToken();
@@ -59,6 +55,7 @@ public class OverDateOperator {
      */
     static class DateSub extends AbstractFunction {
         private static final long serialVersionUID = 8208361199770129766L;
+
         @Override
         public String getName() {
             return OperatorType.SUB.getToken();
@@ -94,6 +91,7 @@ public class OverDateOperator {
      */
     static class DateCompareLE extends AbstractFunction {
         private static final long serialVersionUID = 1321662048697121893L;
+
         @Override
         public String getName() {
             return OperatorType.LE.getToken();
@@ -120,6 +118,7 @@ public class OverDateOperator {
      */
     static class DateCompareLT extends AbstractFunction {
         private static final long serialVersionUID = 8197857653882782806L;
+
         @Override
         public String getName() {
             return OperatorType.LT.getToken();
@@ -146,6 +145,7 @@ public class OverDateOperator {
      */
     static class DateCompareGE extends AbstractFunction {
         private static final long serialVersionUID = -7966630104916265372L;
+
         @Override
         public String getName() {
             return OperatorType.GE.getToken();
@@ -172,6 +172,7 @@ public class OverDateOperator {
      */
     static class DateCompareGT extends AbstractFunction {
         private static final long serialVersionUID = 5214573679573440753L;
+
         @Override
         public String getName() {
             return OperatorType.GT.getToken();
@@ -198,6 +199,7 @@ public class OverDateOperator {
      */
     static class DateCompareEQ extends AbstractFunction {
         private static final long serialVersionUID = -6142749075506832977L;
+
         @Override
         public String getName() {
             return OperatorType.EQ.getToken();
@@ -224,6 +226,7 @@ public class OverDateOperator {
      */
     static class DateCompareNEQ extends AbstractFunction {
         private static final long serialVersionUID = -838391653977975466L;
+
         @Override
         public String getName() {
             return OperatorType.NEQ.getToken();

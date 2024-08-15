@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.support.general;
 
@@ -72,11 +66,13 @@ public class DataListBuilderImpl implements DataListBuilder {
         if (MetadataHelper.isBizzEntity(entity)) {
             List<String> where = new ArrayList<>();
             String s = UserFilters.getBizzFilter(entity, user);
-            if (s != null) where.add(s);
+            if (s != null)
+                where.add(s);
 
             // 部门用户隔离
             s = UserFilters.getEnableBizzPartFilter(entity, user);
-            if (s != null) where.add(s);
+            if (s != null)
+                where.add(s);
             return where.isEmpty() ? null : "( " + StringUtils.join(where, " and ") + " )";
         }
 
@@ -102,7 +98,7 @@ public class DataListBuilderImpl implements DataListBuilder {
             if (stats2.size() > 1) {
                 stats = new JSONArray();
                 for (int i = 1; i < stats2.size(); i++) {
-                    stats.add(JSONUtils.toJSONObject(new String[] {"label", "value"}, stats2.get(i)));
+                    stats.add(JSONUtils.toJSONObject(new String[] { "label", "value" }, stats2.get(i)));
                 }
             }
         }
@@ -112,7 +108,8 @@ public class DataListBuilderImpl implements DataListBuilder {
         Object[][] data = query.setLimit(limits[0], limits[1]).array();
 
         JSONObject listdata = (JSONObject) createDataListWrapper((int) totalRows, data, query).toJson();
-        if (stats != null) listdata.put("stats", stats);
+        if (stats != null)
+            listdata.put("stats", stats);
         return listdata;
     }
 
@@ -123,11 +120,12 @@ public class DataListBuilderImpl implements DataListBuilder {
      */
     public JSONArray getJSONStats() {
         List<Object[]> stats2 = getStats();
-        if (stats2.size() < 2) return null;
+        if (stats2.size() < 2)
+            return null;
 
         JSONArray stats = new JSONArray();
         for (int i = 1; i < stats2.size(); i++) {
-            stats.add(JSONUtils.toJSONObject(new String[] {"label", "value"}, stats2.get(i)));
+            stats.add(JSONUtils.toJSONObject(new String[] { "label", "value" }, stats2.get(i)));
         }
         return stats;
     }
@@ -141,11 +139,13 @@ public class DataListBuilderImpl implements DataListBuilder {
         List<Object[]> stats = new ArrayList<>();
 
         final Object[] count = Application.createQuery(queryParser.toCountSql(), user).unique();
-        stats.add(new Object[] {null, count[0]});
-        if (count.length < 2) return stats;
+        stats.add(new Object[] { null, count[0] });
+        if (count.length < 2)
+            return stats;
 
         List<Map<String, Object>> statsFields = queryParser.getCountFields();
-        if (statsFields.isEmpty()) return stats;
+        if (statsFields.isEmpty())
+            return stats;
 
         // 统计列
         for (int i = 1; i < count.length; i++) {
@@ -172,7 +172,7 @@ public class DataListBuilderImpl implements DataListBuilder {
                 value = FieldValueHelper.desensitized(easyField, value);
             }
 
-            stats.add(new Object[] {label, value});
+            stats.add(new Object[] { label, value });
         }
         return stats;
     }

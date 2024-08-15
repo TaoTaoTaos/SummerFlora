@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.service.dataimport;
 
@@ -65,7 +59,7 @@ public class DataExporter extends SetUser {
      * 最大导出行数
      */
     public static final int MAX_ROWS = 1000000;
-    
+
     final private JSONObject queryData;
     // 字段
     private List<Field> headFields = new ArrayList<>();
@@ -106,7 +100,8 @@ public class DataExporter extends SetUser {
 
         // Excel
         if ("xls".equalsIgnoreCase(csvOrExcel)) {
-            File file = RebuildConfiguration.getFileOfTemp(String.format("RBEXPORT-%d.xls", System.currentTimeMillis()));
+            File file = RebuildConfiguration
+                    .getFileOfTemp(String.format("RBEXPORT-%d.xls", System.currentTimeMillis()));
 
             List<List<String>> head4Excel = new ArrayList<>();
             for (String h : head) {
@@ -114,7 +109,8 @@ public class DataExporter extends SetUser {
             }
 
             List<List<String>> datas = this.buildData(builder, Boolean.FALSE);
-            if (datas.isEmpty()) throw new DefinedException(Language.L("暂无数据"));
+            if (datas.isEmpty())
+                throw new DefinedException(Language.L("暂无数据"));
 
             EasyExcel.write(file)
                     .registerWriteHandler(new LongestMatchColumnWidthStyleStrategy())
@@ -135,7 +131,8 @@ public class DataExporter extends SetUser {
                     writer.write(mergeLine(head));
 
                     List<List<String>> datas = this.buildData(builder, Boolean.TRUE);
-                    if (datas.isEmpty()) throw new DefinedException(Language.L("暂无数据"));
+                    if (datas.isEmpty())
+                        throw new DefinedException(Language.L("暂无数据"));
 
                     for (List<String> row : datas) {
                         writer.newLine();
@@ -156,8 +153,10 @@ public class DataExporter extends SetUser {
         StringBuilder sb = new StringBuilder();
         boolean b = true;
         for (String s : line) {
-            if (b) b = false;
-            else sb.append(",");
+            if (b)
+                b = false;
+            else
+                sb.append(",");
 
             sb.append(s.replace(", ", " / "));
         }
@@ -219,7 +218,7 @@ public class DataExporter extends SetUser {
                 } else if (!dt.isExportable() || (dt == DisplayType.SIGN || dt == DisplayType.BARCODE)) {
                     cellVal = labelUns;
                 } else if (dt == DisplayType.DECIMAL || dt == DisplayType.NUMBER) {
-                    cellVal = cellVal.toString().replaceAll("[^0-9|^.-]", "");  // 仅保留数字
+                    cellVal = cellVal.toString().replaceAll("[^0-9|^.-]", ""); // 仅保留数字
                 } else if (dt == DisplayType.ID) {
                     cellVal = ((JSONObject) cellVal).getString("id");
                 }
@@ -229,7 +228,8 @@ public class DataExporter extends SetUser {
                     cellVal = ((MixValue) easyField).unpackWrapValue(cellVal);
 
                     if (cleanContent && cellVal.toString().contains(", ")
-                            && (easyField instanceof EasyMultiSelect || easyField instanceof EasyN2NReference || easyField instanceof EasyTag)) {
+                            && (easyField instanceof EasyMultiSelect || easyField instanceof EasyN2NReference
+                                    || easyField instanceof EasyTag)) {
                         cellVal = cellVal.toString().replace(", ", " / ");
                     }
                 }

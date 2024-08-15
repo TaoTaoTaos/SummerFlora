@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.utils;
 
@@ -104,8 +98,10 @@ public class PdfConverter {
         final File dest = new File(outDir, outName);
 
         if (dest.exists()) {
-            if (forceRegen) FileUtils.deleteQuietly(dest);
-            else return dest.toPath();
+            if (forceRegen)
+                FileUtils.deleteQuietly(dest);
+            else
+                return dest.toPath();
         }
 
         if (TYPE_HTML.equalsIgnoreCase(type)) {
@@ -123,18 +119,22 @@ public class PdfConverter {
 
         // alias
         String soffice = RebuildConfiguration.get(ConfigurationItem.LibreofficeBin);
-        if (StringUtils.isBlank(soffice)) soffice = SystemUtils.IS_OS_WINDOWS ? "soffice.exe" : "libreoffice";
+        if (StringUtils.isBlank(soffice))
+            soffice = SystemUtils.IS_OS_WINDOWS ? "soffice.exe" : "libreoffice";
         String cmd = String.format("%s --headless --convert-to %s \"%s\" --outdir \"%s\"", soffice, type, path, outDir);
 
         String echo = CommandUtils.execFor(cmd);
-        if (!echo.isEmpty()) log.info(echo);
+        if (!echo.isEmpty())
+            log.info(echo);
 
-        if (dest.exists()) return dest.toPath();
+        if (dest.exists())
+            return dest.toPath();
 
         throw new PdfConverterException("Cannot convert to PDF : " + StringUtils.defaultIfBlank(echo, "<empty>"));
     }
 
     private static String TEMPALTE_HTML;
+
     /**
      * Word to HTML
      *
@@ -184,10 +184,11 @@ public class PdfConverter {
             toHtml.printStyles();
             output.append("</style>");
 
-            for (Iterator<Sheet> iter = wb.sheetIterator(); iter.hasNext(); ) {
+            for (Iterator<Sheet> iter = wb.sheetIterator(); iter.hasNext();) {
                 final Sheet sheet = iter.next();
                 String paperClass = "paper excel";
-                if (sheet.getPrintSetup().getLandscape()) paperClass += " landscape";  // 横向
+                if (sheet.getPrintSetup().getLandscape())
+                    paperClass += " landscape"; // 横向
 
                 output.append("<div class=\"").append(paperClass).append("\">");
                 toHtml.printSheet(sheet);

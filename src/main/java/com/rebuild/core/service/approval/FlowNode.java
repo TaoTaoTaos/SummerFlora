@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.service.approval;
 
@@ -61,9 +55,9 @@ public class FlowNode {
 
     // 多人联合审批类型
 
-    public static final String SIGN_AND = "AND";  // 会签（默认）
-    public static final String SIGN_OR = "OR";    // 或签
-    public static final String SIGN_ALL = "ALL";  // 逐个审批（暂未用）
+    public static final String SIGN_AND = "AND"; // 会签（默认）
+    public static final String SIGN_OR = "OR"; // 或签
+    public static final String SIGN_ALL = "ALL"; // 逐个审批（暂未用）
 
     // --
 
@@ -165,7 +159,8 @@ public class FlowNode {
      */
     public Set<ID> getSpecUsers(ID operator, ID record) {
         JSONArray userDefs = getDataMap().getJSONArray("users");
-        if (userDefs == null || userDefs.isEmpty()) return Collections.emptySet();
+        if (userDefs == null || userDefs.isEmpty())
+            return Collections.emptySet();
 
         String userType = userDefs.getString(0);
         if (USER_SELF.equalsIgnoreCase(userType)) {
@@ -196,7 +191,7 @@ public class FlowNode {
                     if (isSubmitted) {
                         // 提交人即审批人
                     } else {
-                        followUser = null;  // 未提交
+                        followUser = null; // 未提交
                     }
                 }
 
@@ -207,7 +202,8 @@ public class FlowNode {
                         // 部门中的用户（如上级）
                         if (userField.getOwnEntity().getEntityCode() == EntityHelper.Department) {
                             Department d = Application.getUserStore().getUser(followUser).getOwningDept();
-                            ud = Application.getQueryFactory().uniqueNoFilter((ID) d.getIdentity(), userField.getName());
+                            ud = Application.getQueryFactory().uniqueNoFilter((ID) d.getIdentity(),
+                                    userField.getName());
                         } else {
                             ud = Application.getQueryFactory().uniqueNoFilter(followUser, userField.getName());
                         }
@@ -215,13 +211,16 @@ public class FlowNode {
                         if (ud != null && ud[0] != null) {
                             if (userField.getReferenceEntity().getEntityCode() == EntityHelper.Department) {
                                 if (ud[0] instanceof ID[]) {
-                                    for (ID x : (ID[]) ud[0]) defsList.add(x.toString());
+                                    for (ID x : (ID[]) ud[0])
+                                        defsList.add(x.toString());
                                 } else {
                                     defsList.add(ud[0].toString());
                                 }
                             } else {
-                                if (ud[0] instanceof ID[]) Collections.addAll(users, (ID[]) ud[0]);
-                                else users.add((ID) ud[0]);
+                                if (ud[0] instanceof ID[])
+                                    Collections.addAll(users, (ID[]) ud[0]);
+                                else
+                                    users.add((ID) ud[0]);
                             }
                         }
                     }
@@ -246,7 +245,8 @@ public class FlowNode {
      */
     public Set<String> getCcAccounts(ID record) {
         JSONArray accountFields = getDataMap().getJSONArray("accounts");
-        if (accountFields == null || accountFields.isEmpty()) return Collections.emptySet();
+        if (accountFields == null || accountFields.isEmpty())
+            return Collections.emptySet();
 
         Entity useEntity = MetadataHelper.getEntity(record.getEntityCode());
         List<String> useFields = new ArrayList<>();
@@ -256,10 +256,12 @@ public class FlowNode {
                 useFields.add((String) o);
             }
         }
-        if (useFields.isEmpty()) return Collections.emptySet();
+        if (useFields.isEmpty())
+            return Collections.emptySet();
 
         Object[] o = Application.getQueryFactory().uniqueNoFilter(record, useFields.toArray(new String[0]));
-        if (o == null) return Collections.emptySet();
+        if (o == null)
+            return Collections.emptySet();
 
         Set<String> mobileOrEmail = new HashSet<>();
         for (Object me : o) {
@@ -302,7 +304,8 @@ public class FlowNode {
      */
     public JSONArray getEditableFields() {
         JSONArray editableFields = dataMap == null ? null : dataMap.getJSONArray("editableFields");
-        if (editableFields == null) return null;
+        if (editableFields == null)
+            return null;
 
         editableFields = (JSONArray) JSONUtils.clone(editableFields);
         for (Object o : editableFields) {
@@ -319,8 +322,10 @@ public class FlowNode {
      */
     public JSONObject getExpiresAuto() {
         JSONObject expiresAuto = dataMap == null ? null : dataMap.getJSONObject("expiresAuto");
-        if (expiresAuto == null) return null;
-        if (expiresAuto.getIntValue("expiresAuto") <= 0) return null;
+        if (expiresAuto == null)
+            return null;
+        if (expiresAuto.getIntValue("expiresAuto") <= 0)
+            return null;
         return expiresAuto;
     }
 

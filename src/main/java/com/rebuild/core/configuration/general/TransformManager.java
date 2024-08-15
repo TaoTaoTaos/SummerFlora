@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.configuration.general;
 
@@ -43,7 +37,8 @@ public class TransformManager implements ConfigManager {
     // 任何修改都会清空
     private static final Map<Object, Object> WEAK_CACHED = new ConcurrentHashMap<>();
 
-    private TransformManager() { }
+    private TransformManager() {
+    }
 
     /**
      * 前端使用
@@ -56,11 +51,13 @@ public class TransformManager implements ConfigManager {
         for (ConfigBean cb : getRawTransforms(sourceEntity)) {
             JSONObject config = (JSONObject) cb.getJSON("config");
             // 过滤尚未配置或禁用的
-            if (config == null || cb.getBoolean("disabled")) continue;
+            if (config == null || cb.getBoolean("disabled"))
+                continue;
 
             // 无字段映射
             JSONObject fieldsMapping = config.getJSONObject("fieldsMapping");
-            if (fieldsMapping == null || fieldsMapping.isEmpty()) continue;
+            if (fieldsMapping == null || fieldsMapping.isEmpty())
+                continue;
 
             String target = cb.getString("target");
             Entity targetEntity = MetadataHelper.getEntity(target);
@@ -71,7 +68,8 @@ public class TransformManager implements ConfigManager {
                 }
             } else {
                 // To 明细
-                if (!Application.getPrivilegesManager().allowUpdate(user, targetEntity.getMainEntity().getEntityCode())) {
+                if (!Application.getPrivilegesManager().allowUpdate(user,
+                        targetEntity.getMainEntity().getEntityCode())) {
                     continue;
                 }
             }
@@ -92,7 +90,8 @@ public class TransformManager implements ConfigManager {
      * @throws ConfigurationException
      */
     public ConfigBean getTransformConfig(ID configId, String sourceEntity) throws ConfigurationException {
-        if (sourceEntity == null) sourceEntity = getBelongEntity(configId);
+        if (sourceEntity == null)
+            sourceEntity = getBelongEntity(configId);
 
         for (ConfigBean c : getRawTransforms(sourceEntity)) {
             if (configId.equals(c.getID("id"))) {
@@ -107,7 +106,8 @@ public class TransformManager implements ConfigManager {
     public List<ConfigBean> getRawTransforms(String sourceEntity) {
         final String cKey = "TransformManager31-" + sourceEntity;
         Object cached = Application.getCommonsCache().getx(cKey);
-        if (cached != null) return (List<ConfigBean>) cached;
+        if (cached != null)
+            return (List<ConfigBean>) cached;
 
         Object[][] array = Application.createQueryNoFilter(
                 "select belongEntity,targetEntity,configId,config,isDisabled,name from TransformConfig where belongEntity = ?")
@@ -117,7 +117,8 @@ public class TransformManager implements ConfigManager {
         ArrayList<ConfigBean> entries = new ArrayList<>();
         for (Object[] o : array) {
             String name = (String) o[5];
-            if (StringUtils.isBlank(name)) name = EasyMetaFactory.getLabel((String) o[1]);
+            if (StringUtils.isBlank(name))
+                name = EasyMetaFactory.getLabel((String) o[1]);
 
             ConfigBean entry = new ConfigBean()
                     .set("source", o[0])
@@ -147,7 +148,8 @@ public class TransformManager implements ConfigManager {
                 "select belongEntity from TransformConfig where configId = ?")
                 .setParameter(1, configId)
                 .unique();
-        if (o == null) throw new ConfigurationException("No `TransformConfig` found : " + configId);
+        if (o == null)
+            throw new ConfigurationException("No `TransformConfig` found : " + configId);
 
         WEAK_CACHED.put(configId, o[0]);
         return (String) o[0];
@@ -195,7 +197,8 @@ public class TransformManager implements ConfigManager {
 
     // v3.6 排序
     private void sortByName(List<ConfigBean> list) {
-        if (list == null || list.isEmpty()) return;
+        if (list == null || list.isEmpty())
+            return;
 
         Comparator<Object> comparator = Collator.getInstance(Locale.CHINESE);
         list.sort((o1, o2) -> comparator.compare(

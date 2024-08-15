@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.service.notification;
 
@@ -101,8 +95,10 @@ public class MessageBuilder {
             }
         }
 
-        if (md2html) return MarkdownUtils.render(message);
-        else return message;
+        if (md2html)
+            return MarkdownUtils.render(message);
+        else
+            return message;
     }
 
     /**
@@ -112,7 +108,8 @@ public class MessageBuilder {
      * @return
      */
     protected static String parseAtId(String atid) {
-        if (!ID.isId(atid)) return atid;
+        if (!ID.isId(atid))
+            return atid;
 
         final ID id = ID.valueOf(atid);
         if (id.getEntityCode() == EntityHelper.User) {

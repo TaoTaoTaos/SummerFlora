@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.configuration.general;
 
@@ -85,7 +79,8 @@ public class ViewAddonsManager extends BaseLayoutManager {
                 JSONObject deJson = (JSONObject) deEasy.toJSON();
                 deJson.put("entity", de.getName() + "." + MetadataHelper.getDetailToMainField(de).getName());
                 // 显示位置
-                deJson.put("showAt2", BooleanUtils.toBoolean(deEasy.getExtraAttr(EasyEntityConfigProps.DETAILS_SHOWAT2)) ? 2 : 1);
+                deJson.put("showAt2",
+                        BooleanUtils.toBoolean(deEasy.getExtraAttr(EasyEntityConfigProps.DETAILS_SHOWAT2)) ? 2 : 1);
                 tabsFluent.add(deJson);
             }
 
@@ -103,7 +98,8 @@ public class ViewAddonsManager extends BaseLayoutManager {
      */
     public Map<String, JSONObject> getViewTabFilters(String entity) {
         final ConfigBean config = getLayout(UserService.SYSTEM_USER, entity, TYPE_TAB, null);
-        if (config == null) return Collections.emptyMap();
+        if (config == null)
+            return Collections.emptyMap();
 
         // compatible: v2.2
         JSON configJson = config.getJSON("config");
@@ -112,19 +108,23 @@ public class ViewAddonsManager extends BaseLayoutManager {
         }
 
         JSONArray items = ((JSONObject) configJson).getJSONArray("items");
-        if (items == null || items.isEmpty()) return Collections.emptyMap();
+        if (items == null || items.isEmpty())
+            return Collections.emptyMap();
 
         Map<String, JSONObject> filters = new HashMap<>();
         for (Object o : items) {
             // compatible: v2.8
-            if (!(o instanceof JSONArray)) continue;
+            if (!(o instanceof JSONArray))
+                continue;
 
             JSONArray item = (JSONArray) o;
-            if (item.size() < 3) continue;
+            if (item.size() < 3)
+                continue;
 
             String entityKey = item.getString(0);
             JSONObject filter = item.getJSONObject(2);
-            if (filter != null) filters.put(entityKey, filter);
+            if (filter != null)
+                filters.put(entityKey, filter);
         }
 
         return filters;
@@ -159,12 +159,15 @@ public class ViewAddonsManager extends BaseLayoutManager {
             JSONArray useRefs = new JSONArray();
             for (Field field : entityMeta.getReferenceToFields(Boolean.FALSE, Boolean.TRUE)) {
                 Entity e = field.getOwnEntity();
-                if (!MetadataHelper.isBusinessEntity(e)) continue;
-                if (ArrayUtils.contains(entityMeta.getDetialEntities(), e)) continue;
+                if (!MetadataHelper.isBusinessEntity(e))
+                    continue;
+                if (ArrayUtils.contains(entityMeta.getDetialEntities(), e))
+                    continue;
 
                 // 新建项排除明细
                 if (TYPE_ADD.equals(applyType)) {
-                    if (e.getMainEntity() != null) continue;
+                    if (e.getMainEntity() != null)
+                        continue;
                 }
 
                 Entity eCheck = ObjectUtils.defaultIfNull(e.getMainEntity(), e);
@@ -195,7 +198,7 @@ public class ViewAddonsManager extends BaseLayoutManager {
         }
 
         JSONArray addons = new JSONArray();
-        for (Object o : ((JSONObject) configJson).getJSONArray ("items")) {
+        for (Object o : ((JSONObject) configJson).getJSONArray("items")) {
             String key;
             String label = null;
             // compatible: v2.8
@@ -235,7 +238,7 @@ public class ViewAddonsManager extends BaseLayoutManager {
                 new Object[] { addons,
                         ((JSONObject) configJson).getBooleanValue("autoExpand"),
                         ((JSONObject) configJson).getBooleanValue("autoHide"),
-                        ((JSONObject) configJson).getBooleanValue("defaultList")});
+                        ((JSONObject) configJson).getBooleanValue("defaultList") });
     }
 
     /**
@@ -246,7 +249,7 @@ public class ViewAddonsManager extends BaseLayoutManager {
      */
     public static Set<Entity> hasMultiFieldsReferenceTo(Entity entity) {
         Map<Entity, Integer> map = new HashMap<>();
-        map.put(entity, 1);  // 包括自己
+        map.put(entity, 1); // 包括自己
 
         for (Field field : entity.getReferenceToFields(Boolean.FALSE, Boolean.TRUE)) {
             Entity e = field.getOwnEntity();

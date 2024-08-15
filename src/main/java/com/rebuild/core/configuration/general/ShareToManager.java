@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.configuration.general;
 
@@ -86,9 +80,11 @@ public abstract class ShareToManager implements ConfigManager {
      * @param useSysFlag
      * @return
      */
-    protected ID detectUseConfig(ID user, String belongEntity, String applyType, boolean firstUseSelf, String useSysFlag) {
+    protected ID detectUseConfig(ID user, String belongEntity, String applyType, boolean firstUseSelf,
+            String useSysFlag) {
         final Object[][] alls = getAllConfig(belongEntity, applyType);
-        if (alls.length == 0) return null;
+        if (alls.length == 0)
+            return null;
 
         // 1.优先使用自己的
         if (firstUseSelf) {
@@ -96,7 +92,8 @@ public abstract class ShareToManager implements ConfigManager {
                 ID createdBy = (ID) d[2];
                 if (UserHelper.isSelf(user, createdBy)) {
                     if (useSysFlag != null) {
-                        if (useSysFlag.equals(d[4])) return (ID) d[0];
+                        if (useSysFlag.equals(d[4]))
+                            return (ID) d[0];
                     } else {
                         return (ID) d[0];
                     }
@@ -108,7 +105,8 @@ public abstract class ShareToManager implements ConfigManager {
         for (Object[] d : alls) {
             if (isShareTo((String) d[1], user)) {
                 if (useSysFlag != null) {
-                    if (useSysFlag.equals(d[4])) return (ID) d[0];
+                    if (useSysFlag.equals(d[4]))
+                        return (ID) d[0];
                 } else {
                     return (ID) d[0];
                 }
@@ -196,7 +194,7 @@ public abstract class ShareToManager implements ConfigManager {
             Set<ID> sharedUsers = UserHelper.parseUsers(userDefs, null);
             return sharedUsers.contains(user);
 
-        } else {  // SELF
+        } else { // SELF
             return false;
         }
     }

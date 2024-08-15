@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.privileges.bizz;
 
@@ -32,7 +26,7 @@ public class ZeroPrivileges implements Privileges {
     private final String definition;
 
     /**
-     * @param zreoKey {@link ZeroEntry}
+     * @param zreoKey    {@link ZeroEntry}
      * @param definition
      */
     public ZeroPrivileges(String zreoKey, String definition) {
@@ -52,7 +46,7 @@ public class ZeroPrivileges implements Privileges {
 
     @Override
     public boolean allowed(Permission action, Serializable targetGuard) {
-        return definition.contains(":" + ZERO_MASK);  // {"Z":4}
+        return definition.contains(":" + ZERO_MASK); // {"Z":4}
     }
 
     @Override

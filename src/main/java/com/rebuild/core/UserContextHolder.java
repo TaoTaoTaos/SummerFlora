@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core;
 
@@ -32,7 +26,8 @@ public class UserContextHolder {
 
     private static final ThreadLocal<String> REQIP = new NamedThreadLocal<>("Request IP");
 
-    private UserContextHolder() {}
+    private UserContextHolder() {
+    }
 
     /**
      * @param user
@@ -82,9 +77,11 @@ public class UserContextHolder {
      */
     public static ID getUser(boolean allowNull) throws AccessDeniedException {
         ID user = CALLER.get();
-        if (user != null) return user;
+        if (user != null)
+            return user;
 
-        if (allowNull) return null;
+        if (allowNull)
+            return null;
         throw new AccessDeniedException("No user found in current session (thread)");
     }
 
@@ -93,7 +90,8 @@ public class UserContextHolder {
      */
     public static String getLocale() {
         String local = LOCALE.get();
-        if (local != null) return local;
+        if (local != null)
+            return local;
 
         // Use default
         return RebuildConfiguration.get(ConfigurationItem.DefaultLanguage);
@@ -132,10 +130,13 @@ public class UserContextHolder {
 
         // Keep origin
         ID e = CALLER_PREV.get();
-        if (e == null) e = getUser(Boolean.TRUE);
+        if (e == null)
+            e = getUser(Boolean.TRUE);
 
-        if (e != null) CALLER_PREV.set(e);
-        else CALLER_PREV.remove();
+        if (e != null)
+            CALLER_PREV.set(e);
+        else
+            CALLER_PREV.remove();
 
         CALLER.set(user);
     }
@@ -148,7 +149,8 @@ public class UserContextHolder {
      */
     public static ID getReplacedUser() {
         ID prev = CALLER_PREV.get();
-        if (prev != null) return prev;
+        if (prev != null)
+            return prev;
         return getUser();
     }
 

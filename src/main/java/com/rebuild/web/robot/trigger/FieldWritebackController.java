@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.web.robot.trigger;
 
@@ -59,7 +53,8 @@ public class FieldWritebackController extends BaseController {
         // 1.我引用了谁 v2.7.1
 
         for (Field refFrom : MetadataSorter.sortFields(sourceEntity, DisplayType.REFERENCE, DisplayType.N2NREFERENCE)) {
-            if (MetadataHelper.isCommonsField(refFrom)) continue;
+            if (MetadataHelper.isCommonsField(refFrom))
+                continue;
 
             Entity refEntity = refFrom.getReferenceEntity();
             String entityLabel = String.format("%s (%s)",
@@ -148,8 +143,8 @@ public class FieldWritebackController extends BaseController {
                 ObjectUtils.defaultIfNull(targetEntity.getMainEntity(), targetEntity), null) != null;
 
         return JSONUtils.toJSONObject(
-                new String[]{"source", "target", "hadApproval"},
-                new Object[]{sourceFields, targetFields, hadApproval});
+                new String[] { "source", "target", "hadApproval" },
+                new Object[] { sourceFields, targetFields, hadApproval });
     }
 
     // 验证公式
@@ -171,10 +166,12 @@ public class FieldWritebackController extends BaseController {
             return RespBody.ok(evalValue);
 
         } catch (Exception ex) {
-            if (ex instanceof AssertFailedException) return RespBody.ok();
+            if (ex instanceof AssertFailedException)
+                return RespBody.ok();
 
             String errMsg = ex.getLocalizedMessage();
-            if (errMsg == null) errMsg = "UNABLE TO EVALUATE";
+            if (errMsg == null)
+                errMsg = "UNABLE TO EVALUATE";
 
             log.warn("Verify formula error : {} >> {} >> {}", sourceEntity, formula, errMsg);
             return RespBody.error(errMsg);

@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.web.commons;
 
@@ -48,7 +42,7 @@ public class BarCodeGeneratorController extends BaseController {
         writeTo(BarCodeSupport.getBarCodeImage(barcodeField, record), response);
     }
 
-    @GetMapping({"/commons/barcode/render-qr", "/commons/barcode/render"})
+    @GetMapping({ "/commons/barcode/render-qr", "/commons/barcode/render" })
     public void render(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String content = getParameter(request, "t", "UNSET");
         int w = getIntParameter(request, "w", 0);

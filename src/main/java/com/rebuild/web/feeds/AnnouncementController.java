@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.web.feeds;
 
@@ -58,7 +52,8 @@ public class AnnouncementController extends BaseController {
             }
         }
 
-        if (fromWhere == 0) return RespBody.ok();
+        if (fromWhere == 0)
+            return RespBody.ok();
 
         Object[][] array = Application.createQueryNoFilter(
                 "select content,contentMore,scope,createdBy,createdOn,feedsId from Feeds where type = 3")
@@ -72,15 +67,18 @@ public class AnnouncementController extends BaseController {
             // 不在指定位置
 
             int whereMask = options.getIntValue("showWhere");
-            if ((fromWhere & whereMask) == 0) continue;
+            if ((fromWhere & whereMask) == 0)
+                continue;
 
             // 不在展示时间
 
             Date timeStart = parseTime(options.getString("timeStart"));
-            if (timeStart != null && timeNow < timeStart.getTime()) continue;
+            if (timeStart != null && timeNow < timeStart.getTime())
+                continue;
 
             Date timeEnd = parseTime(options.getString("timeEnd"));
-            if (timeEnd != null && timeNow > timeEnd.getTime()) continue;
+            if (timeEnd != null && timeNow > timeEnd.getTime())
+                continue;
 
             // 不可见
             boolean allow = false;
@@ -104,7 +102,8 @@ public class AnnouncementController extends BaseController {
                 a.put("publishBy", UserHelper.getName((ID) o[3]));
                 a.put("id", o[5]);
                 // v3.6 已读
-                if (options.getBooleanValue("reqRead")) a.put("readState", 1);
+                if (options.getBooleanValue("reqRead"))
+                    a.put("readState", 1);
 
                 if (user != null) {
                     Object[] status = Application.createQueryNoFilter(
@@ -112,7 +111,8 @@ public class AnnouncementController extends BaseController {
                             .setParameter(1, user)
                             .setParameter(2, o[5])
                             .unique();
-                    if (status != null) a.put("readState", status[0]);
+                    if (status != null)
+                        a.put("readState", status[0]);
                 }
                 as.add(a);
             }
@@ -133,7 +133,8 @@ public class AnnouncementController extends BaseController {
     }
 
     private Date parseTime(String time) {
-        if (StringUtils.isBlank(time)) return null;
+        if (StringUtils.isBlank(time))
+            return null;
         return CalendarUtils.parse(time + (time.length() == 16 ? ":00" : ""));
     }
 }

@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.web.project;
 
@@ -81,7 +75,7 @@ public class TaskTagController extends BaseController {
 
     @RequestMapping("related-add")
     public JSON createRelated(@IdParam(name = "task") ID taskId,
-                              @IdParam(name = "tag") ID tagId) {
+            @IdParam(name = "tag") ID tagId) {
         ID relatedId = TaskTagManager.instance.createRelated(taskId, tagId);
         // `relatedId` 可能为空
         return JSONUtils.toJSONObject("rid", relatedId);
@@ -109,6 +103,6 @@ public class TaskTagController extends BaseController {
                 "select tagId.tagName,tagId.color,relationId,tagId from ProjectTaskTagRelation where taskId = ? order by createdOn")
                 .setParameter(1, taskId)
                 .array();
-        return JSONUtils.toJSONObjectArray(new String[] { "name", "color" , "rid", "id" }, tags);
+        return JSONUtils.toJSONObjectArray(new String[] { "name", "color", "rid", "id" }, tags);
     }
 }

@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.web.user.signup;
 
@@ -71,7 +65,8 @@ public class LoginController extends LoginAction {
                 loginSuccessed(request, response, tokenUser, false);
 
                 String nexturl = getParameter(request, "nexturl", homeUrl);
-                if (nexturl.startsWith("http")) nexturl = homeUrl;
+                if (nexturl.startsWith("http"))
+                    nexturl = homeUrl;
 
                 response.sendRedirect(CodecUtils.urlDecode(nexturl));
                 return null;
@@ -90,7 +85,8 @@ public class LoginController extends LoginAction {
                 Integer ed = loginSuccessed(request, response, altUser, true);
 
                 String nexturl = getParameter(request, "nexturl", homeUrl);
-                if (nexturl.startsWith("http")) nexturl = homeUrl;
+                if (nexturl.startsWith("http"))
+                    nexturl = homeUrl;
 
                 if (ed != null) {
                     nexturl = "../settings/passwd-expired?d=" + ed;
@@ -187,7 +183,8 @@ public class LoginController extends LoginAction {
 
         // 2FA
         int faMode = RebuildConfiguration.getInt(ConfigurationItem.Login2FAMode);
-        boolean faModeSkip = UserHelper.isSuperAdmin(loginUser.getId()) && !RebuildConfiguration.getBool(ConfigurationItem.SecurityEnhanced);
+        boolean faModeSkip = UserHelper.isSuperAdmin(loginUser.getId())
+                && !RebuildConfiguration.getBool(ConfigurationItem.SecurityEnhanced);
         if (faMode > 0 && !faModeSkip) {
             resMap.put("login2FaMode", faMode);
 
@@ -207,7 +204,8 @@ public class LoginController extends LoginAction {
         } else {
             Integer ed = loginSuccessed(
                     request, response, loginUser.getId(), getBoolParameter(request, "autoLogin", false));
-            if (ed != null) resMap.put("passwdExpiredDays", ed);
+            if (ed != null)
+                resMap.put("passwdExpiredDays", ed);
         }
 
         return RespBody.ok(resMap);

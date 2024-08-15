@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.service.general;
 
@@ -74,7 +68,8 @@ public class RecentlyUsedHelper {
         final String ckey = formatKey(user, entity, type);
         @SuppressWarnings("unchecked")
         LinkedList<ID> cached = (LinkedList<ID>) Application.getCommonsCache().getx(ckey);
-        if (cached == null || cached.isEmpty()) return ID.EMPTY_ID_ARRAY;
+        if (cached == null || cached.isEmpty())
+            return ID.EMPTY_ID_ARRAY;
 
         Set<ID> missed = new HashSet<>();
         List<ID> data = new ArrayList<>();
@@ -86,7 +81,8 @@ public class RecentlyUsedHelper {
 
             boolean allowRead = entityCode == EntityHelper.ClassificationData
                     || Application.getPrivilegesManager().allowRead(user, raw);
-            if (!allowRead) continue;
+            if (!allowRead)
+                continue;
 
             // 是否符合条件
             if (checkFilter != null) {

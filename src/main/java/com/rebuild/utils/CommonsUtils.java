@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.utils;
 
@@ -91,8 +85,10 @@ public class CommonsUtils {
      * @return
      */
     public static String maxstr(String text, int maxLength) {
-        if (text == null) return null;
-        if (text.length() > maxLength) return text.substring(0, maxLength);
+        if (text == null)
+            return null;
+        if (text.length() > maxLength)
+            return text.substring(0, maxLength);
         return text;
     }
 
@@ -189,7 +185,8 @@ public class CommonsUtils {
      */
     public static String randomHex(boolean simple) {
         String hex = UUID.randomUUID().toString();
-        if (simple) hex = hex.replace("-", "");
+        if (simple)
+            hex = hex.replace("-", "");
         return hex;
     }
 
@@ -239,7 +236,8 @@ public class CommonsUtils {
      */
     public static boolean containsIgnoreCase(String[] strs, String search) {
         for (String s : strs) {
-            if (StringUtils.containsIgnoreCase(s, search)) return true;
+            if (StringUtils.containsIgnoreCase(s, search))
+                return true;
         }
         return false;
     }
@@ -284,10 +282,14 @@ public class CommonsUtils {
      * @return
      */
     public static boolean hasLength(Object any) {
-        if (any == null) return false;
-        if (any.getClass().isArray()) return ((Object[]) any).length > 0;
-        if (any instanceof Collection) return !((Collection<?>) any).isEmpty();
-        if (NullValue.is(any)) return false;
+        if (any == null)
+            return false;
+        if (any.getClass().isArray())
+            return ((Object[]) any).length > 0;
+        if (any instanceof Collection)
+            return !((Collection<?>) any).isEmpty();
+        if (NullValue.is(any))
+            return false;
         return !any.toString().isEmpty();
     }
 
@@ -300,9 +302,12 @@ public class CommonsUtils {
      */
     @SuppressWarnings("unchecked")
     public static boolean isSame(Object a, Object b) {
-        if (a == null && b != null) return false;
-        if (a != null && b == null) return false;
-        if (Objects.equals(a, b)) return true;
+        if (a == null && b != null)
+            return false;
+        if (a != null && b == null)
+            return false;
+        if (Objects.equals(a, b))
+            return true;
 
         // 数字
         if (a instanceof Number && b instanceof Number) {
@@ -313,14 +318,20 @@ public class CommonsUtils {
         // 集合/数组
         if ((a instanceof Collection || a instanceof Object[]) && (b instanceof Collection || b instanceof Object[])) {
             Collection<Object> aColl;
-            if (a instanceof Object[]) aColl = Arrays.asList((Object[]) a);
-            else aColl = (Collection<Object>) a;
+            if (a instanceof Object[])
+                aColl = Arrays.asList((Object[]) a);
+            else
+                aColl = (Collection<Object>) a;
             Collection<Object> bColl;
-            if (b instanceof Object[]) bColl = Arrays.asList((Object[]) b);
-            else bColl = (Collection<Object>) b;
+            if (b instanceof Object[])
+                bColl = Arrays.asList((Object[]) b);
+            else
+                bColl = (Collection<Object>) b;
 
-            if (aColl.size() != bColl.size()) return false;
-            if (aColl.isEmpty()) return true;
+            if (aColl.size() != bColl.size())
+                return false;
+            if (aColl.isEmpty())
+                return true;
             return CollectionUtils.containsAll(aColl, bColl) && CollectionUtils.containsAll(bColl, aColl);
         }
 
@@ -334,7 +345,8 @@ public class CommonsUtils {
      * @throws SecurityException
      */
     public static void checkSafeFilePath(String filepath) throws SecurityException {
-        if (filepath == null) return;
+        if (filepath == null)
+            return;
         if (filepath.contains("../") || filepath.contains("<") || filepath.contains(">")) {
             throw new SecurityException("Attack path detected : " + escapeHtml(filepath));
         }
@@ -356,16 +368,18 @@ public class CommonsUtils {
 
         try {
             DateTime dt = DateUtil.parse(source);
-            if (dt != null) return dt.toJdkDate();
+            if (dt != null)
+                return dt.toJdkDate();
         } catch (DateException ignored) {
         }
 
         // 2017/11/19 11:07
         if (source.contains("/")) {
-            String[] fs = new String[]{"yyyy/M/d H:m:s", "yyyy/M/d H:m", "yyyy/M/d"};
+            String[] fs = new String[] { "yyyy/M/d H:m:s", "yyyy/M/d H:m", "yyyy/M/d" };
             for (String format : fs) {
                 Date d = CalendarUtils.parse(source, format);
-                if (d != null) return d;
+                if (d != null)
+                    return d;
             }
         }
 

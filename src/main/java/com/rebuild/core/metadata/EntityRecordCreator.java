@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.metadata;
 
@@ -68,19 +62,23 @@ public class EntityRecordCreator extends JsonRecordCreator {
     @Override
     public boolean onSetFieldValueWarn(Field field, String value, Record record) {
         // 非业务实体
-        if (!MetadataHelper.isBusinessEntity(field.getOwnEntity())) return true;
+        if (!MetadataHelper.isBusinessEntity(field.getOwnEntity()))
+            return true;
 
         final boolean isNew = record.getPrimary() == null;
 
         // 明细关联主记录 + 位置定位
-        if (isNew && isForceCreateable(field)) return true;
+        if (isNew && isForceCreateable(field))
+            return true;
 
         // 公共字段前台可能会布局出来
         // 此处忽略检查没问题，因为最后还会复写，即 EntityHelper#bindCommonsFieldsValue
         boolean isCommonField = MetadataHelper.isCommonsField(field);
-        if (!isCommonField) return false;
+        if (!isCommonField)
+            return false;
 
-        if (isNew) return true;
+        if (isNew)
+            return true;
 
         String n = field.getName();
         return !(EntityHelper.OwningUser.equalsIgnoreCase(n) || EntityHelper.OwningDept.equalsIgnoreCase(n)
@@ -96,7 +94,8 @@ public class EntityRecordCreator extends JsonRecordCreator {
             verify(record);
         } else if (e == EntityHelper.Feeds || e == EntityHelper.FeedsComment
                 || e == EntityHelper.ProjectTask || e == EntityHelper.ProjectTaskComment
-                || e == EntityHelper.User || e == EntityHelper.Department || e == EntityHelper.Role || e == EntityHelper.Team) {
+                || e == EntityHelper.User || e == EntityHelper.Department || e == EntityHelper.Role
+                || e == EntityHelper.Team) {
             keepFieldValueSafe(record);
         }
 
@@ -108,13 +107,14 @@ public class EntityRecordCreator extends JsonRecordCreator {
         // 自动只读字段忽略非空检查
         final Set<String> autoReadonlyFields = EasyMetaFactory.getAutoReadonlyFields(entity.getName());
 
-        List<String> notNulls = new ArrayList<>();  // 非空
-        List<String> notWells = new ArrayList<>();  // 格式
+        List<String> notNulls = new ArrayList<>(); // 非空
+        List<String> notWells = new ArrayList<>(); // 格式
 
         // 新建
         if (record.getPrimary() == null) {
             for (Field field : entity.getFields()) {
-                if (MetadataHelper.isCommonsField(field)) continue;
+                if (MetadataHelper.isCommonsField(field))
+                    continue;
 
                 EasyField easyField = EasyMetaFactory.valueOf(field);
                 if (easyField.getDisplayType() == DisplayType.SERIES
@@ -150,7 +150,8 @@ public class EntityRecordCreator extends JsonRecordCreator {
         else {
             for (String fieldName : record.getAvailableFields()) {
                 Field field = entity.getField(fieldName);
-                if (MetadataHelper.isCommonsField(field)) continue;
+                if (MetadataHelper.isCommonsField(field))
+                    continue;
 
                 Object hasVal = record.getObjectValue(field.getName());
                 boolean canNull = field.isNullable() || autoReadonlyFields.contains(field.getName());
@@ -203,7 +204,8 @@ public class EntityRecordCreator extends JsonRecordCreator {
 
     // 正则匹配
     private boolean patternMatches(EasyField easyField, Object val) {
-        if (!(easyField instanceof EasyText)) return true;
+        if (!(easyField instanceof EasyText))
+            return true;
 
         Pattern patt = ((EasyText) easyField).getPattern();
         return patt == null || patt.matcher((CharSequence) val).matches();
@@ -213,7 +215,8 @@ public class EntityRecordCreator extends JsonRecordCreator {
     private void keepFieldValueSafe(Record record) {
         for (String fieldName : record.getAvailableFields()) {
             final Object value = record.getObjectValue(fieldName);
-            if (NullValue.isNull(value)) continue;
+            if (NullValue.isNull(value))
+                continue;
 
             final EasyField field = EasyMetaFactory.valueOf(entity.getField(fieldName));
 
@@ -243,7 +246,8 @@ public class EntityRecordCreator extends JsonRecordCreator {
     @Override
     public boolean isNoValue(String value, Field field) {
         boolean is = super.isNoValue(value, field);
-        if (is) return true;
+        if (is)
+            return true;
 
         // 空的文件/图片
         if ("[]".equalsIgnoreCase(value)) {

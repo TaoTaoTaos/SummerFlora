@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.privileges.bizz;
 
@@ -36,7 +30,8 @@ public class Department extends BusinessUnit {
      * @return
      */
     public boolean isChildren(Department child, boolean recursive) {
-        if (!recursive) return isChildren((ID) child.getIdentity());
+        if (!recursive)
+            return isChildren((ID) child.getIdentity());
 
         for (BusinessUnit dept : getChildren()) {
             if (dept.getIdentity().equals(child.getIdentity())) {

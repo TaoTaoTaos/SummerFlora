@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.service.general.recyclebin;
 
@@ -36,7 +30,8 @@ public class RecycleBinCleanerJob extends DistributedJobLock {
 
     @Scheduled(cron = "0 0 4 * * ?")
     protected void executeJob() {
-        if (!tryLock()) return;
+        if (!tryLock())
+            return;
 
         // 回收站
 
@@ -117,6 +112,7 @@ public class RecycleBinCleanerJob extends DistributedJobLock {
 
     /**
      * 回收站是否激活
+     * 
      * @return
      * @see #setSkipRecyclebinOnce()
      */
@@ -125,13 +121,15 @@ public class RecycleBinCleanerJob extends DistributedJobLock {
         if (enable) {
             Boolean skip = SKIP_RECYCLEBIN.get();
             SKIP_RECYCLEBIN.remove();
-            if (skip != null && skip) return false;
+            if (skip != null && skip)
+                return false;
         }
         return enable;
     }
 
     /**
      * 变更历史是否激活
+     * 
      * @return
      * @see #setSkipRevisionHistoryOnce()
      */
@@ -140,7 +138,8 @@ public class RecycleBinCleanerJob extends DistributedJobLock {
         if (enable) {
             Boolean skip = SKIP_REVISIONHISTORY.get();
             SKIP_REVISIONHISTORY.remove();
-            if (skip != null && skip) return false;
+            if (skip != null && skip)
+                return false;
         }
         return enable;
     }

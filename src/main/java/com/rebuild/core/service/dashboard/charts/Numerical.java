@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.service.dashboard.charts;
 
@@ -34,14 +28,16 @@ public class Numerical extends Axis {
      * @param parentField
      */
     protected Numerical(Field field, FormatSort sort, FormatCalc calc, String label, Integer scale,
-                        JSONObject filter, Field parentField) {
+            JSONObject filter, Field parentField) {
         super(field, sort, calc, label, parentField);
-        if (scale != null) this.scale = scale;
+        if (scale != null)
+            this.scale = scale;
         this.filter = filter;
     }
 
     /**
      * 小数位
+     * 
      * @return
      */
     public int getScale() {
@@ -50,6 +46,7 @@ public class Numerical extends Axis {
 
     /**
      * 字段筛选条件
+     * 
      * @return
      */
     public JSONObject getFilter() {

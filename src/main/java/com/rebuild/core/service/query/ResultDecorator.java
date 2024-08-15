@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.service.query;
 
@@ -44,7 +38,8 @@ public class ResultDecorator extends AjqlResultImpl {
 
         String pk = query.getRootEntity().getPrimaryField().getName();
         for (SelectItem item : query.getSelectItems()) {
-            if (item.getType() != SelectItemType.Field) continue;
+            if (item.getType() != SelectItemType.Field)
+                continue;
 
             if (pk.equalsIgnoreCase(item.getFieldPath())) {
                 this.pkIndex = item.getIndex();
@@ -63,7 +58,8 @@ public class ResultDecorator extends AjqlResultImpl {
     @Override
     protected Object[] readRow(SelectItem[] selectItems, ResultSet rs) throws SQLException {
         Object[] row = super.readRow(selectItems, rs);
-        if (pkIndex == -1) return row;
+        if (pkIndex == -1)
+            return row;
 
         final ID pkValue = (ID) row[pkIndex];
 

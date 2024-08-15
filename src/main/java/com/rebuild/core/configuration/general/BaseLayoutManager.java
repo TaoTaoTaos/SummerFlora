@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.configuration.general;
 
@@ -104,7 +98,8 @@ public class BaseLayoutManager extends ShareToManager {
         if (detected == null && useSysFlag != null) {
             detected = detectUseConfig(user, belongEntity, applyType, firstUseSelf, null);
         }
-        if (detected == null) return null;
+        if (detected == null)
+            return null;
 
         Object[][] cached = getAllConfig(belongEntity, applyType);
         return findConfigBean(cached, detected);
@@ -116,7 +111,8 @@ public class BaseLayoutManager extends ShareToManager {
      */
     public ConfigBean getLayoutById(ID cfgid) {
         Object[] o = Application.getQueryFactory().uniqueNoFilter(cfgid, "belongEntity,applyType");
-        if (o == null) throw new ConfigurationException("No config found : " + cfgid);
+        if (o == null)
+            throw new ConfigurationException("No config found : " + cfgid);
 
         Object[][] cached = getAllConfig((String) o[0], (String) o[1]);
         return findConfigBean(cached, cfgid);

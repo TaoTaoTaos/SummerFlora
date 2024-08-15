@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.web.admin.data;
 
@@ -74,7 +68,8 @@ public class ReportTemplateController extends BaseController {
         String entity = getParameter(request, "entity");
         String q = getParameter(request, "q");
 
-        String sql = "select configId,belongEntity,belongEntity,name,isDisabled,modifiedOn,templateType,extraDefinition,configId from DataReportConfig" +
+        String sql = "select configId,belongEntity,belongEntity,name,isDisabled,modifiedOn,templateType,extraDefinition,configId from DataReportConfig"
+                +
                 " where (1=1) and (2=2)" +
                 " order by modifiedOn desc, name";
 
@@ -94,9 +89,11 @@ public class ReportTemplateController extends BaseController {
 
         boolean isDocx = file.toLowerCase().endsWith(".docx");
         if (type == DataReportManager.TYPE_WORD) {
-            if (!isDocx) return RespBody.errorl("上传 WORD 文件请选择 WORD 模板类型");
+            if (!isDocx)
+                return RespBody.errorl("上传 WORD 文件请选择 WORD 模板类型");
         } else {
-            if (isDocx) return RespBody.errorl("上传 EXCEL 文件请选择 EXCEL 模板类型");
+            if (isDocx)
+                return RespBody.errorl("上传 EXCEL 文件请选择 EXCEL 模板类型");
         }
 
         File template = RebuildConfiguration.getFileOfData(file);
@@ -107,7 +104,7 @@ public class ReportTemplateController extends BaseController {
             } else if (type == DataReportManager.TYPE_LIST) {
                 vars = new TemplateExtractor(template, Boolean.TRUE).transformVars(entity);
             } else if (type == DataReportManager.TYPE_WORD) {
-                //noinspection unchecked
+                // noinspection unchecked
                 vars = (Map<String, String>) CommonsUtils.invokeMethod(
                         "com.rebuild.rbv.data.WordTemplateExtractor#transformVars", template, entity.getName());
             }
@@ -151,14 +148,15 @@ public class ReportTemplateController extends BaseController {
 
     @GetMapping("/report-templates/preview")
     public ModelAndView preview(@IdParam(required = false) ID reportId,
-                        HttpServletRequest request, HttpServletResponse response) throws IOException {
+            HttpServletRequest request, HttpServletResponse response) throws IOException {
         final TemplateFile tt;
         // 新建时
         if (reportId == null) {
             String entity = getParameter(request, "entity");
             String template = getParameter(request, "file");
             int type = getIntParameter(request, "type", DataReportManager.TYPE_RECORD);
-            tt = new TemplateFile(RebuildConfiguration.getFileOfData(template), MetadataHelper.getEntity(entity), type, true, null);
+            tt = new TemplateFile(RebuildConfiguration.getFileOfData(template), MetadataHelper.getEntity(entity), type,
+                    true, null);
         } else {
             // 使用配置
             tt = DataReportManager.instance.getTemplateFile(reportId);
@@ -225,7 +223,8 @@ public class ReportTemplateController extends BaseController {
     }
 
     @GetMapping("/report-templates/download")
-    public void download(@IdParam ID reportId, HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public void download(@IdParam ID reportId, HttpServletRequest request, HttpServletResponse response)
+            throws IOException {
         File template = DataReportManager.instance.getTemplateFile(reportId).templateFile;
         String attname = QiniuCloud.parseFileName(template.getName());
 

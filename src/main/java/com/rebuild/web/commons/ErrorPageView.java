@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.web.commons;
 
@@ -71,14 +65,15 @@ public class ErrorPageView extends BaseController {
         mv.getModel().put("MemoryUsageJvm", OshiUtils.getJvmMemoryUsed());
         mv.getModel().put("SystemLoad", OshiUtils.getSystemLoad());
         mv.getModelMap().put("isAdminVerified", AppUtils.isAdminVerified(request));
-        mv.getModelMap().put("SN", License.SN() + "/" + ComputerIdentifier.generateIdentifierKey() + "/" + OshiUtils.getLocalIp() + "/" + ServerStatus.STARTUP_ONCE);
+        mv.getModelMap().put("SN", License.SN() + "/" + ComputerIdentifier.generateIdentifierKey() + "/"
+                + OshiUtils.getLocalIp() + "/" + ServerStatus.STARTUP_ONCE);
 
         final String specDisks = request.getParameter("disks");
         if (specDisks != null) {
             StringBuilder disksDesc = new StringBuilder();
             for (Object[] d : OshiUtils.getDisksUsed(
                     "/".equals(specDisks) ? ArrayUtils.EMPTY_STRING_ARRAY : specDisks.split("[,;]"))) {
-                //noinspection MalformedFormatString
+                // noinspection MalformedFormatString
                 disksDesc.append(String.format(" $%s:%.1f%%:%.1fGB", d[2], d[1], d[0]));
             }
             mv.getModelMap().put("DisksDesc", disksDesc.toString().trim());
@@ -110,16 +105,18 @@ public class ErrorPageView extends BaseController {
                     "/".equals(specDisks) ? ArrayUtils.EMPTY_STRING_ARRAY : specDisks.split("[,;]"));
             double diskWarning = 0;
             for (Object[] d : disksUsed) {
-                if ((double) d[1] >= 80) diskWarning = (double) d[1];
+                if ((double) d[1] >= 80)
+                    diskWarning = (double) d[1];
             }
             status.put("DisksUsage", disksUsed);
-            if (diskWarning >= 80) s.put("warning", true);
+            if (diskWarning >= 80)
+                s.put("warning", true);
         }
 
         ServletUtils.writeJson(response, s.toJSONString());
     }
 
-    @GetMapping({"/gw/server-status", "/gw/server-status.json"})
+    @GetMapping({ "/gw/server-status", "/gw/server-status.json" })
     public String v1Fix(HttpServletRequest request) {
         if (request.getRequestURI().contains("server-status.json")) {
             return "redirect:/error/server-status.json";
@@ -140,8 +137,10 @@ public class ErrorPageView extends BaseController {
 
         String reason = request.getParameter("title");
         String url = "https://getrebuild.com/report-issue?title=";
-        if (tsid != null) url += tsid;
-        if (StringUtils.isNotBlank(reason)) url += "&reason=" + CodecUtils.urlEncode(reason);
+        if (tsid != null)
+            url += tsid;
+        if (StringUtils.isNotBlank(reason))
+            url += "&reason=" + CodecUtils.urlEncode(reason);
 
         response.sendRedirect(url);
     }
@@ -149,7 +148,8 @@ public class ErrorPageView extends BaseController {
     @RequestMapping("/error/jslog")
     public void jslog(HttpServletRequest request, HttpServletResponse response) {
         String error = ServletUtils.getRequestString(request);
-        if (error == null) error = getParameter(request, "error", "-");
+        if (error == null)
+            error = getParameter(request, "error", "-");
 
         String errorLog = "\n++ JSLOG TRACE +++++++++++++++++++++++++++++++++++++++++++++" +
                 "\nUA      : " + StringUtils.defaultIfEmpty(request.getHeader("user-agent"), "-") +

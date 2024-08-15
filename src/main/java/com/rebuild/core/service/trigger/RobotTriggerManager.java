@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.service.trigger;
 
@@ -60,6 +54,7 @@ public class RobotTriggerManager implements ConfigManager {
     }
 
     private static final ThreadLocal<List<String>> TRIGGERS_CHAIN_4DEBUG = ThreadLocal.withInitial(ArrayList::new);
+
     /**
      * @param recordId
      * @param entity
@@ -75,7 +70,8 @@ public class RobotTriggerManager implements ConfigManager {
                 if (recordId == null
                         || QueryHelper.isMatchAdvFilter(recordId, (JSONObject) cb.getJSON("whenFilter"), true)) {
 
-                    ActionContext ctx = new ActionContext(recordId, entity, cb.getJSON("actionContent"), cb.getID("id"));
+                    ActionContext ctx = new ActionContext(recordId, entity, cb.getJSON("actionContent"),
+                            cb.getID("id"));
                     TriggerAction o = ActionFactory.createAction(cb.getString("actionType"), ctx);
                     if (o.getClass().getName().contains("NoRbv")) {
                         log.warn("Trigger action {} is RBV", cb.getString("actionType"));
@@ -86,7 +82,8 @@ public class RobotTriggerManager implements ConfigManager {
 
                     if (log.isDebugEnabled()) {
                         TRIGGERS_CHAIN_4DEBUG.get().add(
-                                String.format("%s (%s) on %s %s (%s)", o.getType(), ctx.getConfigId(), when[0], entity.getName(), recordId));
+                                String.format("%s (%s) on %s %s (%s)", o.getType(), ctx.getConfigId(), when[0],
+                                        entity.getName(), recordId));
                     }
                 }
             }
@@ -97,9 +94,10 @@ public class RobotTriggerManager implements ConfigManager {
                     recordId, StringUtils.join(TRIGGERS_CHAIN_4DEBUG.get(), "\n  > "));
         }
 
-//        ActionContext ctx = new ActionContext(recordId, entity,
-//                JSONUtils.EMPTY_OBJECT, EntityHelper.newUnsavedId(EntityHelper.RobotTriggerConfig));
-//        actions.add(new GeneralTriggerAction(ctx));
+        // ActionContext ctx = new ActionContext(recordId, entity,
+        // JSONUtils.EMPTY_OBJECT,
+        // EntityHelper.newUnsavedId(EntityHelper.RobotTriggerConfig));
+        // actions.add(new GeneralTriggerAction(ctx));
 
         return actions.toArray(new TriggerAction[0]);
     }
@@ -112,7 +110,8 @@ public class RobotTriggerManager implements ConfigManager {
      * @return
      */
     private boolean allowedWhen(ConfigBean entry, TriggerWhen... when) {
-        if (when.length == 0) return true;
+        if (when.length == 0)
+            return true;
 
         int whenMask = entry.getInteger("when");
         for (TriggerWhen w : when) {
@@ -164,6 +163,7 @@ public class RobotTriggerManager implements ConfigManager {
     }
 
     private static final String CKEY_TARF = "TriggersAutoReadonlyFields2";
+
     /**
      * 获取触发器中涉及的自动只读字段
      *
@@ -173,13 +173,13 @@ public class RobotTriggerManager implements ConfigManager {
     public Set<String> getAutoReadonlyFields(String entity) {
         @SuppressWarnings("unchecked")
         Map<String, Set<String>> fieldsMap = (Map<String, Set<String>>) Application.getCommonsCache().getx(CKEY_TARF);
-        if (fieldsMap == null) fieldsMap = this.initAutoReadonlyFields();
+        if (fieldsMap == null)
+            fieldsMap = this.initAutoReadonlyFields();
 
         return Collections.unmodifiableSet(fieldsMap.getOrDefault(entity, Collections.emptySet()));
     }
 
-    synchronized
-    private Map<String, Set<String>> initAutoReadonlyFields() {
+    synchronized private Map<String, Set<String>> initAutoReadonlyFields() {
         Object[][] array = Application.createQueryNoFilter(
                 "select actionContent,actionType from RobotTriggerConfig where (actionType = ? or actionType = ? or actionType = ?) and isDisabled = 'F'")
                 .setParameter(1, ActionType.FIELDAGGREGATION.name())
@@ -196,7 +196,7 @@ public class RobotTriggerManager implements ConfigManager {
 
             String targetEntity = content.getString("targetEntity");
             if (!ActionType.GROUPAGGREGATION.name().equals(o[1])) {
-                targetEntity = targetEntity.split("\\.")[1];  // Field.Entity
+                targetEntity = targetEntity.split("\\.")[1]; // Field.Entity
             }
 
             Set<String> fields = fieldsMap.computeIfAbsent(targetEntity, k -> new HashSet<>());

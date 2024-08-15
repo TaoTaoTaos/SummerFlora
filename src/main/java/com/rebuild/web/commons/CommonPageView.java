@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.web.commons;
 
@@ -45,7 +39,7 @@ public class CommonPageView extends BaseController {
             response.sendRedirect("user/login");
         }
     }
-    
+
     @GetMapping("/*.txt")
     public void txtSuffix(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String url = request.getRequestURI();
@@ -88,7 +82,7 @@ public class CommonPageView extends BaseController {
 
     @GetMapping("/app/home")
     public void appHome(@RequestParam(name = "def", required = false) String def,
-                        HttpServletResponse response) throws IOException {
+            HttpServletResponse response) throws IOException {
         if (def != null && def.length() >= 20) {
             String[] defs = def.split(":");
             addCookie("AppHome.Nav", ID.isId(defs[0]) ? ID.valueOf(defs[0]) : null, response);
@@ -100,8 +94,10 @@ public class CommonPageView extends BaseController {
     private void addCookie(String name, ID value, HttpServletResponse response) {
         Cookie cookie = new Cookie(name, value == null ? "N" : CodecUtils.urlEncode(value.toLiteral()));
         cookie.setPath("/");
-        if (value == null) cookie.setMaxAge(0);
-        else cookie.setMaxAge(60 * 60 * 24 * 30);  // 30d
+        if (value == null)
+            cookie.setMaxAge(0);
+        else
+            cookie.setMaxAge(60 * 60 * 24 * 30); // 30d
         response.addCookie(cookie);
     }
 }

@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.service.project;
 
@@ -118,7 +112,8 @@ public class ProjectTaskService extends BaseTaskService {
     @Override
     public int delete(ID taskId) {
         final ID user = getCurrentUser();
-        if (!ProjectHelper.isManageable(taskId, user)) throw new OperationDeniedException();
+        if (!ProjectHelper.isManageable(taskId, user))
+            throw new OperationDeniedException();
 
         // 先删评论
         Object[][] comments = Application.createQueryNoFilter(
@@ -136,7 +131,8 @@ public class ProjectTaskService extends BaseTaskService {
         int d = super.delete(taskId);
         ProjectManager.instance.clean(taskId);
 
-        if (recycleBin != null) recycleBin.store();
+        if (recycleBin != null)
+            recycleBin.store();
         return d;
     }
 
@@ -144,8 +140,7 @@ public class ProjectTaskService extends BaseTaskService {
      * @param projectId
      * @return
      */
-    synchronized
-    private long getNextTaskNumber(ID projectId) {
+    synchronized private long getNextTaskNumber(ID projectId) {
         Object[] max = Application.createQueryNoFilter(
                 "select max(taskNumber) from ProjectTask where projectId = ?")
                 .setParameter(1, projectId)
@@ -157,8 +152,7 @@ public class ProjectTaskService extends BaseTaskService {
      * @param projectPlanId
      * @return
      */
-    synchronized
-    private int getNextSeqViaMidValue(ID projectPlanId) {
+    synchronized private int getNextSeqViaMidValue(ID projectPlanId) {
         Object[] seqMax = Application.createQueryNoFilter(
                 "select max(seq) from ProjectTask where projectPlanId = ?")
                 .setParameter(1, projectPlanId)
@@ -171,13 +165,13 @@ public class ProjectTaskService extends BaseTaskService {
      * @param desc   Use max or min
      * @return
      */
-    synchronized
-    private int getSeqInStatus(ID taskId, boolean desc) {
+    synchronized private int getSeqInStatus(ID taskId, boolean desc) {
         Object[] taskStatus = Application.createQueryNoFilter(
                 "select status,projectPlanId from ProjectTask where taskId = ?")
                 .setParameter(1, taskId)
                 .unique();
-        if (taskStatus == null) return 1;
+        if (taskStatus == null)
+            return 1;
 
         Object[] seq = Application.createQueryNoFilter(
                 "select " + (desc ? "max" : "min") + "(seq) from ProjectTask where status = ? and projectPlanId = ?")
@@ -185,8 +179,10 @@ public class ProjectTaskService extends BaseTaskService {
                 .setParameter(2, taskStatus[1])
                 .unique();
 
-        if (desc) return (Integer) seq[0] + MID_VALUE;
-        else return (Integer) seq[0] - MID_VALUE;
+        if (desc)
+            return (Integer) seq[0] + MID_VALUE;
+        else
+            return (Integer) seq[0] - MID_VALUE;
     }
 
     /**
@@ -212,7 +208,8 @@ public class ProjectTaskService extends BaseTaskService {
 
     private void sendNotification(ID taskId) {
         Object[] task = Application.getQueryFactory().uniqueNoFilter(taskId, "executor", "taskName");
-        if (task[0] == null) return;
+        if (task[0] == null)
+            return;
 
         String msg = Language.L("有一个新任务指派给你") + " \n> " + task[1];
         Application.getNotifications().send(

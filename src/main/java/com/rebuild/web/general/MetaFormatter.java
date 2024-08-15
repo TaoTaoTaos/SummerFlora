@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.web.general;
 
@@ -101,19 +95,21 @@ public class MetaFormatter {
      * 获取字段列表
      *
      * @param entity
-     * @param deep 几级
+     * @param deep      几级
      * @param riching
      * @param forceWith 1=ID, 2=approvalStepNode
      * @param filter
      * @return
      */
-    public static JSONArray buildFieldsWithRefs(Entity entity, int deep, boolean riching, int forceWith, Predicate<BaseMeta> filter) {
+    public static JSONArray buildFieldsWithRefs(Entity entity, int deep, boolean riching, int forceWith,
+            Predicate<BaseMeta> filter) {
         JSONArray res = new JSONArray();
 
         // 一级
         for (Field field : MetadataSorter.sortFields(entity)) {
             EasyField easyField = EasyMetaFactory.valueOf(field);
-            if (filter.test(easyField)) continue;
+            if (filter.test(easyField))
+                continue;
             res.add(buildField(easyField, null, riching));
         }
         // ID
@@ -121,16 +117,19 @@ public class MetaFormatter {
             res.add(buildField(EasyMetaFactory.valueOf(entity.getPrimaryField()), null, false));
         }
 
-        if (deep < 2) return res;
+        if (deep < 2)
+            return res;
 
         List<Object[]> deep3Refs = new ArrayList<>();
 
         // 二级
         for (Field field2 : MetadataSorter.sortFields(entity, DisplayType.REFERENCE)) {
-            if (filter.test(field2)) continue;
+            if (filter.test(field2))
+                continue;
 
             Entity entity2 = field2.getReferenceEntity();
-            if (entity2.getEntityCode() == EntityHelper.RobotApprovalConfig) continue;
+            if (entity2.getEntityCode() == EntityHelper.RobotApprovalConfig)
+                continue;
 
             EasyField easyField2 = EasyMetaFactory.valueOf(field2);
             String[] parents = new String[] {
@@ -139,7 +138,8 @@ public class MetaFormatter {
 
             for (Field field : MetadataSorter.sortFields(entity2)) {
                 EasyField easyField = EasyMetaFactory.valueOf(field);
-                if (filter.test(easyField)) continue;
+                if (filter.test(easyField))
+                    continue;
 
                 res.add(buildField(easyField, parents, riching));
 
@@ -148,15 +148,18 @@ public class MetaFormatter {
                 }
             }
         }
-        if (deep < 3) return res;
+        if (deep < 3)
+            return res;
 
         // 最多三级
         for (Object[] d : deep3Refs) {
             EasyField easyField3 = (EasyField) d[2];
-            if (filter.test(easyField3.getRawMeta())) continue;
+            if (filter.test(easyField3.getRawMeta()))
+                continue;
 
             Entity entity3 = easyField3.getRawMeta().getReferenceEntity();
-            if (entity3.getEntityCode() == EntityHelper.RobotApprovalConfig) continue;
+            if (entity3.getEntityCode() == EntityHelper.RobotApprovalConfig)
+                continue;
 
             String[] parents = new String[] {
                     d[0] + "." + easyField3.getName(), d[1] + "." + easyField3.getLabel()
@@ -164,36 +167,61 @@ public class MetaFormatter {
 
             for (Field field : MetadataSorter.sortFields(entity3)) {
                 EasyField easyField = EasyMetaFactory.valueOf(field);
-                if (filter.test(easyField)) continue;
+                if (filter.test(easyField))
+                    continue;
 
                 JSONObject item = buildField(easyField, parents, riching);
                 String name = item.getString("name");
 
                 // 特殊过滤（对业务没什么用）
-                if (name.contains("modifiedBy.modifiedBy")) continue;
-                if (name.contains("createdBy.createdBy")) continue;
-                if (name.contains("createdBy.modifiedBy")) continue;
-                if (name.contains("modifiedBy.createdBy")) continue;
-                if (name.endsWith(".approvalLastUser.createdBy")) continue;
-                if (name.endsWith(".approvalLastUser.createdOn")) continue;
-                if (name.endsWith(".approvalLastUser.modifiedBy")) continue;
-                if (name.endsWith(".approvalLastUser.modifiedOn")) continue;
-                if (name.endsWith(".owningUser.createdBy")) continue;
-                if (name.endsWith(".owningUser.createdOn")) continue;
-                if (name.endsWith(".owningUser.modifiedBy")) continue;
-                if (name.endsWith(".owningUser.modifiedOn")) continue;
-                if (name.endsWith(".owningDept.createdBy")) continue;
-                if (name.endsWith(".owningDept.createdOn")) continue;
-                if (name.endsWith(".owningDept.modifiedBy")) continue;
-                if (name.endsWith(".owningDept.modifiedOn")) continue;
-                if (name.endsWith(".deptId.createdBy")) continue;
-                if (name.endsWith(".deptId.createdOn")) continue;
-                if (name.endsWith(".deptId.modifiedBy")) continue;
-                if (name.endsWith(".deptId.modifiedOn")) continue;
-                if (name.endsWith(".roleId.createdBy")) continue;
-                if (name.endsWith(".roleId.createdOn")) continue;
-                if (name.endsWith(".roleId.modifiedBy")) continue;
-                if (name.endsWith(".roleId.modifiedOn")) continue;
+                if (name.contains("modifiedBy.modifiedBy"))
+                    continue;
+                if (name.contains("createdBy.createdBy"))
+                    continue;
+                if (name.contains("createdBy.modifiedBy"))
+                    continue;
+                if (name.contains("modifiedBy.createdBy"))
+                    continue;
+                if (name.endsWith(".approvalLastUser.createdBy"))
+                    continue;
+                if (name.endsWith(".approvalLastUser.createdOn"))
+                    continue;
+                if (name.endsWith(".approvalLastUser.modifiedBy"))
+                    continue;
+                if (name.endsWith(".approvalLastUser.modifiedOn"))
+                    continue;
+                if (name.endsWith(".owningUser.createdBy"))
+                    continue;
+                if (name.endsWith(".owningUser.createdOn"))
+                    continue;
+                if (name.endsWith(".owningUser.modifiedBy"))
+                    continue;
+                if (name.endsWith(".owningUser.modifiedOn"))
+                    continue;
+                if (name.endsWith(".owningDept.createdBy"))
+                    continue;
+                if (name.endsWith(".owningDept.createdOn"))
+                    continue;
+                if (name.endsWith(".owningDept.modifiedBy"))
+                    continue;
+                if (name.endsWith(".owningDept.modifiedOn"))
+                    continue;
+                if (name.endsWith(".deptId.createdBy"))
+                    continue;
+                if (name.endsWith(".deptId.createdOn"))
+                    continue;
+                if (name.endsWith(".deptId.modifiedBy"))
+                    continue;
+                if (name.endsWith(".deptId.modifiedOn"))
+                    continue;
+                if (name.endsWith(".roleId.createdBy"))
+                    continue;
+                if (name.endsWith(".roleId.createdOn"))
+                    continue;
+                if (name.endsWith(".roleId.modifiedBy"))
+                    continue;
+                if (name.endsWith(".roleId.modifiedOn"))
+                    continue;
 
                 res.add(item);
             }
@@ -211,7 +239,8 @@ public class MetaFormatter {
         return item;
     }
 
-    /**部分特殊实体的字段不要显示
+    /**
+     * 部分特殊实体的字段不要显示
      *
      * @param field
      * @return

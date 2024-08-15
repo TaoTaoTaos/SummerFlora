@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.service.general;
 
@@ -76,18 +70,21 @@ public class RecordDifference {
             JSONObject recordSerialize = (JSONObject) record.serialize();
             for (Map.Entry<String, Object> e : recordSerialize.entrySet()) {
                 String fieldName = e.getKey();
-                if (!entity.containsField(fieldName)) continue;
-                if (!diffCommons && isIgnoreField(entity.getField(fieldName))) continue;
+                if (!entity.containsField(fieldName))
+                    continue;
+                if (!diffCommons && isIgnoreField(entity.getField(fieldName)))
+                    continue;
 
                 Object beforeVal = e.getValue();
-                if (NullValue.is(beforeVal)) beforeVal = null;
+                if (NullValue.is(beforeVal))
+                    beforeVal = null;
 
                 // v3.5.3
                 if (beforeVal instanceof Date && entity.getField(fieldName).getType() == FieldType.DATE) {
                     beforeVal = CalendarUtils.clearTime((Date) beforeVal);
                 }
 
-                merged.put(fieldName, new Object[]{beforeVal, null});
+                merged.put(fieldName, new Object[] { beforeVal, null });
             }
         }
 
@@ -95,18 +92,21 @@ public class RecordDifference {
             JSONObject afterSerialize = (JSONObject) after.serialize();
             for (Map.Entry<String, Object> e : afterSerialize.entrySet()) {
                 String fieldName = e.getKey();
-                if (!entity.containsField(fieldName)) continue;
-                if (!diffCommons && isIgnoreField(entity.getField(fieldName))) continue;
+                if (!entity.containsField(fieldName))
+                    continue;
+                if (!diffCommons && isIgnoreField(entity.getField(fieldName)))
+                    continue;
 
                 Object afterVal = e.getValue();
-                if (NullValue.is(afterVal)) continue;
+                if (NullValue.is(afterVal))
+                    continue;
 
                 // v3.5.3
                 if (afterVal instanceof Date && entity.getField(fieldName).getType() == FieldType.DATE) {
                     afterVal = CalendarUtils.clearTime((Date) afterVal);
                 }
 
-                Object[] mergedValue = merged.computeIfAbsent(fieldName, k -> new Object[]{null, null});
+                Object[] mergedValue = merged.computeIfAbsent(fieldName, k -> new Object[] { null, null });
                 mergedValue[1] = afterVal;
             }
         }
@@ -115,12 +115,14 @@ public class RecordDifference {
 
         for (Map.Entry<String, Object[]> e : merged.entrySet()) {
             Object[] vals = e.getValue();
-            if (vals[0] == null && vals[1] == null) continue;
-            if (CommonsUtils.isSame(vals[0], vals[1])) continue;
+            if (vals[0] == null && vals[1] == null)
+                continue;
+            if (CommonsUtils.isSame(vals[0], vals[1]))
+                continue;
 
             JSON item = JSONUtils.toJSONObject(
-                    new String[]{"field", "before", "after"},
-                    new Object[]{e.getKey(), vals[0], vals[1]});
+                    new String[] { "field", "before", "after" },
+                    new Object[] { e.getKey(), vals[0], vals[1] });
             result.add(item);
         }
         return result;

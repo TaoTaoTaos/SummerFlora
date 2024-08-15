@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.service.general.transform;
 
@@ -98,7 +92,8 @@ public class TransformerPreview {
                 details = QueryHelper.detailIdsNoFilter(sourceId);
                 fakeMainid = EntityHelper.newUnsavedId(sourceEntity.getEntityCode());
             }
-            if (details.isEmpty()) return JSONUtils.EMPTY_ARRAY;
+            if (details.isEmpty())
+                return JSONUtils.EMPTY_ARRAY;
 
             sourceEntity = sourceEntity.getMainEntity() != null ? sourceEntity : sourceEntity.getDetailEntity();
             targetEntity = targetEntity.getMainEntity() != null ? targetEntity : targetEntity.getDetailEntity();
@@ -112,7 +107,8 @@ public class TransformerPreview {
 
                     fillLabelOfReference(targetRecord);
 
-                    JSON model = UseFormsBuilder.instance.buildNewForm(targetEntity, targetRecord, FormsBuilder.DV_MAINID, user);
+                    JSON model = UseFormsBuilder.instance.buildNewForm(targetEntity, targetRecord,
+                            FormsBuilder.DV_MAINID, user);
                     detailModels.add(model);
                 }
             } finally {
@@ -146,7 +142,8 @@ public class TransformerPreview {
         try {
             return UseFormsBuilder.instance.buildNewForm(targetEntity, targetRecord, mainid, user);
         } finally {
-            if (mainid != null) FormsBuilderContextHolder.getMainIdOfDetail(true);
+            if (mainid != null)
+                FormsBuilderContextHolder.getMainIdOfDetail(true);
         }
     }
 
@@ -157,7 +154,8 @@ public class TransformerPreview {
 
             if (dt == DisplayType.REFERENCE) {
                 ID idVal = record.getID(field);
-                if (NullValue.isNull(idVal) || idVal.getLabel() != null) continue;
+                if (NullValue.isNull(idVal) || idVal.getLabel() != null)
+                    continue;
 
                 // Update ref
                 idVal.setLabel(FieldValueHelper.getLabelNotry(idVal));

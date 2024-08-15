@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.service.trigger.aviator;
 
@@ -33,11 +27,14 @@ public class IsNullFunction extends AbstractFunction {
     public AviatorObject call(Map<String, Object> env, AviatorObject arg1) {
         final Object $any = arg1.getValue(env);
 
-        if (NullValue.isNull($any)) return AviatorBoolean.TRUE;
+        if (NullValue.isNull($any))
+            return AviatorBoolean.TRUE;
 
         if ($any instanceof Number) {
-            if (ObjectUtils.toDouble($any) == 0d) return AviatorBoolean.TRUE;
-            if (ObjectUtils.toLong($any) == 0L) return AviatorBoolean.TRUE;
+            if (ObjectUtils.toDouble($any) == 0d)
+                return AviatorBoolean.TRUE;
+            if (ObjectUtils.toLong($any) == 0L)
+                return AviatorBoolean.TRUE;
         }
 
         if ($any instanceof Object[]) {

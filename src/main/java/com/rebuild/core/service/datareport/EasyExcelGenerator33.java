@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.service.datareport;
 
@@ -105,7 +99,8 @@ public class EasyExcelGenerator33 extends EasyExcelGenerator {
                     // 在客户中导出订单（下列 AccountId 为订单中引用客户的引用字段）
                     // .AccountId.SalesOrder.SalesOrderName or $AccountId$SalesOrder$SalesOrderName
                     String[] split = varName.substring(1).split("[.$]");
-                    if (split.length < 2) throw new ReportsException("Bad REF (Miss .detail prefix?) : " + varName);
+                    if (split.length < 2)
+                        throw new ReportsException("Bad REF (Miss .detail prefix?) : " + varName);
 
                     String refName2 = split[0] + split[1];
                     refKey = varName.substring(0, refName2.length() + 2 /* dots */);
@@ -179,7 +174,8 @@ public class EasyExcelGenerator33 extends EasyExcelGenerator {
 
                 Entity de = entity.getDetailEntity();
                 querySql = String.format(querySql, StringUtils.join(e.getValue(), ","),
-                        de.getPrimaryField().getName(), de.getName(), MetadataHelper.getDetailToMainField(de).getName());
+                        de.getPrimaryField().getName(), de.getName(),
+                        MetadataHelper.getDetailToMainField(de).getName());
 
             } else {
                 String[] split = refKey.substring(1).split("[.$]");
@@ -207,7 +203,8 @@ public class EasyExcelGenerator33 extends EasyExcelGenerator {
                 Record firstNode = list.get(0);
                 Record submit = RecordBuilder.builder(EntityHelper.RobotApprovalStep)
                         .add("approver", ApprovalHelper.getSubmitter(firstNode.getID("recordId")))
-                        .add("approvedTime", CalendarUtils.getUTCDateTimeFormat().format(firstNode.getDate("createdOn")))
+                        .add("approvedTime",
+                                CalendarUtils.getUTCDateTimeFormat().format(firstNode.getDate("createdOn")))
                         .add("state", 0)
                         .build(UserService.SYSTEM_USER);
 
@@ -224,7 +221,8 @@ public class EasyExcelGenerator33 extends EasyExcelGenerator {
                 if (isApproval) {
                     int state = c.getInt("state");
                     Date approvedTime = c.getDate("approvedTime");
-                    if (approvedTime == null && state > 1) c.setDate("approvedTime", c.getDate("createdOn"));
+                    if (approvedTime == null && state > 1)
+                        c.setDate("approvedTime", c.getDate("createdOn"));
                 }
                 refDatas.add(buildData(c, varsMapOfRefs.get(refKey)));
                 phNumber++;
@@ -247,7 +245,8 @@ public class EasyExcelGenerator33 extends EasyExcelGenerator {
 
     @Override
     public File generate() {
-        if (recordIdMultiple == null) return superGenerate();
+        if (recordIdMultiple == null)
+            return superGenerate();
 
         // init
         File targetFile = super.getTargetFile();
@@ -314,20 +313,23 @@ public class EasyExcelGenerator33 extends EasyExcelGenerator {
 
     private File superGenerate() {
         File file = super.generate();
-        if (inShapeVars.isEmpty() || recordMainHolder == null) return file;
+        if (inShapeVars.isEmpty() || recordMainHolder == null)
+            return file;
 
         // v3.6 提取文本框
         try (Workbook wb = WorkbookFactory.create(file)) {
             Sheet sheet = wb.getSheetAt(0);
             for (Object o : sheet.getDrawingPatriarch()) {
-                if (!(o instanceof XSSFSimpleShape)) continue;  // 仅文本
+                if (!(o instanceof XSSFSimpleShape))
+                    continue; // 仅文本
                 XSSFSimpleShape shape = (XSSFSimpleShape) o;
                 String shapeText = shape.getText();
                 Matcher matcher = TemplateExtractor33.PATT_V2.matcher(shapeText);
                 while (matcher.find()) {
                     String varName = matcher.group(1);
                     if (StringUtils.isNotBlank(varName)) {
-                        shapeText = shapeText.replace("{" + varName +"}", String.valueOf(recordMainHolder.get(varName)));
+                        shapeText = shapeText.replace("{" + varName + "}",
+                                String.valueOf(recordMainHolder.get(varName)));
                     }
                 }
 

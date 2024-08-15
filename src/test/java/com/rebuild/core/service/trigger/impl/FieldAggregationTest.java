@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.service.trigger.impl;
 
@@ -48,7 +42,8 @@ public class FieldAggregationTest extends TestSupport {
 
         Record testRecord = EntityHelper.forNew(testEntity.getEntityCode(), UserService.SYSTEM_USER);
 
-        TriggerAction[] as = RobotTriggerManager.instance.getActions(ID.newId(testEntity.getEntityCode()), TriggerWhen.CREATE);
+        TriggerAction[] as = RobotTriggerManager.instance.getActions(ID.newId(testEntity.getEntityCode()),
+                TriggerWhen.CREATE);
         for (TriggerAction action : as) {
             action.execute(OperatingContext.create(UserService.SYSTEM_USER, BizzPermission.CREATE, null, testRecord));
         }

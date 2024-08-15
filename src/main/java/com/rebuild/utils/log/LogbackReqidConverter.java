@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.utils.log;
 
@@ -25,7 +19,9 @@ public class LogbackReqidConverter extends MessageConverter {
         String reqip = UserContextHolder.getReqip();
         ID requser = UserContextHolder.getUser(true);
 
-        if (reqip == null && requser == null) return NO_REQID;
-        else return String.format("%s,%s", reqip == null ? NO_REQID : reqip, requser == null ? NO_REQID : requser);
+        if (reqip == null && requser == null)
+            return NO_REQID;
+        else
+            return String.format("%s,%s", reqip == null ? NO_REQID : reqip, requser == null ? NO_REQID : requser);
     }
 }

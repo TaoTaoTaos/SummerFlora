@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.support.i18n;
 
@@ -72,7 +66,8 @@ public class Language implements Initialization {
      * 刷新语言包
      */
     public void refresh() {
-        if (bundleMap.isEmpty()) return;
+        if (bundleMap.isEmpty())
+            return;
 
         try {
             this.init();
@@ -87,7 +82,8 @@ public class Language implements Initialization {
      * @see java.util.Locale
      */
     public LanguageBundle getBundle(String locale) {
-        if (Application.isWaitLoad()) return LanguageBundle.SYS_BUNDLE;
+        if (Application.isWaitLoad())
+            return LanguageBundle.SYS_BUNDLE;
 
         if (locale != null) {
             if (bundleMap.containsKey(locale)) {
@@ -143,10 +139,12 @@ public class Language implements Initialization {
 
         String[] lc = locale.split("[-_]");
         locale = lc[0].toLowerCase();
-        if (lc.length > 1) locale += "_" + lc[1].toUpperCase();
+        if (lc.length > 1)
+            locale += "_" + lc[1].toUpperCase();
 
         boolean a = bundleMap.containsKey(locale);
-        if (a) return locale;
+        if (a)
+            return locale;
 
         if ((locale = useLanguageCode(lc[0])) != null) {
             return locale;

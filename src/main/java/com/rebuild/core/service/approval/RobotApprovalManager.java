@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.service.approval;
 
@@ -49,7 +43,8 @@ public class RobotApprovalManager implements ConfigManager {
      * @return null 表示没有流程
      */
     public ApprovalState hadApproval(Entity entity, ID recordId) {
-        if (entity.getMainEntity() != null || !MetadataHelper.hasApprovalField(entity)) return null;
+        if (entity.getMainEntity() != null || !MetadataHelper.hasApprovalField(entity))
+            return null;
 
         // 记录的
         if (recordId != null) {
@@ -77,7 +72,6 @@ public class RobotApprovalManager implements ConfigManager {
         return null;
     }
 
-
     /**
      * 获取实体是否有流程
      *
@@ -85,11 +79,13 @@ public class RobotApprovalManager implements ConfigManager {
      * @return
      */
     public boolean hadApproval(Entity entity) {
-        if (entity.getMainEntity() != null || !MetadataHelper.hasApprovalField(entity)) return false;
+        if (entity.getMainEntity() != null || !MetadataHelper.hasApprovalField(entity))
+            return false;
 
         FlowDefinition[] defs = getFlowDefinitions(entity);
         for (FlowDefinition def : defs) {
-            if (!def.isDisabled()) return true;
+            if (!def.isDisabled())
+                return true;
         }
         return false;
     }
@@ -137,10 +133,11 @@ public class RobotApprovalManager implements ConfigManager {
         // 过滤可用的
         List<FlowDefinition> workable = new ArrayList<>();
         for (FlowDefinition def : defs) {
-            if (def.isDisabled() || !def.isWorkable()) continue;
+            if (def.isDisabled() || !def.isWorkable())
+                continue;
 
             FlowParser flowParser = def.createFlowParser();
-            FlowNode root = flowParser.getNode("ROOT");  // 发起人节点
+            FlowNode root = flowParser.getNode("ROOT"); // 发起人节点
 
             // 发起人匹配
             JSONArray users = root.getDataMap().getJSONArray("users");

@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.metadata.easymeta;
 
@@ -38,7 +32,8 @@ public class EasyLocation extends EasyField implements MixValue {
 
     @Override
     public Object wrapValue(Object value) {
-        if (value == null) return null;
+        if (value == null)
+            return null;
         String[] vals = value.toString().split(MetadataHelper.SPLITER_RE);
 
         JSONObject mixVal = JSONUtils.toJSONObject("text", vals[0]);

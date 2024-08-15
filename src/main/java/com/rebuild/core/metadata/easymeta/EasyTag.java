@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.metadata.easymeta;
 
@@ -50,28 +44,34 @@ public class EasyTag extends EasyField implements MultiValue, MixValue {
     @Override
     public Object exprDefaultValue() {
         JSONArray tagList = getExtraAttrs(true).getJSONArray(EasyFieldConfigProps.TAG_LIST);
-        if (tagList == null || tagList.isEmpty()) return null;
+        if (tagList == null || tagList.isEmpty())
+            return null;
 
         List<String> dv = new ArrayList<>();
         for (Object o : tagList) {
             JSONObject tag = (JSONObject) o;
-            if (tag.getBooleanValue("default")) dv.add(tag.getString("name"));
+            if (tag.getBooleanValue("default"))
+                dv.add(tag.getString("name"));
         }
         return dv.isEmpty() ? null : dv.toArray(new String[0]);
     }
 
     @Override
     public Object wrapValue(Object value) {
-        if (value == null) return null;
-        if (value instanceof String) return value.toString();  // When single-edit
-        if (((String[]) value).length == 0) return null;
+        if (value == null)
+            return null;
+        if (value instanceof String)
+            return value.toString(); // When single-edit
+        if (((String[]) value).length == 0)
+            return null;
 
         return JSON.toJSON(value);
     }
 
     @Override
     public Object unpackWrapValue(Object wrappedValue) {
-        if (wrappedValue instanceof String[]) return StringUtils.join((String[]) wrappedValue, MV_SPLIT);
+        if (wrappedValue instanceof String[])
+            return StringUtils.join((String[]) wrappedValue, MV_SPLIT);
         return StringUtils.join((JSONArray) wrappedValue, MV_SPLIT);
     }
 }

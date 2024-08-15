@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.service.general.transform;
 
@@ -68,7 +62,7 @@ public class RecordTransfomer extends SetUser {
     /**
      * @param targetEntity
      * @param transConfig
-     * @param skipGuard 跳过权限
+     * @param skipGuard    跳过权限
      */
     public RecordTransfomer(Entity targetEntity, JSONObject transConfig, boolean skipGuard) {
         this.targetEntity = targetEntity;
@@ -98,7 +92,7 @@ public class RecordTransfomer extends SetUser {
 
     /**
      * @param sourceRecordId
-     * @param specMainId 转换明细时需指定主记录 ID
+     * @param specMainId     转换明细时需指定主记录 ID
      * @return
      * @see #checkFilter(ID)
      */
@@ -130,7 +124,8 @@ public class RecordTransfomer extends SetUser {
 
             String sql = String.format(
                     "select %s from %s where %s = '%s' order by autoId asc",
-                    sourceDetailEntity.getPrimaryField().getName(), sourceDetailEntity.getName(), sourceRefField.getName(), sourceRecordId);
+                    sourceDetailEntity.getPrimaryField().getName(), sourceDetailEntity.getName(),
+                    sourceRefField.getName(), sourceRecordId);
             sourceDetails = Application.createQueryNoFilter(sql).array();
         }
 
@@ -151,7 +146,8 @@ public class RecordTransfomer extends SetUser {
 
         // v3.5 需要先回填
         // 因为可能以回填字段作为条件进行转换一次判断
-        final boolean fillbackFix = fillback(sourceRecordId, EntityHelper.newUnsavedId(mainRecord.getEntity().getEntityCode()));
+        final boolean fillbackFix = fillback(sourceRecordId,
+                EntityHelper.newUnsavedId(mainRecord.getEntity().getEntityCode()));
 
         // 有多条（主+明细）
         if (sourceDetails != null && sourceDetails.length > 0) {
@@ -159,7 +155,8 @@ public class RecordTransfomer extends SetUser {
             List<Record> detailsList = new ArrayList<>();
             for (Object[] d : sourceDetails) {
                 detailsList.add(
-                        transformRecord(sourceDetailEntity, targetDetailEntity, fieldsMappingDetail, (ID) d[0], null, false, false, checkNullable));
+                        transformRecord(sourceDetailEntity, targetDetailEntity, fieldsMappingDetail, (ID) d[0], null,
+                                false, false, checkNullable));
             }
 
             theNewId = saveRecord(mainRecord, detailsList);
@@ -168,13 +165,15 @@ public class RecordTransfomer extends SetUser {
         }
 
         // 回填修正
-        if (fillbackFix) fillback(sourceRecordId, theNewId);
+        if (fillbackFix)
+            fillback(sourceRecordId, theNewId);
 
         return theNewId;
     }
 
     protected ID saveRecord(Record record, List<Record> detailsList) {
-        if (this.skipGuard) PrivilegesGuardContextHolder.setSkipGuard(EntityHelper.UNSAVED_ID);
+        if (this.skipGuard)
+            PrivilegesGuardContextHolder.setSkipGuard(EntityHelper.UNSAVED_ID);
 
         if (detailsList != null && !detailsList.isEmpty()) {
             record.setObjectValue(GeneralEntityService.HAS_DETAILS, detailsList);
@@ -188,7 +187,8 @@ public class RecordTransfomer extends SetUser {
             return record.getPrimary();
         } finally {
             GeneralEntityServiceContextHolder.getRepeatedCheckModeOnce();
-            if (this.skipGuard) PrivilegesGuardContextHolder.getSkipGuardOnce();
+            if (this.skipGuard)
+                PrivilegesGuardContextHolder.getSkipGuardOnce();
         }
     }
 
@@ -233,13 +233,14 @@ public class RecordTransfomer extends SetUser {
      * @param sourceRecordId
      * @param defaultValue
      * @param ignoreUncreateable 忽略不可新建字段
-     * @param forceNullValue v3.5 强制设定空字段值（更新记录时）
-     * @param checkNullable v3.5 检查不允许为空的字段是否都有值
+     * @param forceNullValue     v3.5 强制设定空字段值（更新记录时）
+     * @param checkNullable      v3.5 检查不允许为空的字段是否都有值
      * @return
      */
     protected Record transformRecord(
             Entity sourceEntity, Entity targetEntity, JSONObject fieldsMapping,
-            ID sourceRecordId, Map<String, Object> defaultValue, boolean ignoreUncreateable, boolean forceNullValue, boolean checkNullable) {
+            ID sourceRecordId, Map<String, Object> defaultValue, boolean ignoreUncreateable, boolean forceNullValue,
+            boolean checkNullable) {
         // v3.7 clean
         fieldsMapping.remove("_");
 
@@ -258,7 +259,8 @@ public class RecordTransfomer extends SetUser {
         }
 
         validFields.add(sourceEntity.getPrimaryField().getName());
-        Record source = Application.getQueryFactory().recordNoFilter(sourceRecordId, validFields.toArray(new String[0]));
+        Record source = Application.getQueryFactory().recordNoFilter(sourceRecordId,
+                validFields.toArray(new String[0]));
 
         // 所属用户
         ID specOwningUser = null;
@@ -267,12 +269,14 @@ public class RecordTransfomer extends SetUser {
             final String targetField = e.getKey();
 
             if (e.getValue() == null) {
-                if (forceNullValue) target.setNull(targetField);
+                if (forceNullValue)
+                    target.setNull(targetField);
                 continue;
             }
 
             EasyField targetFieldEasy = EasyMetaFactory.valueOf(targetEntity.getField(targetField));
-            if (ignoreUncreateable && !targetFieldEasy.isCreatable()) continue;
+            if (ignoreUncreateable && !targetFieldEasy.isCreatable())
+                continue;
 
             Object sourceAny = e.getValue();
 
@@ -316,9 +320,12 @@ public class RecordTransfomer extends SetUser {
     private List<String> checkAndWarnFields(Entity entity, Collection<?> fields) {
         List<String> valid = new ArrayList<>();
         for (Object field : fields) {
-            if (field == null) continue;
-            if (field instanceof JSONArray) continue;  // VFIXED
-            if (field instanceof JSONObject) continue;  // `_`
+            if (field == null)
+                continue;
+            if (field instanceof JSONArray)
+                continue; // VFIXED
+            if (field instanceof JSONObject)
+                continue; // `_`
 
             if (MetadataHelper.getLastJoinField(entity, (String) field) != null) {
                 valid.add((String) field);

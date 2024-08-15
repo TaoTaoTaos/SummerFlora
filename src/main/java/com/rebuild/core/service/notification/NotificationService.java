@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.service.notification;
 
@@ -94,11 +88,13 @@ public class NotificationService extends InternalPersistService {
             String[] distNames = Application.getContext().getBeanNamesForType(MessageDistributor.class);
             for (String name : distNames) {
                 MessageDistributor md = (MessageDistributor) Application.getContext().getBean(name);
-                if (!md.isEnable()) continue;
+                if (!md.isEnable())
+                    continue;
 
                 try {
                     boolean sent = md.send(message, messageId);
-                    log.info("Distribute message ({}) with {} : {}", sent ? "success" : "fails", md.getClass().getSimpleName(), message);
+                    log.info("Distribute message ({}) with {} : {}", sent ? "success" : "fails",
+                            md.getClass().getSimpleName(), message);
                 } catch (Exception ex) {
                     log.error("Distribute message error : {}", message, ex);
                 }

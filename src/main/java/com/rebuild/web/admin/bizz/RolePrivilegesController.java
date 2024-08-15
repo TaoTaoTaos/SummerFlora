@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.web.admin.bizz;
 
@@ -67,7 +61,7 @@ public class RolePrivilegesController extends EntityController {
         List<Object[]> entities = new ArrayList<>();
         for (Entity e : MetadataSorter.sortEntities()) {
             if (MetadataHelper.hasPrivilegesField(e)) {
-                entities.add(new Object[]{e.getEntityCode(), e.getName(), EasyMetaFactory.getLabel(e)});
+                entities.add(new Object[] { e.getEntityCode(), e.getName(), EasyMetaFactory.getLabel(e) });
             }
         }
         mv.getModel().put("Entities", entities);
@@ -80,9 +74,12 @@ public class RolePrivilegesController extends EntityController {
                 .array();
         // 排序 a-z
         Arrays.sort(array, (o1, o2) -> {
-            if (RoleService.ADMIN_ROLE.equals(o1[0])) return -1;
-            else if (RoleService.ADMIN_ROLE.equals(o2[0])) return 1;
-            else return ((String) o1[1]).compareTo((String) o2[1]);
+            if (RoleService.ADMIN_ROLE.equals(o1[0]))
+                return -1;
+            else if (RoleService.ADMIN_ROLE.equals(o2[0]))
+                return 1;
+            else
+                return ((String) o1[1]).compareTo((String) o2[1]);
         });
 
         return JSONUtils.toJSONObjectArray(
@@ -120,17 +117,18 @@ public class RolePrivilegesController extends EntityController {
 
     @PostMapping("role-delete")
     public RespBody roleDelete(@IdParam ID roleId, HttpServletRequest request) {
-        ID transferTo = getIdParameter(request, "transfer");  // TODO 转移到新角色
+        ID transferTo = getIdParameter(request, "transfer"); // TODO 转移到新角色
         Application.getBean(RoleService.class).deleteAndTransfer(roleId, transferTo);
         return RespBody.ok();
     }
 
     @PostMapping("role-copyto")
     public RespBody roleCopyTo(@RequestBody JSONObject post) {
-        ID from  = ID.valueOf(post.getString("from"));
+        ID from = ID.valueOf(post.getString("from"));
         Set<ID> tos = new HashSet<>();
         for (Object s : post.getJSONArray("copyTo")) {
-            if (ID.isId(s)) tos.add(ID.valueOf(s.toString()));
+            if (ID.isId(s))
+                tos.add(ID.valueOf(s.toString()));
         }
 
         Application.getBean(RoleService.class).updateWithCopyTo(from, tos.toArray(new ID[0]));

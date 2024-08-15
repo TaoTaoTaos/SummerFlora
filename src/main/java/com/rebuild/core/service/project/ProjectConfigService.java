@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.service.project;
 
@@ -82,9 +76,9 @@ public class ProjectConfigService extends BaseConfigurationService implements Ad
             ID id2 = createPlan(project.getPrimary(),
                     Language.L("进行中"), 2000, ProjectPlanConfigService.FLOW_STATUS_PROCESSING, null);
             ID id3 = createPlan(project.getPrimary(),
-                    Language.L("已完成"), 3000, ProjectPlanConfigService.FLOW_STATUS_END, new ID[]{id1, id2});
-            updateFlowNexts(id1, new ID[]{id2, id3});
-            updateFlowNexts(id2, new ID[]{id1, id3});
+                    Language.L("已完成"), 3000, ProjectPlanConfigService.FLOW_STATUS_END, new ID[] { id1, id2 });
+            updateFlowNexts(id1, new ID[] { id2, id3 });
+            updateFlowNexts(id2, new ID[] { id1, id3 });
         }
 
         this.cleanCache(null);

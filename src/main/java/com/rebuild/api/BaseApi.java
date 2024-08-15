@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.api;
 
@@ -34,7 +28,8 @@ public abstract class BaseApi extends Controller {
 
     /**
      * API 执行。
-     * 返回结果应该使用 #formatSuccess 或 #formatFailure 封装。或者也可以直接抛出 {@link ApiInvokeException} 异常
+     * 返回结果应该使用 #formatSuccess 或 #formatFailure 封装。或者也可以直接抛出
+     * {@link ApiInvokeException} 异常
      *
      * @param context
      * @return Use #formatSuccess or #formatFailure

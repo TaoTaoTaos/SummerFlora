@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.service.dashboard.charts;
 
@@ -51,8 +45,8 @@ public class RadarChart extends ChartData {
             Object[] item = dataRaw[i];
 
             indicator.add(JSONUtils.toJSONObject(
-                    new String[]{"name", "max"},
-                    new Object[]{wrapAxisValue(dim1, item[0]), calcMax(item)}));
+                    new String[] { "name", "max" },
+                    new Object[] { wrapAxisValue(dim1, item[0]), calcMax(item) }));
 
             for (int j = 0; j < nums.length; j++) {
                 Object[] data = seriesRotate.get(nums[j]);
@@ -63,17 +57,18 @@ public class RadarChart extends ChartData {
         JSONArray series = new JSONArray();
         for (Map.Entry<Numerical, Object[]> e : seriesRotate.entrySet()) {
             series.add(JSONUtils.toJSONObject(
-                    new String[]{"name", "value"},
-                    new Object[]{e.getKey().getLabel(), e.getValue()}));
+                    new String[] { "name", "value" },
+                    new Object[] { e.getKey().getLabel(), e.getValue() }));
         }
 
         JSONObject renderOption = config.getJSONObject("option");
-        if (renderOption == null) renderOption = new JSONObject();
+        if (renderOption == null)
+            renderOption = new JSONObject();
         renderOption.put("dataFlags", dataFlags);
 
         return JSONUtils.toJSONObject(
-                new String[]{"indicator", "series", "_renderOption"},
-                new Object[]{indicator, series, renderOption});
+                new String[] { "indicator", "series", "_renderOption" },
+                new Object[] { indicator, series, renderOption });
     }
 
     private long calcMax(Object[] items) {

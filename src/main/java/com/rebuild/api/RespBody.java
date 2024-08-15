@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.api;
 
@@ -38,9 +32,10 @@ public class RespBody implements JSONable {
     @Override
     public JSON toJSON() {
         JSONObject res = JSONUtils.toJSONObject(
-                new String[]{"error_code", "error_msg"},
-                new Object[]{getErrorCode(), getErrorMsg()});
-        if (getData() != null) res.put("data", getData());
+                new String[] { "error_code", "error_msg" },
+                new Object[] { getErrorCode(), getErrorMsg() });
+        if (getData() != null)
+            res.put("data", getData());
         return res;
     }
 

@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.metadata.impl;
 
@@ -56,15 +50,17 @@ public class MetaFieldService extends InternalPersistService implements AdminGua
 
         // 删除此字段的相关配置记录
         // Field: belongEntity, belongField
-        String[] whoUsed = field == null ? new String[0] : new String[]{
-                "PickList", "AutoFillinConfig", "NreferenceItem", "Attachment"
-        };
+        String[] whoUsed = field == null ? new String[0]
+                : new String[] {
+                        "PickList", "AutoFillinConfig", "NreferenceItem", "Attachment"
+                };
 
         int del = 0;
         for (String who : whoUsed) {
             Entity whichEntity = MetadataHelper.getEntity(who);
 
-            Object belongEntity = "Attachment".equals(who) ? field.getOwnEntity().getEntityCode() : field.getOwnEntity().getName();
+            Object belongEntity = "Attachment".equals(who) ? field.getOwnEntity().getEntityCode()
+                    : field.getOwnEntity().getName();
             String dsql = String.format(
                     "delete from `%s` where `BELONG_ENTITY` = '%s' and `BELONG_FIELD` = '%s'",
                     whichEntity.getPhysicalName(), belongEntity.toString(), field.getName());

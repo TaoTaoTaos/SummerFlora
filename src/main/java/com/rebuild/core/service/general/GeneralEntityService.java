@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.service.general;
 
@@ -68,11 +62,16 @@ import static com.rebuild.core.service.approval.ApprovalHelper.getSpecTriggers;
 
 /**
  * 业务实体核心服务，所有业务实体都应该使用此类（或子类）
- * <br>- 有业务验证
- * <br>- 会带有系统设置规则的执行
- * <br>- 会开启一个事务，详见 `application-bean.xml` 配置
+ * <br>
+ * - 有业务验证
+ * <br>
+ * - 会带有系统设置规则的执行
+ * <br>
+ * - 会开启一个事务，详见 `application-bean.xml` 配置
  *
- * <p>如有需要，其他实体可根据自身业务继承并复写</p>
+ * <p>
+ * 如有需要，其他实体可根据自身业务继承并复写
+ * </p>
  *
  * @author Zixin (RB)
  * @since 11/06/2019
@@ -91,7 +90,8 @@ public class GeneralEntityService extends ObservableService implements EntitySer
         addObserver(new RobotTriggerObserver());
         try {
             addObserver((SafeObserver) ReflectUtils.newObject("com.rebuild.rbv.sop.RobotSopObserver"));
-        } catch (Exception ignoredClassNotFound){}
+        } catch (Exception ignoredClassNotFound) {
+        }
     }
 
     @Override
@@ -142,7 +142,8 @@ public class GeneralEntityService extends ObservableService implements EntitySer
 
             // 明细可能有自己的 Service
             EntityService des = Application.getEntityService(detailEntity.getEntityCode());
-            if (des.getEntityCode() == 0) des = this;
+            if (des.getEntityCode() == 0)
+                des = this;
 
             // 先删除
             for (int i = 0; i < details.size(); i++) {
@@ -156,10 +157,11 @@ public class GeneralEntityService extends ObservableService implements EntitySer
             // 再保存
             for (int i = 0; i < details.size(); i++) {
                 Record d = details.get(i);
-                if (d instanceof DeleteRecord) continue;
+                if (d instanceof DeleteRecord)
+                    continue;
 
                 if (checkDetailsRepeated) {
-                    d.setID(dtfField, mainid);  // for check
+                    d.setID(dtfField, mainid); // for check
 
                     List<Record> repeated = des.getAndCheckRepeated(d, 20);
                     if (!repeated.isEmpty()) {
@@ -224,7 +226,8 @@ public class GeneralEntityService extends ObservableService implements EntitySer
         }
 
         record = super.update(record);
-        if (ignoreTriggers) return record;
+        if (ignoreTriggers)
+            return record;
 
         // ND 主记录修改时传导给明细（若有），以便触发聚合触发器
         // v3.7 只触发一个明细就够了
@@ -259,7 +262,8 @@ public class GeneralEntityService extends ObservableService implements EntitySer
         final RecycleStore recycleBin = useRecycleStore(recordId);
 
         int affected = this.deleteInternal(recordId);
-        if (affected == 0) return 0;
+        if (affected == 0)
+            return 0;
         affected = 1;
 
         Map<String, Set<ID>> recordsOfCascaded = getCascadedRecords(recordId, cascades, BizzPermission.DELETE);
@@ -268,7 +272,8 @@ public class GeneralEntityService extends ObservableService implements EntitySer
 
             for (ID id : e.getValue()) {
                 if (Application.getPrivilegesManager().allowDelete(currentUser, id)) {
-                    if (recycleBin != null) recycleBin.add(id, recordId);
+                    if (recycleBin != null)
+                        recycleBin.add(id, recordId);
 
                     int deleted = 0;
                     try {
@@ -279,7 +284,7 @@ public class GeneralEntityService extends ObservableService implements EntitySer
                         if (deleted > 0) {
                             affected++;
                         } else if (recycleBin != null) {
-                            recycleBin.removeLast();  // If not delete
+                            recycleBin.removeLast(); // If not delete
                         }
                     }
                 } else {
@@ -288,7 +293,8 @@ public class GeneralEntityService extends ObservableService implements EntitySer
             }
         }
 
-        if (recycleBin != null) recycleBin.store();
+        if (recycleBin != null)
+            recycleBin.store();
 
         return affected;
     }
@@ -355,7 +361,8 @@ public class GeneralEntityService extends ObservableService implements EntitySer
         }
 
         if (countObservers() > 0 && assignBefore != null) {
-            notifyObservers(OperatingContext.create(getCurrentUser(), BizzPermission.ASSIGN, assignBefore, assignAfter));
+            notifyObservers(
+                    OperatingContext.create(getCurrentUser(), BizzPermission.ASSIGN, assignBefore, assignAfter));
         }
         return affected;
     }
@@ -373,8 +380,11 @@ public class GeneralEntityService extends ObservableService implements EntitySer
         if (!fromTriggerNoDowngrade) {
             // 如用户无更新权限，则降级为只读共享
             if ((rights & BizzPermission.UPDATE.getMask()) != 0) {
-                if (!Application.getPrivilegesManager().allowUpdate(toUserId, recordId.getEntityCode()) /* 目标用户无基础更新权限 */
-                        || !Application.getPrivilegesManager().allow(currentUser, recordId, BizzPermission.UPDATE, true) /* 操作用户无记录更新权限 */) {
+                if (!Application.getPrivilegesManager().allowUpdate(toUserId, recordId.getEntityCode()) /*
+                                                                                                         * 目标用户无基础更新权限
+                                                                                                         */
+                        || !Application.getPrivilegesManager().allow(currentUser, recordId, BizzPermission.UPDATE,
+                                true) /* 操作用户无记录更新权限 */) {
                     rights = BizzPermission.READ.getMask();
                     log.warn("Downgrade share rights to READ({}) : {}", BizzPermission.READ.getMask(), recordId);
                 }
@@ -483,9 +493,9 @@ public class GeneralEntityService extends ObservableService implements EntitySer
     /**
      * 获取级联操作记录
      *
-     * @param mainRecordId 主记录
+     * @param mainRecordId    主记录
      * @param cascadeEntities 级联实体
-     * @param action 动作
+     * @param action          动作
      * @return
      */
     protected Map<String, Set<ID>> getCascadedRecords(ID mainRecordId, String[] cascadeEntities, Permission action) {
@@ -637,14 +647,17 @@ public class GeneralEntityService extends ObservableService implements EntitySer
 
                     // 管理员撤销
                     if (unallow) {
-                        boolean adminCancel = currentState == ApprovalState.APPROVED && changeState == ApprovalState.CANCELED;
-                        if (adminCancel) unallow = false;
+                        boolean adminCancel = currentState == ApprovalState.APPROVED
+                                && changeState == ApprovalState.CANCELED;
+                        if (adminCancel)
+                            unallow = false;
                     }
 
                     // 审批时/已通过强制修改
                     if (unallow) {
                         boolean forceUpdate = GeneralEntityServiceContextHolder.isAllowForceUpdateOnce();
-                        if (forceUpdate) unallow = false;
+                        if (forceUpdate)
+                            unallow = false;
                     }
                 }
 
@@ -677,7 +690,8 @@ public class GeneralEntityService extends ObservableService implements EntitySer
 
         Entity entity = recordOfNew.getEntity();
         // fix: 3.7.5
-        if (!MetadataHelper.isBusinessEntity(entity)) return;
+        if (!MetadataHelper.isBusinessEntity(entity))
+            return;
 
         for (Field field : entity.getFields()) {
             if (MetadataHelper.isCommonsField(field)
@@ -739,29 +753,33 @@ public class GeneralEntityService extends ObservableService implements EntitySer
             checkFields.put(field.getName(), checkValue);
         }
 
-        if (checkFields.isEmpty()) return Collections.emptyList();
+        if (checkFields.isEmpty())
+            return Collections.emptyList();
 
         boolean allNull = true;
         // OR AND
         final String orAnd = StringUtils.defaultString(
-                EasyMetaFactory.valueOf(entity).getExtraAttr(EasyEntityConfigProps.REPEAT_FIELDS_CHECK_MODE), "or").toLowerCase();
+                EasyMetaFactory.valueOf(entity).getExtraAttr(EasyEntityConfigProps.REPEAT_FIELDS_CHECK_MODE), "or")
+                .toLowerCase();
 
         StringBuilder checkSql = new StringBuilder("select ")
-                .append(entity.getPrimaryField().getName()).append(", ")  // 增加一个主键列
+                .append(entity.getPrimaryField().getName()).append(", ") // 增加一个主键列
                 .append(StringUtils.join(checkFields.keySet().iterator(), ", "))
                 .append(" from ")
                 .append(entity.getName());
         List<String> checkSqlWhere = new ArrayList<>();
         for (Map.Entry<String, Object> e : checkFields.entrySet()) {
             if (NullValue.isNull(e.getValue())) {
-                if ("and".equals(orAnd)) checkSqlWhere.add(String.format(" %s is null ", e.getKey()));
+                if ("and".equals(orAnd))
+                    checkSqlWhere.add(String.format(" %s is null ", e.getKey()));
             } else {
                 checkSqlWhere.add(String.format(" %s = ? ", e.getKey()));
                 allNull = false;
             }
         }
         // 全空值则不检查
-        if (allNull) return Collections.emptyList();
+        if (allNull)
+            return Collections.emptyList();
 
         checkSql.append(" where (").append(StringUtils.join(checkSqlWhere, orAnd)).append(")");
 
@@ -773,7 +791,8 @@ public class GeneralEntityService extends ObservableService implements EntitySer
 
         // 明细实体
         if (entity.getMainEntity() != null) {
-            String globalRepeat = EasyMetaFactory.valueOf(entity).getExtraAttr(EasyEntityConfigProps.DETAILS_GLOBALREPEAT);
+            String globalRepeat = EasyMetaFactory.valueOf(entity)
+                    .getExtraAttr(EasyEntityConfigProps.DETAILS_GLOBALREPEAT);
             // v3.4
             if (!BooleanUtils.toBoolean(globalRepeat)) {
                 String dtfName = MetadataHelper.getDetailToMainField(entity).getName();

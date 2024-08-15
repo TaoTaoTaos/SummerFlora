@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.web.commons;
 
@@ -73,13 +67,16 @@ public class MetadataGetting extends BaseController {
         int forceWith = "withid".equals(referer) ? 1 : 0;
 
         return MetaFormatter.buildFieldsWithRefs(entity, appendRefFields, true, forceWith, field -> {
-            if (!field.isQueryable()) return true;
+            if (!field.isQueryable())
+                return true;
 
             if (field instanceof Field) {
                 int c = ((Field) field).getReferenceEntity().getEntityCode();
-                if (c == EntityHelper.RobotApprovalConfig) return true;
+                if (c == EntityHelper.RobotApprovalConfig)
+                    return true;
                 if (c == EntityHelper.User || c == EntityHelper.Department) {
-                    return field.getName().equals(EntityHelper.CreatedBy) || field.getName().equals(EntityHelper.ModifiedBy);
+                    return field.getName().equals(EntityHelper.CreatedBy)
+                            || field.getName().equals(EntityHelper.ModifiedBy);
                 }
             }
             return false;
@@ -102,9 +99,11 @@ public class MetadataGetting extends BaseController {
 
         for (Field field : entity.getReferenceToFields()) {
             Entity ownEntity = field.getOwnEntity();
-            if (unique.contains(ownEntity.getName())) continue;
+            if (unique.contains(ownEntity.getName()))
+                continue;
             // 排除明细
-            if (ownEntity.getMainEntity() != null) continue;
+            if (ownEntity.getMainEntity() != null)
+                continue;
 
             EasyField easyField = EasyMetaFactory.valueOf(field);
             boolean isN2N = easyField.getDisplayType() == DisplayType.N2NREFERENCE;
@@ -116,8 +115,8 @@ public class MetadataGetting extends BaseController {
                     // NOTE 是否需要显示到字段级别（目前是实体识别）??? 可能有多个字段引用同一实体
 
                     String label = EasyMetaFactory.getLabel(ownEntity);
-//                    if (isN2N) label += " (N)";
-                    data.add(new String[]{ ownEntity.getName(), label });
+                    // if (isN2N) label += " (N)";
+                    data.add(new String[] { ownEntity.getName(), label });
                     unique.add(ownEntity.getName());
                 }
             }
@@ -138,8 +137,10 @@ public class MetadataGetting extends BaseController {
         }
 
         Entity foundEntity;
-        if (NumberUtils.isDigits(name)) foundEntity = MetadataHelper.getEntity(Integer.parseInt(name));
-        else foundEntity = MetadataHelper.getEntity(name);
+        if (NumberUtils.isDigits(name))
+            foundEntity = MetadataHelper.getEntity(Integer.parseInt(name));
+        else
+            foundEntity = MetadataHelper.getEntity(name);
 
         return EasyMetaFactory.valueOf(foundEntity).toJSON();
     }

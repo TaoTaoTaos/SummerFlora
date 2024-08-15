@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.web.files;
 
@@ -72,7 +66,8 @@ public class FileManagerController extends BaseController {
 
         Set<ID> willDeletes = new HashSet<>();
         for (String file : files) {
-            if (!ID.isId(file)) continue;
+            if (!ID.isId(file))
+                continue;
 
             ID fileId = ID.valueOf(file);
             if (!FilesHelper.isFileManageable(user, fileId)) {
@@ -94,7 +89,8 @@ public class FileManagerController extends BaseController {
 
         List<Record> fileRecords = new ArrayList<>();
         for (String file : files) {
-            if (!ID.isId(file)) continue;
+            if (!ID.isId(file))
+                continue;
 
             ID fileId = ID.valueOf(file);
             if (!FilesHelper.isFileManageable(user, fileId)) {

@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.service.trigger.impl;
 
@@ -37,7 +31,8 @@ public class FieldAggregationRefresh {
     /**
      */
     public void refresh() {
-        if (operatingContext.getBeforeRecord() == null || operatingContext.getAfterRecord() == null) return;
+        if (operatingContext.getBeforeRecord() == null || operatingContext.getAfterRecord() == null)
+            return;
 
         ID triggerUser = UserService.SYSTEM_USER;
         ActionContext parentAc = parent.getActionContext();
@@ -55,9 +50,11 @@ public class FieldAggregationRefresh {
         final ID afterValue = operatingContext.getAfterRecord().getID(followSourceField);
 
         // 之前未聚合
-        if (beforeValue == null) return;
+        if (beforeValue == null)
+            return;
         // 未更新
-        if (beforeValue.equals(afterValue)) return;
+        if (beforeValue.equals(afterValue))
+            return;
 
         ActionContext actionContext = new ActionContext(null,
                 parentAc.getSourceEntity(), parentAc.getActionContent(), parentAc.getConfigId());
@@ -69,7 +66,8 @@ public class FieldAggregationRefresh {
         fa.followSourceWhere = String.format("%s = '%s'", followSourceField, beforeValue);
 
         Record fakeSourceRecord = EntityHelper.forUpdate(operatingContext.getFixedRecordId(), triggerUser, false);
-        OperatingContext oCtx = OperatingContext.create(triggerUser, BizzPermission.NONE, fakeSourceRecord, fakeSourceRecord);
+        OperatingContext oCtx = OperatingContext.create(triggerUser, BizzPermission.NONE, fakeSourceRecord,
+                fakeSourceRecord);
 
         try {
             fa.execute(oCtx);

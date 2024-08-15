@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.support.setup;
 
@@ -87,7 +81,8 @@ public class Installer implements InstallState {
 
     private String EXISTS_SN;
 
-    private Installer() { }
+    private Installer() {
+    }
 
     /**
      * @param installProps
@@ -117,7 +112,8 @@ public class Installer implements InstallState {
         } else if (dbInfo.isMySQL80()) {
             // https://www.cnblogs.com/lusaisai/p/13372763.html
             String dbUrl8 = installProps.getProperty("db.url");
-            if (!dbUrl8.contains("allowPublicKeyRetrieval")) dbUrl8 += "&allowPublicKeyRetrieval=true";
+            if (!dbUrl8.contains("allowPublicKeyRetrieval"))
+                dbUrl8 += "&allowPublicKeyRetrieval=true";
             installProps.put("db.url", dbUrl8);
         }
 
@@ -129,7 +125,8 @@ public class Installer implements InstallState {
 
             String cachePasswd = cacheProps.getString(CachePassword.name());
             if (StringUtils.isNotBlank(cachePasswd)) {
-                installProps.put(CONF_PREFIX + CachePassword.name(), String.format("AES(%s)", AES.encrypt(cachePasswd)));
+                installProps.put(CONF_PREFIX + CachePassword.name(),
+                        String.format("AES(%s)", AES.encrypt(cachePasswd)));
             }
         } else {
             // Use ehcache
@@ -160,7 +157,8 @@ public class Installer implements InstallState {
         // Clean cached
         clearAllCache();
 
-        if (!dbNew) return;
+        if (!dbNew)
+            return;
 
         // 附加数据
 
@@ -168,7 +166,8 @@ public class Installer implements InstallState {
             // 导入实体
             String[] created = this.installModel();
             // 初始化菜单
-            if (created.length > 0) NavBuilder.instance.addInitNavOnInstall(created);
+            if (created.length > 0)
+                NavBuilder.instance.addInitNavOnInstall(created);
 
         } catch (Exception ex) {
             log.error("Error installing business module", ex);
@@ -198,7 +197,8 @@ public class Installer implements InstallState {
         // 刷新: REDIS
         JedisPool pool = BootConfiguration.createJedisPoolInternal();
         for (Object o : Application.getContext().getBeansOfType(UseRedis.class).values()) {
-            if (!((BaseCacheTemplate<?>) o).reinjectJedisPool(pool)) break;
+            if (!((BaseCacheTemplate<?>) o).reinjectJedisPool(pool))
+                break;
         }
 
         String inputSN = System.getProperty("SN");
@@ -277,7 +277,8 @@ public class Installer implements InstallState {
                 getTimeZoneId());
 
         // https://www.cnblogs.com/lusaisai/p/13372763.html
-        if (allowPublicKeyRetrieval) dbUrl += "&allowPublicKeyRetrieval=true";
+        if (allowPublicKeyRetrieval)
+            dbUrl += "&allowPublicKeyRetrieval=true";
 
         String dbUser = dbProps.getString("dbUser");
         String dbPassword = dbProps.getString("dbPassword");
@@ -351,12 +352,14 @@ public class Installer implements InstallState {
      * @return
      */
     public DbInfo getDbInfo() {
-        if (quickMode) return new DbInfo("H2");
+        if (quickMode)
+            return new DbInfo("H2");
 
         try (Connection conn = getConnection("mysql")) {
             try (Statement stmt = conn.createStatement()) {
                 try (ResultSet rs = stmt.executeQuery("select version()")) {
-                    if (rs.next()) return new DbInfo(rs.getString(1));
+                    if (rs.next())
+                        return new DbInfo(rs.getString(1));
                 }
             }
         } catch (SQLException ex) {
@@ -393,7 +396,7 @@ public class Installer implements InstallState {
             }
 
             SQL.append(L2);
-            if (L2.endsWith(";")) {  // SQL ends
+            if (L2.endsWith(";")) { // SQL ends
                 SQLS.add(SQL.toString().replace(",\n)Engine=", "\n)Engine="));
                 SQL = new StringBuilder();
             } else {
@@ -535,7 +538,7 @@ public class Installer implements InstallState {
         String tz = TimeZone.getDefault().getID();
         if (StringUtils.isBlank(tz)) {
             try {
-                //noinspection ResultOfMethodCallIgnored
+                // noinspection ResultOfMethodCallIgnored
                 ZoneId.of("GMT+08:00");
                 tz = "GMT+08:00";
             } catch (DateTimeException unsupportZoneId) {
@@ -546,8 +549,10 @@ public class Installer implements InstallState {
         }
 
         // 转义
-        if (tz.contains(" ")) tz = tz.replace(" ", "%2B");
-        if (tz.contains("+")) tz = tz.replace("+", "%2B");
+        if (tz.contains(" "))
+            tz = tz.replace(" ", "%2B");
+        if (tz.contains("+"))
+            tz = tz.replace("+", "%2B");
 
         return tz;
     }
@@ -598,7 +603,7 @@ public class Installer implements InstallState {
             try (Jedis jedis = Application.getCommonsCache().getJedisPool().getResource()) {
                 // https://redis.io/commands/flushdb/
                 try {
-                    jedis.flushDB(FlushMode.SYNC);  // v6.2.0
+                    jedis.flushDB(FlushMode.SYNC); // v6.2.0
                 } catch (Exception v620) {
                     jedis.flushDB();
                 }

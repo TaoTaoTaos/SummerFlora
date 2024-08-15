@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.support.distributed;
 
@@ -30,7 +24,7 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
 public abstract class DistributedJobLock {
 
     private static final String LOCK_KEY = "#RBJOBLOCK";
-    private static final long LOCK_TIME = 15;  // 15s offset
+    private static final long LOCK_TIME = 15; // 15s offset
 
     /**
      * 是否已在运行中，即并发判断（分布式环境）
@@ -67,7 +61,8 @@ public abstract class DistributedJobLock {
      */
     public static int getActiveCount() {
         try {
-            ThreadPoolTaskScheduler taskScheduler = (ThreadPoolTaskScheduler) Application.getContext().getBean("taskScheduler");
+            ThreadPoolTaskScheduler taskScheduler = (ThreadPoolTaskScheduler) Application.getContext()
+                    .getBean("taskScheduler");
             ScheduledThreadPoolExecutor poolExecutor = taskScheduler.getScheduledThreadPoolExecutor();
             return poolExecutor.getActiveCount();
         } catch (BeansException ex) {

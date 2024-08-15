@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.metadata.easymeta;
 
@@ -77,7 +71,8 @@ public class EasyMetaFactory {
      */
     public static EasyField valueOf(Field field) {
         String displayType = field.getExtraAttrs() == null
-                ? null : field.getExtraAttrs().getString("displayType");
+                ? null
+                : field.getExtraAttrs().getString("displayType");
         DisplayType dt = displayType == null ? convertBuiltinFieldType(field) : DisplayType.valueOf(displayType);
         if (dt == null) {
             throw new RebuildException("Unsupported field type : " + field);
@@ -155,9 +150,12 @@ public class EasyMetaFactory {
      * @return
      */
     public static String getLabel(BaseMeta entityOrField) {
-        if (entityOrField instanceof Entity) return valueOf((Entity) entityOrField).getLabel();
-        else if (entityOrField instanceof Field) return valueOf((Field) entityOrField).getLabel();
-        else throw new MetadataException("Unsupport meta type : " + entityOrField);
+        if (entityOrField instanceof Entity)
+            return valueOf((Entity) entityOrField).getLabel();
+        else if (entityOrField instanceof Field)
+            return valueOf((Field) entityOrField).getLabel();
+        else
+            throw new MetadataException("Unsupport meta type : " + entityOrField);
     }
 
     /**

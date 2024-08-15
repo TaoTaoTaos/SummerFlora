@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.metadata.easymeta;
 
@@ -42,9 +36,10 @@ public class EasyTime extends EasyDateTime {
     @Override
     public Object exprDefaultValue() {
         String valueExpr = (String) getRawMeta().getDefaultValue();
-        if (StringUtils.isBlank(valueExpr)) return null;
+        if (StringUtils.isBlank(valueExpr))
+            return null;
 
-        if (valueExpr.contains("NOW")) {  // {NOW}
+        if (valueExpr.contains("NOW")) { // {NOW}
             return LocalTime.now();
         } else {
             return RecordVisitor.tryParseTime(valueExpr);

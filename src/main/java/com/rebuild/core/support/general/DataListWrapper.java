@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.support.general;
 
@@ -84,7 +78,8 @@ public class DataListWrapper {
         if (user != null) {
             this.useDesensitized = !Application.getPrivilegesManager().allow(user, ZeroEntry.AllowNoDesensitized);
             if (!this.useDesensitized) {
-                this.useDesensitized = UserHelper.isAdmin(user) && RebuildConfiguration.getBool(ConfigurationItem.SecurityEnhanced);
+                this.useDesensitized = UserHelper.isAdmin(user)
+                        && RebuildConfiguration.getBool(ConfigurationItem.SecurityEnhanced);
             }
         }
     }
@@ -197,7 +192,7 @@ public class DataListWrapper {
                 String color = PickListManager.instance.getColor((ID) originValue);
                 if (StringUtils.isNotBlank(color)) {
                     value = JSONUtils.toJSONObject(
-                            new String[]{ "text", "color" }, new Object[]{ value, color });
+                            new String[] { "text", "color" }, new Object[] { value, color });
                 }
 
             } else if (easyField.getDisplayType() == DisplayType.MULTISELECT) {
@@ -215,7 +210,7 @@ public class DataListWrapper {
                             colorLabels.add(text);
                         } else {
                             colorLabels.add(JSONUtils.toJSONObject(
-                                    new String[]{ "text", "color" }, new Object[]{ text, color }));
+                                    new String[] { "text", "color" }, new Object[] { text, color }));
                         }
                     }
                 }
@@ -229,7 +224,7 @@ public class DataListWrapper {
                 for (Object o : (JSONArray) value) {
                     String name = o.toString();
                     colorValue.add(JSONUtils.toJSONObject(
-                            new String[]{ "name", "color" }, new Object[]{ name, colorNames.get(name) }));
+                            new String[] { "name", "color" }, new Object[] { name, colorNames.get(name) }));
                 }
                 value = colorValue;
             }

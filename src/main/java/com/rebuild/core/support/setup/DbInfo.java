@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.support.setup;
 
@@ -28,12 +22,14 @@ public class DbInfo {
     }
 
     public boolean isMySQL56() {
-        if (isOceanBase()) return false;
+        if (isOceanBase())
+            return false;
         return desc.contains("5.6.");
     }
 
     public boolean isMySQL80() {
-        if (isOceanBase()) return false;
+        if (isOceanBase())
+            return false;
         return desc.contains("8.0.") || desc.contains("8.1.");
     }
 

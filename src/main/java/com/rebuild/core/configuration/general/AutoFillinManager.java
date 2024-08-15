@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.configuration.general;
 
@@ -57,7 +51,8 @@ public class AutoFillinManager implements ConfigManager {
 
     public static final AutoFillinManager instance = new AutoFillinManager();
 
-    private AutoFillinManager() {}
+    private AutoFillinManager() {
+    }
 
     /**
      * 获取回填值
@@ -70,10 +65,12 @@ public class AutoFillinManager implements ConfigManager {
         final EasyField easyField = EasyMetaFactory.valueOf(field);
 
         // 内置字段无配置
-        if (easyField.isBuiltin()) return JSONUtils.EMPTY_ARRAY;
+        if (easyField.isBuiltin())
+            return JSONUtils.EMPTY_ARRAY;
 
         final List<ConfigBean> config = new ArrayList<>();
-        for (ConfigBean cb : getConfig(field)) config.add(cb.clone());
+        for (ConfigBean cb : getConfig(field))
+            config.add(cb.clone());
 
         // 父级级联
         // 利用表单回填做父级级联字段回填
@@ -91,7 +88,7 @@ public class AutoFillinManager implements ConfigManager {
                         .set("fillinForce", true);
 
                 // 移除冲突的表单回填配置
-                for (Iterator<ConfigBean> iter = config.iterator(); iter.hasNext(); ) {
+                for (Iterator<ConfigBean> iter = config.iterator(); iter.hasNext();) {
                     ConfigBean cb = iter.next();
                     if (StringUtils.equals(cb.getString("source"), fake.getString("source"))
                             && StringUtils.equals(cb.getString("target"), fake.getString("target"))) {
@@ -104,14 +101,15 @@ public class AutoFillinManager implements ConfigManager {
             }
         }
 
-        if (config.isEmpty()) return JSONUtils.EMPTY_ARRAY;
+        if (config.isEmpty())
+            return JSONUtils.EMPTY_ARRAY;
 
         final Entity sourceEntity = MetadataHelper.getEntity(sourceId.getEntityCode());
         final Entity targetEntity = field.getOwnEntity();
 
         Set<String> sourceFields = new HashSet<>();
 
-        for (Iterator<ConfigBean> iter = config.iterator(); iter.hasNext(); ) {
+        for (Iterator<ConfigBean> iter = config.iterator(); iter.hasNext();) {
             ConfigBean e = iter.next();
             String sourceField = e.getString("source");
             if (MetadataHelper.getLastJoinField(sourceEntity, sourceField) == null) {
@@ -134,18 +132,22 @@ public class AutoFillinManager implements ConfigManager {
             sourceFields.add(sourceField);
         }
 
-        if (sourceFields.isEmpty()) return JSONUtils.EMPTY_ARRAY;
+        if (sourceFields.isEmpty())
+            return JSONUtils.EMPTY_ARRAY;
 
         sourceFields.add(sourceEntity.getPrimaryField().getName());
-        Record sourceRecord = Application.getQueryFactory().recordNoFilter(sourceId, sourceFields.toArray(new String[0]));
+        Record sourceRecord = Application.getQueryFactory().recordNoFilter(sourceId,
+                sourceFields.toArray(new String[0]));
 
-        if (sourceRecord == null) return JSONUtils.EMPTY_ARRAY;
+        if (sourceRecord == null)
+            return JSONUtils.EMPTY_ARRAY;
 
         JSONArray fillin = new JSONArray();
         for (ConfigBean e : config) {
             String sourceField = e.getString("source");
             String targetField = e.getString("target");
-            if (!MetadataHelper.checkAndWarnField(targetEntity, targetField)) continue;
+            if (!MetadataHelper.checkAndWarnField(targetEntity, targetField))
+                continue;
 
             Field targetFieldMeta;
             // 明细 > 主
@@ -155,7 +157,7 @@ public class AutoFillinManager implements ConfigManager {
             } else {
                 targetFieldMeta = targetEntity.getField(targetField);
             }
-            
+
             Object value = null;
             if (sourceRecord.hasValue(sourceField, false)) {
                 value = sourceRecord.getObjectValue(sourceField);
@@ -190,13 +192,16 @@ public class AutoFillinManager implements ConfigManager {
             // 空值
             if (NullValue.isNull(value) || StringUtils.isBlank(value.toString())) {
                 // v3.3 强制回填空值
-                if (BooleanUtils.isTrue(e.getBoolean("fillinForce"))) value = null;
-                else continue;
+                if (BooleanUtils.isTrue(e.getBoolean("fillinForce")))
+                    value = null;
+                else
+                    continue;
             }
 
             // 日期格式处理
             if (value instanceof Date
-                    && (targetFieldMeta.getType() == FieldType.DATE || targetFieldMeta.getType() == FieldType.TIMESTAMP)) {
+                    && (targetFieldMeta.getType() == FieldType.DATE
+                            || targetFieldMeta.getType() == FieldType.TIMESTAMP)) {
                 value = tfEasy.wrapValue(value);
             }
 
@@ -230,33 +235,41 @@ public class AutoFillinManager implements ConfigManager {
 
         int fillin = 0;
         for (String fieldName : record.getAvailableFields()) {
-            if (!entity.containsField(fieldName)) continue;
+            if (!entity.containsField(fieldName))
+                continue;
 
             EasyField easyField = EasyMetaFactory.valueOf(entity.getField(fieldName));
-            if (easyField.getDisplayType() != DisplayType.REFERENCE) continue;
+            if (easyField.getDisplayType() != DisplayType.REFERENCE)
+                continue;
 
-            fillin += fillinRecordItem(easyField.getRawMeta(), record.getObjectValue(fieldName), isNew, fillinForce, record);
+            fillin += fillinRecordItem(easyField.getRawMeta(), record.getObjectValue(fieldName), isNew, fillinForce,
+                    record);
         }
         return fillin;
     }
 
     private int fillinRecordItem(Field field, Object sourceId, boolean isNew, boolean fillinForce, Record into) {
-        if (NullValue.isNull(sourceId)) return 0;
+        if (NullValue.isNull(sourceId))
+            return 0;
 
         JSONArray fillinValue = getFillinValue(field, (ID) sourceId);
-        if (fillinValue.isEmpty()) return 0;
+        if (fillinValue.isEmpty())
+            return 0;
 
         int fillin = 0;
         for (Object o : fillinValue) {
             JSONObject item = (JSONObject) o;
             boolean fillinBackend2 = fillinForce || item.getBooleanValue("fillinBackend");
-            if (!fillinBackend2) continue;
+            if (!fillinBackend2)
+                continue;
 
             if (!fillinForce) {
                 if (isNew) {
-                    if (!item.getBooleanValue("whenCreate")) continue;
+                    if (!item.getBooleanValue("whenCreate"))
+                        continue;
                 } else {
-                    if (!item.getBooleanValue("whenUpdate")) continue;
+                    if (!item.getBooleanValue("whenUpdate"))
+                        continue;
                 }
             }
 
@@ -266,16 +279,20 @@ public class AutoFillinManager implements ConfigManager {
 
             // 强制回填
             if (fillinForce2) {
-                if (value == null) into.setNull(targetFieldName);
-                else into.setObjectValue(targetFieldName, value);
+                if (value == null)
+                    into.setNull(targetFieldName);
+                else
+                    into.setObjectValue(targetFieldName, value);
             } else {
 
                 // 非强制时检查目标是否有值
-                if (into.hasValue(targetFieldName, false)) continue;
+                if (into.hasValue(targetFieldName, false))
+                    continue;
 
                 if (!isNew) {
                     Object[] has = Application.getQueryFactory().uniqueNoFilter(into.getPrimary(), targetFieldName);
-                    if (has != null && has[0] != null) continue;
+                    if (has != null && has[0] != null)
+                        continue;
                 }
 
                 into.setObjectValue(targetFieldName, value);
@@ -309,7 +326,7 @@ public class AutoFillinManager implements ConfigManager {
 
         if (sourceEasy.getDisplayType() == targetEasy.getDisplayType()
                 && sourceEasy.getDisplayType() == DisplayType.MULTISELECT) {
-            return newValue;  // Long
+            return newValue; // Long
         }
 
         if (sourceEasy instanceof EasyID && targetEasy instanceof EasyN2NReference) {
@@ -327,7 +344,8 @@ public class AutoFillinManager implements ConfigManager {
 
     // 利用表单回填功能取到的值是 String，这里需要转换成类型值
     private Object conversion2RecordValue(Field target, Object value) {
-        if (NullValue.isNull(value)) return null;
+        if (NullValue.isNull(value))
+            return null;
 
         // REF
         if (value instanceof JSONObject) {
@@ -337,7 +355,8 @@ public class AutoFillinManager implements ConfigManager {
         // FILE,IMAGE,N2NREF
         if (value instanceof JSONArray) {
             JSONArray array = (JSONArray) value;
-            if (array.isEmpty()) return null;
+            if (array.isEmpty())
+                return null;
 
             // N2NREF
             Object type = array.get(0);
@@ -414,6 +433,7 @@ public class AutoFillinManager implements ConfigManager {
     }
 
     private static final String CKEY_AFARF = "AutoFillinReadonlyFields";
+
     /**
      * 自动回填中涉及的自动只读字段
      *
@@ -423,13 +443,13 @@ public class AutoFillinManager implements ConfigManager {
     @SuppressWarnings("unchecked")
     public Set<String> getAutoReadonlyFields(String entity) {
         Map<String, Set<String>> fieldsMap = (Map<String, Set<String>>) Application.getCommonsCache().getx(CKEY_AFARF);
-        if (fieldsMap == null) fieldsMap = this.initAutoReadonlyFields();
+        if (fieldsMap == null)
+            fieldsMap = this.initAutoReadonlyFields();
 
         return Collections.unmodifiableSet(fieldsMap.getOrDefault(entity, Collections.emptySet()));
     }
 
-    synchronized
-    private Map<String, Set<String>> initAutoReadonlyFields() {
+    synchronized private Map<String, Set<String>> initAutoReadonlyFields() {
         Object[][] array = Application.createQueryNoFilter(
                 "select extConfig,belongEntity,targetField from AutoFillinConfig")
                 .array();

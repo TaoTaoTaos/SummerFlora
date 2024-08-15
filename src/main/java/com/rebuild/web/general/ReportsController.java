@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.web.general;
 
@@ -85,10 +79,10 @@ public class ReportsController extends BaseController {
         return alist;
     }
 
-    @RequestMapping({"report/generate", "report/export"})
+    @RequestMapping({ "report/generate", "report/export" })
     public ModelAndView reportGenerate(@PathVariable String entity,
-                               @IdParam(name = "report") ID reportId,
-                               HttpServletRequest request, HttpServletResponse response) throws IOException {
+            @IdParam(name = "report") ID reportId,
+            HttpServletRequest request, HttpServletResponse response) throws IOException {
         final ID[] recordIds = getIdArrayParameterNotNull(request, "record");
         final ID recordId = recordIds[0];
         final TemplateFile tt = DataReportManager.instance.getTemplateFile(reportId);
@@ -141,7 +135,8 @@ public class ReportsController extends BaseController {
             if (AppUtils.isMobile(request)) {
                 String fileUrl = String.format(
                         "/filex/download/%s?temp=yes&_csrfToken=%s&attname=%s",
-                        CodecUtils.urlEncode(output.getName()), AuthTokenManager.generateCsrfToken(90), CodecUtils.urlEncode(fileName));
+                        CodecUtils.urlEncode(output.getName()), AuthTokenManager.generateCsrfToken(90),
+                        CodecUtils.urlEncode(fileName));
                 data.put("fileUrl", fileUrl);
             }
             writeSuccess(response, data);
@@ -149,11 +144,13 @@ public class ReportsController extends BaseController {
         } else if ("preview".equalsIgnoreCase(typeOutput)) {
             String fileUrl = String.format(
                     "/filex/download/%s?temp=yes&_onceToken=%s&attname=%s",
-                    CodecUtils.urlEncode(output.getName()), AuthTokenManager.generateOnceToken(null), CodecUtils.urlEncode(fileName));
+                    CodecUtils.urlEncode(output.getName()), AuthTokenManager.generateOnceToken(null),
+                    CodecUtils.urlEncode(fileName));
             fileUrl = RebuildConfiguration.getHomeUrl(fileUrl);
 
             String previewUrl = StringUtils.defaultIfBlank(
-                    RebuildConfiguration.get(ConfigurationItem.PortalOfficePreviewUrl), "https://view.officeapps.live.com/op/embed.aspx?src=");
+                    RebuildConfiguration.get(ConfigurationItem.PortalOfficePreviewUrl),
+                    "https://view.officeapps.live.com/op/embed.aspx?src=");
 
             previewUrl += CodecUtils.urlEncode(fileUrl);
             response.sendRedirect(previewUrl);
@@ -165,7 +162,7 @@ public class ReportsController extends BaseController {
         }
         return null;
     }
-    
+
     // 列表数据导出
 
     @RequestMapping({ "export/submit", "report/export-list" })
@@ -202,7 +199,7 @@ public class ReportsController extends BaseController {
             }
 
             RbAssert.is(output != null, Language.L("无法输出报表，请检查报表模板是否有误"));
-            
+
             String fileName;
             if (useReport == null) {
                 fileName = String.format("%s-%s.%s",

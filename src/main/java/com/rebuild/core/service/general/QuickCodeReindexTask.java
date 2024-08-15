@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.service.general;
 
@@ -73,12 +67,15 @@ public class QuickCodeReindexTask extends HeavyTask<Integer> {
 
             this.setTotal(records.size() + this.getTotal() + 1);
             for (Record o : records) {
-                if (this.isInterruptState()) break;
+                if (this.isInterruptState())
+                    break;
 
                 try {
                     String quickCodeNew = generateQuickCode(o);
-                    if (quickCodeNew == null) continue;
-                    if (quickCodeNew.equals(o.getString(EntityHelper.QuickCode))) continue;
+                    if (quickCodeNew == null)
+                        continue;
+                    if (quickCodeNew.equals(o.getString(EntityHelper.QuickCode)))
+                        continue;
 
                     Record record = EntityHelper.forUpdate(o.getPrimary(), UserService.SYSTEM_USER, Boolean.FALSE);
                     if (StringUtils.isBlank(quickCodeNew)) {
@@ -94,7 +91,8 @@ public class QuickCodeReindexTask extends HeavyTask<Integer> {
                 }
             }
 
-            if (records.size() < PAGE_SIZE || this.isInterruptState()) break;
+            if (records.size() < PAGE_SIZE || this.isInterruptState())
+                break;
         }
 
         this.setTotal(this.getTotal() - 1);
@@ -111,10 +109,12 @@ public class QuickCodeReindexTask extends HeavyTask<Integer> {
      */
     public static String generateQuickCode(Record record) {
         Entity entity = record.getEntity();
-        if (!entity.containsField(EntityHelper.QuickCode)) return null;
+        if (!entity.containsField(EntityHelper.QuickCode))
+            return null;
 
         Field nameField = entity.getNameField();
-        if (!record.hasValue(nameField.getName(), Boolean.FALSE)) return null;
+        if (!record.hasValue(nameField.getName(), Boolean.FALSE))
+            return null;
 
         Object nameValue = record.getObjectValue(nameField.getName());
         DisplayType dt = EasyMetaFactory.getDisplayType(nameField);
@@ -137,7 +137,8 @@ public class QuickCodeReindexTask extends HeavyTask<Integer> {
             nameValue = null;
         }
 
-        if (nameValue == null) return null;
+        if (nameValue == null)
+            return null;
         return generateQuickCode((String) nameValue);
     }
 
@@ -148,16 +149,20 @@ public class QuickCodeReindexTask extends HeavyTask<Integer> {
      * @return
      */
     public static String generateQuickCode(String nameVal) {
-        if (StringUtils.isBlank(nameVal)) return StringUtils.EMPTY;
+        if (StringUtils.isBlank(nameVal))
+            return StringUtils.EMPTY;
 
-        if (nameVal.length() > 100) nameVal = nameVal.substring(0, 100);
+        if (nameVal.length() > 100)
+            nameVal = nameVal.substring(0, 100);
 
-        if (EasyPhone.isPhone(nameVal) || EasyEmail.isEmail(nameVal) || EasyUrl.isUrl(nameVal)) return StringUtils.EMPTY;
+        if (EasyPhone.isPhone(nameVal) || EasyEmail.isEmail(nameVal) || EasyUrl.isUrl(nameVal))
+            return StringUtils.EMPTY;
 
         // 提取 0-9+a-z+A-Z+中文+空格，忽略特殊字符
         nameVal = nameVal.replaceAll("[^a-zA-Z0-9\\s\u4e00-\u9fa5]", "");
         // 忽略数字或小字母
-        if (nameVal.matches("[a-z0-9]+")) return StringUtils.EMPTY;
+        if (nameVal.matches("[a-z0-9]+"))
+            return StringUtils.EMPTY;
 
         String quickCode = nameVal;
 

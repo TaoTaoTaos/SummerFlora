@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.privileges;
 
@@ -45,11 +39,13 @@ public class PrivilegesManagerTest extends TestSupport {
     @Test
     public void testAllow() {
         Entity test = MetadataHelper.getEntity(Account);
-        boolean allowAccount = Application.getPrivilegesManager().allow(SIMPLE_USER, ID.newId(test.getEntityCode()), BizzPermission.READ);
+        boolean allowAccount = Application.getPrivilegesManager().allow(SIMPLE_USER, ID.newId(test.getEntityCode()),
+                BizzPermission.READ);
         Assertions.assertFalse(allowAccount);
 
         test = MetadataHelper.getEntity(SalesOrderItem);
-        boolean allowSalesOrderItem = Application.getPrivilegesManager().allow(SIMPLE_USER, ID.newId(test.getEntityCode()), BizzPermission.READ);
+        boolean allowSalesOrderItem = Application.getPrivilegesManager().allow(SIMPLE_USER,
+                ID.newId(test.getEntityCode()), BizzPermission.READ);
         Assertions.assertFalse(allowSalesOrderItem);
     }
 }

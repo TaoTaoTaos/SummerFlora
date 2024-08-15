@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.service.datareport;
 
@@ -70,7 +64,7 @@ public class TemplateExtractor {
 
     /**
      * @param templateFile
-     * @param isList 列表模板
+     * @param isList       列表模板
      */
     public TemplateExtractor(File templateFile, boolean isList) {
         this.templateFile = templateFile;
@@ -88,7 +82,8 @@ public class TemplateExtractor {
 
         Entity detailEntity = this.isListType ? null : entity.getDetailEntity();
         Entity approvalEntity = MetadataHelper.hasApprovalField(entity)
-                ? MetadataHelper.getEntity(EntityHelper.RobotApprovalStep) : null;
+                ? MetadataHelper.getEntity(EntityHelper.RobotApprovalStep)
+                : null;
 
         Map<String, String> map = new HashMap<>();
         for (final String varName : vars) {
@@ -99,7 +94,8 @@ public class TemplateExtractor {
                 // 审批流程
                 if (varName.startsWith(APPROVAL_PREFIX)) {
                     String stepNodeField = listField.substring(APPROVAL_PREFIX.length());
-                    if (approvalEntity != null && MetadataHelper.getLastJoinField(approvalEntity, stepNodeField) != null) {
+                    if (approvalEntity != null
+                            && MetadataHelper.getLastJoinField(approvalEntity, stepNodeField) != null) {
                         map.put(varName, stepNodeField);
                     } else {
                         map.put(varName, null);
@@ -140,7 +136,8 @@ public class TemplateExtractor {
         Set<String> vars = new LinkedHashSet<>();
         for (Cell[] row : rows) {
             for (Cell cell : row) {
-                if (cell.isEmpty()) continue;
+                if (cell.isEmpty())
+                    continue;
 
                 // 变量套变量无法支持
                 // {.__KEEP:(=IF(ISBLANK({.LimitedCredit}), "", "{.LimitedCredit}天付款"))}
@@ -149,7 +146,8 @@ public class TemplateExtractor {
                 Matcher matcher = PATT_V2.matcher(cellText);
                 while (matcher.find()) {
                     String varName = matcher.group(1);
-                    if (StringUtils.isNotBlank(varName)) vars.add(varName);
+                    if (StringUtils.isNotBlank(varName))
+                        vars.add(varName);
                 }
             }
         }
@@ -164,7 +162,8 @@ public class TemplateExtractor {
      * @return
      */
     protected String transformRealField(Entity entity, String fieldPath) {
-        if (TemplateExtractor33.isPlaceholder(fieldPath)) return null;
+        if (TemplateExtractor33.isPlaceholder(fieldPath))
+            return null;
 
         if (fieldPath.contains("$")) {
             fieldPath = fieldPath.replace("$", ".");
@@ -179,10 +178,12 @@ public class TemplateExtractor {
         Field lastField;
         Entity father = entity;
         for (String field : paths) {
-            if (father == null) return null;
+            if (father == null)
+                return null;
 
             lastField = findFieldByLabel(father, field);
-            if (lastField == null) return null;
+            if (lastField == null)
+                return null;
 
             realPaths.add(lastField.getName());
 

@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.service.datareport;
 
@@ -35,10 +29,12 @@ public class FormulaCellWriteHandler implements CellWriteHandler {
 
     private void setCellFormula(CellWriteHandlerContext context) {
         final Cell cell = context.getCell();
-        if (cell.getCellType() != CellType.STRING) return;
+        if (cell.getCellType() != CellType.STRING)
+            return;
         final String cellValue = cell.getStringCellValue();
         // {.__KEEP:(=B2>1000)}
-        if (StringUtils.isBlank(cellValue) || !(cellValue.startsWith("(=") && cellValue.endsWith(")"))) return;
+        if (StringUtils.isBlank(cellValue) || !(cellValue.startsWith("(=") && cellValue.endsWith(")")))
+            return;
 
         final int rowIndex = cell.getRowIndex() + 1;
 
@@ -48,7 +44,8 @@ public class FormulaCellWriteHandler implements CellWriteHandler {
         while (m.find()) {
             String cellNo = m.group(1);
             // 避免多次替换出错
-            if (set.contains(cellNo)) continue;
+            if (set.contains(cellNo))
+                continue;
             set.add(cellNo);
 
             String cellNoNew = cellNo.replaceAll("[0-9]+", String.valueOf(rowIndex));

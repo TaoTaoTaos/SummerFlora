@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.api;
 
@@ -137,7 +131,8 @@ public class ApiGateway extends Controller implements Initialization {
             log.error("Server Internal Error ({})", requestId, ex);
 
             String knownError = KnownExceptionConverter.convert2ErrorMsg(ex);
-            if (knownError != null) errorMsg = "Server Internal Error : " + knownError;
+            if (knownError != null)
+                errorMsg = "Server Internal Error : " + knownError;
 
         } finally {
             UserContextHolder.clear();
@@ -161,7 +156,8 @@ public class ApiGateway extends Controller implements Initialization {
      * @param useApi
      * @return
      */
-    protected ApiContext verfiy(HttpServletRequest request, ApiContext base, @SuppressWarnings("unused") BaseApi useApi) {
+    protected ApiContext verfiy(HttpServletRequest request, ApiContext base,
+            @SuppressWarnings("unused") BaseApi useApi) {
         final Map<String, String> sortedMap = new TreeMap<>(base.getParameterMap());
         final String appid = getParameterNotNull(sortedMap, "appid");
         final String sign = getParameterNotNull(sortedMap, "sign");
@@ -176,7 +172,8 @@ public class ApiGateway extends Controller implements Initialization {
         if (StringUtils.isNotBlank(bindIps)) {
             String clientIp = ServletUtils.getRemoteAddr(request);
             if (!bindIps.contains(clientIp)) {
-                throw new ApiInvokeException(ApiInvokeException.ERR_BADAUTH, "Client ip not in whitelist : " + clientIp);
+                throw new ApiInvokeException(ApiInvokeException.ERR_BADAUTH,
+                        "Client ip not in whitelist : " + clientIp);
             }
         }
 
@@ -229,7 +226,8 @@ public class ApiGateway extends Controller implements Initialization {
 
         ID bindUser = apiConfig.getID("bindUser");
         // 默认绑定系统用户
-        if (bindUser == null) bindUser = UserService.SYSTEM_USER;
+        if (bindUser == null)
+            bindUser = UserService.SYSTEM_USER;
 
         return new ApiContext(sortedMap, base.getPostData(), appid, bindUser);
     }
@@ -286,7 +284,8 @@ public class ApiGateway extends Controller implements Initialization {
      * @param context
      * @param result
      */
-    protected void logRequestAsync(Date requestTime, String remoteIp, String requestId, String apiName, ApiContext context, JSON result) {
+    protected void logRequestAsync(Date requestTime, String remoteIp, String requestId, String apiName,
+            ApiContext context, JSON result) {
         Record record = EntityHelper.forNew(EntityHelper.RebuildApiRequest, UserService.SYSTEM_USER);
         record.setString("requestUrl", apiName);
         record.setString("remoteIp", remoteIp);

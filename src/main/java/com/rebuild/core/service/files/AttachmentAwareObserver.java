@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.service.files;
 
@@ -46,7 +40,8 @@ public class AttachmentAwareObserver extends OperatingObserver {
     public void onCreate(OperatingContext context) {
         Record record = context.getAfterRecord();
         Field[] fileFields = MetadataSorter.sortFields(record.getEntity(), DisplayType.FILE, DisplayType.IMAGE);
-        if (fileFields.length == 0) return;
+        if (fileFields.length == 0)
+            return;
 
         List<Record> creates = new ArrayList<>();
         for (Field field : fileFields) {
@@ -59,7 +54,8 @@ public class AttachmentAwareObserver extends OperatingObserver {
                 }
             }
         }
-        if (creates.isEmpty()) return;
+        if (creates.isEmpty())
+            return;
 
         Application.getCommonsService().createOrUpdate(creates.toArray(new Record[0]), false);
     }
@@ -68,7 +64,8 @@ public class AttachmentAwareObserver extends OperatingObserver {
     public void onUpdate(OperatingContext context) {
         Record record = context.getAfterRecord();
         Field[] fileFields = MetadataSorter.sortFields(record.getEntity(), DisplayType.FILE, DisplayType.IMAGE);
-        if (fileFields.length == 0) return;
+        if (fileFields.length == 0)
+            return;
 
         Record before = context.getBeforeRecord();
 
@@ -77,10 +74,10 @@ public class AttachmentAwareObserver extends OperatingObserver {
         for (Field field : fileFields) {
             String fieldName = field.getName();
             if (record.hasValue(fieldName)) {
-                JSONArray beforeFiles = parseFilesJson(before.getObjectValue(fieldName));  // 修改前
-                JSONArray afterFiles = parseFilesJson(record.getObjectValue(fieldName));   // 修改后
+                JSONArray beforeFiles = parseFilesJson(before.getObjectValue(fieldName)); // 修改前
+                JSONArray afterFiles = parseFilesJson(record.getObjectValue(fieldName)); // 修改后
 
-                for (Iterator<Object> iter = afterFiles.iterator(); iter.hasNext(); ) {
+                for (Iterator<Object> iter = afterFiles.iterator(); iter.hasNext();) {
                     Object a = iter.next();
                     if (beforeFiles.contains(a)) {
                         beforeFiles.remove(a);
@@ -112,7 +109,8 @@ public class AttachmentAwareObserver extends OperatingObserver {
                 }
             }
         }
-        if (creates.isEmpty() && deletes.isEmpty()) return;
+        if (creates.isEmpty() && deletes.isEmpty())
+            return;
 
         Application.getCommonsService().createOrUpdateAndDelete(
                 creates.toArray(new Record[0]), deletes.toArray(new ID[0]), false);
@@ -122,13 +120,15 @@ public class AttachmentAwareObserver extends OperatingObserver {
     public void onDelete(OperatingContext context) {
         Record record = context.getBeforeRecord();
         Field[] fileFields = MetadataSorter.sortFields(record.getEntity(), DisplayType.FILE, DisplayType.IMAGE);
-        if (fileFields.length == 0) return;
+        if (fileFields.length == 0)
+            return;
 
         Object[][] array = Application.createQueryNoFilter(
                 "select attachmentId from Attachment where relatedRecord = ?")
                 .setParameter(1, record.getPrimary())
                 .array();
-        if (array.length == 0) return;
+        if (array.length == 0)
+            return;
 
         // 标记删除，以便记录从回收站恢复后可用
         final boolean rbEnable = RecycleBinCleanerJob.isEnableRecycleBin();
@@ -150,9 +150,12 @@ public class AttachmentAwareObserver extends OperatingObserver {
     }
 
     private JSONArray parseFilesJson(Object files) {
-        if (files instanceof JSON) return (JSONArray) files;
-        else if (files == null || StringUtils.isBlank(files.toString())) return JSONUtils.EMPTY_ARRAY;
-        else return JSON.parseArray(files.toString());
+        if (files instanceof JSON)
+            return (JSONArray) files;
+        else if (files == null || StringUtils.isBlank(files.toString()))
+            return JSONUtils.EMPTY_ARRAY;
+        else
+            return JSON.parseArray(files.toString());
     }
 
     private Record createAttachment(Field field, ID recordId, String filePath, ID user) {

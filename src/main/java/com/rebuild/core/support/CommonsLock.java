@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.support;
 
@@ -44,7 +38,8 @@ public class CommonsLock {
      */
     public static Object[] getLockedUserFormat(ID source) {
         ID u = getLockedUser(source);
-        if (u == null) return null;
+        if (u == null)
+            return null;
         return new Object[] { u, UserHelper.getName(u) };
     }
 
@@ -74,7 +69,8 @@ public class CommonsLock {
      */
     public static boolean unlock(ID source, ID unlockUser) {
         final ID lockedUser = getLockedUser(source);
-        if (lockedUser == null) return true;
+        if (lockedUser == null)
+            return true;
 
         if (lockedUser.equals(unlockUser)) {
             Object[] o = Application.createQueryNoFilter(

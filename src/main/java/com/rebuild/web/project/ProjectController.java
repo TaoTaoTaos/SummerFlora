@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.web.project;
 
@@ -55,7 +49,7 @@ public class ProjectController extends BaseController {
 
     @GetMapping({ "{projectId}/tasks", "{projectId}/tasks/list" })
     public ModelAndView pageProject(@PathVariable String projectId,
-                                    HttpServletRequest request, HttpServletResponse response) throws IOException {
+            HttpServletRequest request, HttpServletResponse response) throws IOException {
         final ID projectId2 = ID.isId(projectId) ? ID.valueOf(projectId) : null;
         if (projectId2 == null) {
             response.sendError(404);
@@ -95,20 +89,17 @@ public class ProjectController extends BaseController {
                 plansList.add(newCustomPlan(GROUP_PRIORITY + "-2", Language.L("紧急")));
                 plansList.add(newCustomPlan(GROUP_PRIORITY + "-1", Language.L("普通")));
                 plansList.add(newCustomPlan(GROUP_PRIORITY + "-0", Language.L("较低")));
-            }
-            else if (GROUP_DEADLINE.equalsIgnoreCase(group)) {
+            } else if (GROUP_DEADLINE.equalsIgnoreCase(group)) {
                 plansList.add(newCustomPlan(GROUP_DEADLINE + "-1", Language.L("已逾期")));
                 plansList.add(newCustomPlan(GROUP_DEADLINE + "-2", Language.L("今天")));
                 plansList.add(newCustomPlan(GROUP_DEADLINE + "-3", Language.L("7 天内")));
                 plansList.add(newCustomPlan(GROUP_DEADLINE + "-4", Language.L("以后或未安排")));
-            }
-            else if (GROUP_MODIFIED.equalsIgnoreCase(group)) {
+            } else if (GROUP_MODIFIED.equalsIgnoreCase(group)) {
                 plansList.add(newCustomPlan(GROUP_MODIFIED + "-1", Language.L("今天")));
                 plansList.add(newCustomPlan(GROUP_MODIFIED + "-2", Language.L("7 天内")));
                 plansList.add(newCustomPlan(GROUP_MODIFIED + "-3", Language.L("14 天内")));
                 plansList.add(newCustomPlan(GROUP_MODIFIED + "-4", Language.L("更早")));
-            }
-            else {
+            } else {
                 final ConfigBean[] plans = ProjectManager.instance.getPlansOfProject(projectId2);
                 for (ConfigBean e : plans) {
                     plansList.add(e.toJSON());
@@ -130,13 +121,14 @@ public class ProjectController extends BaseController {
     @GetMapping("{projectId}/details")
     public RespBody getPlans(@PathVariable String projectId, HttpServletRequest request) {
         final ID user = getRequestUser(request);
-        
+
         JSONObject details;
         try {
             ConfigBean p = ProjectManager.instance.getProject(ID.valueOf(projectId), user);
             details = JSONUtils.toJSONObject(
                     new String[] { "projectName", "isMember", "projectStatus" },
-                    new Object[] { p.getString("projectName"), p.get("members", Set.class).contains(user), p.getInteger("status") });
+                    new Object[] { p.getString("projectName"), p.get("members", Set.class).contains(user),
+                            p.getInteger("status") });
 
         } catch (ConfigurationException ex) {
             return RespBody.error(ex.getLocalizedMessage(), 403);
@@ -194,7 +186,8 @@ public class ProjectController extends BaseController {
             response.sendError(404, Language.L("没有可用项目"));
         } else {
             String projectUrl = baseUrl + ccc[0].getID("id") + "/tasks#gs=";
-            if (gs != null) projectUrl += CodecUtils.urlEncode(gs);
+            if (gs != null)
+                projectUrl += CodecUtils.urlEncode(gs);
             response.sendRedirect(projectUrl);
         }
     }

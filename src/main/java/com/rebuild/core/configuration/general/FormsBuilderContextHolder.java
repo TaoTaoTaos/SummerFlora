@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.configuration.general;
 
@@ -37,7 +31,8 @@ public class FormsBuilderContextHolder {
      */
     public static ID getMainIdOfDetail(boolean once) {
         ID mainid = MAINID_OF_DETAIL.get();
-        if (mainid != null && once) MAINID_OF_DETAIL.remove();
+        if (mainid != null && once)
+            MAINID_OF_DETAIL.remove();
         return mainid;
     }
 
@@ -56,7 +51,8 @@ public class FormsBuilderContextHolder {
      */
     public static ID getSpecLayout(boolean once) {
         ID specRecordId = SPEC_LAYOUT.get();
-        if (specRecordId != null && once) SPEC_LAYOUT.remove();
+        if (specRecordId != null && once)
+            SPEC_LAYOUT.remove();
         return specRecordId;
     }
 }

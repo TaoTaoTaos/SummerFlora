@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.web;
 
@@ -73,14 +67,18 @@ public class RebuildWebConfigurer implements WebMvcConfigurer, ErrorViewResolver
         thymeleafViewResolver.addStaticVariable(WebConstants.ENV, Application.devMode() ? "dev" : "production");
         thymeleafViewResolver.addStaticVariable(WebConstants.COMMERCIAL, License.getCommercialType());
         thymeleafViewResolver.addStaticVariable(WebConstants.BASE_URL, AppUtils.getContextPath());
-        thymeleafViewResolver.addStaticVariable(WebConstants.APP_NAME, RebuildConfiguration.get(ConfigurationItem.AppName));
+        thymeleafViewResolver.addStaticVariable(WebConstants.APP_NAME,
+                RebuildConfiguration.get(ConfigurationItem.AppName));
         if (QiniuCloud.instance().available()) {
-            thymeleafViewResolver.addStaticVariable(WebConstants.STORAGE_URL, RebuildConfiguration.get(ConfigurationItem.StorageURL));
+            thymeleafViewResolver.addStaticVariable(WebConstants.STORAGE_URL,
+                    RebuildConfiguration.get(ConfigurationItem.StorageURL));
         } else {
             thymeleafViewResolver.addStaticVariable(WebConstants.STORAGE_URL, StringUtils.EMPTY);
         }
-        thymeleafViewResolver.addStaticVariable(WebConstants.FILE_SHARABLE, RebuildConfiguration.get(ConfigurationItem.FileSharable));
-        thymeleafViewResolver.addStaticVariable(WebConstants.MARK_WATERMARK, RebuildConfiguration.get(ConfigurationItem.MarkWatermark));
+        thymeleafViewResolver.addStaticVariable(WebConstants.FILE_SHARABLE,
+                RebuildConfiguration.get(ConfigurationItem.FileSharable));
+        thymeleafViewResolver.addStaticVariable(WebConstants.MARK_WATERMARK,
+                RebuildConfiguration.get(ConfigurationItem.MarkWatermark));
 
         String pageFooter = RebuildConfiguration.get(ConfigurationItem.PageFooter);
         if (StringUtils.isBlank(pageFooter)) {
@@ -116,7 +114,7 @@ public class RebuildWebConfigurer implements WebMvcConfigurer, ErrorViewResolver
 
     @Override
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
-//        converters.add(0, new FastJsonHttpMessageConverter4());
+        // converters.add(0, new FastJsonHttpMessageConverter4());
         converters.add(0, new FastJsonHttpMessageConverter());
     }
 
@@ -145,8 +143,8 @@ public class RebuildWebConfigurer implements WebMvcConfigurer, ErrorViewResolver
 
     @Override
     public void configureHandlerExceptionResolvers(List<HandlerExceptionResolver> resolvers) {
-        resolvers.add((request, response, handler, ex)
-                -> createError(request, ex, HttpStatus.INTERNAL_SERVER_ERROR, null));
+        resolvers.add(
+                (request, response, handler, ex) -> createError(request, ex, HttpStatus.INTERNAL_SERVER_ERROR, null));
     }
 
     @Override
@@ -157,9 +155,11 @@ public class RebuildWebConfigurer implements WebMvcConfigurer, ErrorViewResolver
     /**
      * @see ControllerRespBodyAdvice
      */
-    private ModelAndView createError(HttpServletRequest request, Exception ex, HttpStatus status, Map<String, Object> model) {
+    private ModelAndView createError(HttpServletRequest request, Exception ex, HttpStatus status,
+            Map<String, Object> model) {
         // IGNORED
-        if (request.getRequestURI().contains("/assets/")) return null;
+        if (request.getRequestURI().contains("/assets/"))
+            return null;
 
         ModelAndView error;
         if (ServletUtils.isAjaxRequest(request) || request.getRequestURI().contains("/filex/upload")) {
@@ -171,7 +171,8 @@ public class RebuildWebConfigurer implements WebMvcConfigurer, ErrorViewResolver
 
         int errorCode = status.value();
         String errorMsg = ex == null ? null : KnownExceptionConverter.convert2ErrorMsg(ex);
-        if (errorMsg == null) errorMsg = getErrorMessage(request, ex);
+        if (errorMsg == null)
+            errorMsg = getErrorMessage(request, ex);
 
         String errorLog = "\n++ EXECUTE REQUEST ERROR(s) TRACE +++++++++++++++++++++++++++++++++++++++++++++" +
                 "\nUser    : " + ObjectUtils.defaultIfNull(AppUtils.getRequestUser(request), "-") +
@@ -187,7 +188,8 @@ public class RebuildWebConfigurer implements WebMvcConfigurer, ErrorViewResolver
         } else if (ex != null && ex.getClass().getSimpleName().equals("ClientAbortException")) {
             log.warn("ClientAbortException : " + errorMsg, Application.devMode() ? ex : null);
         } else if (ex instanceof HttpRequestMethodNotSupportedException) {
-            log.warn("HttpRequestMethodNotSupportedException : " + getRequestUrls(request), Application.devMode() ? ex : null);
+            log.warn("HttpRequestMethodNotSupportedException : " + getRequestUrls(request),
+                    Application.devMode() ? ex : null);
         } else {
             log.error(errorLog, ex);
 
@@ -197,7 +199,8 @@ public class RebuildWebConfigurer implements WebMvcConfigurer, ErrorViewResolver
             }
         }
 
-        if (StringUtils.isBlank(errorMsg)) errorMsg = Language.L("系统繁忙，请稍后重试");
+        if (StringUtils.isBlank(errorMsg))
+            errorMsg = Language.L("系统繁忙，请稍后重试");
 
         error.getModel().put("error_code", errorCode);
         error.getModel().put("error_msg", CommonsUtils.sanitizeHtml(errorMsg));
@@ -217,12 +220,16 @@ public class RebuildWebConfigurer implements WebMvcConfigurer, ErrorViewResolver
      */
     protected static String getRequestUrls(HttpServletRequest request) {
         String reqUrl = request.getRequestURL().toString();
-        if (StringUtils.isNotBlank(request.getQueryString())) reqUrl += "?" + request.getQueryString();
+        if (StringUtils.isNotBlank(request.getQueryString()))
+            reqUrl += "?" + request.getQueryString();
         String refUrl = ServletUtils.getReferer(request);
 
-        if (refUrl == null) return reqUrl;
-        else if (reqUrl.endsWith("/error")) return refUrl;
-        else return reqUrl + " via " + refUrl;
+        if (refUrl == null)
+            return reqUrl;
+        else if (reqUrl.endsWith("/error"))
+            return refUrl;
+        else
+            return reqUrl + " via " + refUrl;
     }
 
     /**
@@ -265,7 +272,8 @@ public class RebuildWebConfigurer implements WebMvcConfigurer, ErrorViewResolver
         } else {
             exception = ThrowableUtils.getRootCause(exception);
             String errorMsg = exception.getLocalizedMessage();
-            if (StringUtils.isBlank(errorMsg)) errorMsg = Language.L("系统繁忙，请稍后重试");
+            if (StringUtils.isBlank(errorMsg))
+                errorMsg = Language.L("系统繁忙，请稍后重试");
             return errorMsg;
         }
     }

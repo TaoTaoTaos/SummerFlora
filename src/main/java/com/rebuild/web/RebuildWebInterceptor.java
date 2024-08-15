@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.web;
 
@@ -138,12 +132,16 @@ public class RebuildWebInterceptor implements AsyncHandlerInterceptor, InstallSt
 
                 // Nav collapsed
                 String sidebarCollapsed = ServletUtils.readCookie(request, "rb.sidebarCollapsed");
-                String sideCollapsedClazz = BooleanUtils.toBoolean(sidebarCollapsed) ? "rb-collapsible-sidebar-collapsed" : "";
+                String sideCollapsedClazz = BooleanUtils.toBoolean(sidebarCollapsed)
+                        ? "rb-collapsible-sidebar-collapsed"
+                        : "";
                 // Aside collapsed
                 if (!(requestUri.contains("/admin/") || requestUri.contains("/setup/"))) {
                     String asideCollapsed = ServletUtils.readCookie(request, "rb.asideCollapsed");
-                    if ("false".equals(asideCollapsed));
-                    else sideCollapsedClazz += " rb-aside-collapsed";
+                    if ("false".equals(asideCollapsed))
+                        ;
+                    else
+                        sideCollapsedClazz += " rb-aside-collapsed";
                 }
                 request.setAttribute("sideCollapsedClazz", sideCollapsedClazz);
 
@@ -157,12 +155,15 @@ public class RebuildWebInterceptor implements AsyncHandlerInterceptor, InstallSt
             }
 
             // 非增强安全超管可访问
-            if (isSecurityEnhanced) skipCheckSafeUse = false;
-            else skipCheckSafeUse = UserHelper.isSuperAdmin(requestUser);
+            if (isSecurityEnhanced)
+                skipCheckSafeUse = false;
+            else
+                skipCheckSafeUse = UserHelper.isSuperAdmin(requestUser);
 
         } else if (!isIgnoreAuth(requestUri)) {
             // 独立验证逻辑
-            if (requestUri.contains("/filex/")) return true;
+            if (requestUri.contains("/filex/"))
+                return true;
 
             log.warn("Unauthorized access {}", RebuildWebConfigurer.getRequestUrls(request));
 
@@ -177,13 +178,15 @@ public class RebuildWebInterceptor implements AsyncHandlerInterceptor, InstallSt
             skipCheckSafeUse = true;
         }
 
-        if (!skipCheckSafeUse) checkSafeUse(ipAddr, requestEntry.getRequestUri());
+        if (!skipCheckSafeUse)
+            checkSafeUse(ipAddr, requestEntry.getRequestUri());
 
         return true;
     }
 
     @Override
-    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) {
+    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
+            ModelAndView modelAndView) {
         // v3.6 H5 session 时间
         if (AppUtils.isRbMobile(request)) {
             request.getSession().setMaxInactiveInterval(60 * 5);
@@ -191,7 +194,8 @@ public class RebuildWebInterceptor implements AsyncHandlerInterceptor, InstallSt
     }
 
     @Override
-    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler,
+            Exception ex) {
         RequestEntry requestEntry = REQUEST_ENTRY.get();
         REQUEST_ENTRY.remove();
 
@@ -207,7 +211,8 @@ public class RebuildWebInterceptor implements AsyncHandlerInterceptor, InstallSt
 
     private String detectLocale(HttpServletRequest request, HttpServletResponse response) {
         String rbmobLocale = request.getHeader(AppUtils.HF_LOCALE);
-        if (rbmobLocale != null) return rbmobLocale;
+        if (rbmobLocale != null)
+            return rbmobLocale;
 
         // 0. Session
         String useLocale = (String) ServletUtils.getSessionAttribute(request, AppUtils.SK_LOCALE);
@@ -223,10 +228,12 @@ public class RebuildWebInterceptor implements AsyncHandlerInterceptor, InstallSt
                 ServletUtils.addCookie(response, AppUtils.CK_LOCALE, useLocale,
                         CommonsCache.TS_DAY * 90, null, StringUtils.defaultIfBlank(AppUtils.getContextPath(), "/"));
 
-                if (Application.devMode()) Application.getLanguage().refresh();
+                if (Application.devMode())
+                    Application.getLanguage().refresh();
             }
         }
-        if (useLocale != null) return useLocale;
+        if (useLocale != null)
+            return useLocale;
 
         // 1. Cookie
         useLocale = ServletUtils.readCookie(request, AppUtils.CK_LOCALE);
@@ -245,8 +252,10 @@ public class RebuildWebInterceptor implements AsyncHandlerInterceptor, InstallSt
     }
 
     private boolean isIgnoreAuth(String requestUri) {
-        if (requestUri.contains("..")) return false;
-        if (requestUri.contains("/user/") && !requestUri.contains("/user/admin")) return true;
+        if (requestUri.contains(".."))
+            return false;
+        if (requestUri.contains("/user/") && !requestUri.contains("/user/admin"))
+            return true;
 
         requestUri = requestUri.replaceFirst(AppUtils.getContextPath(), "");
 
@@ -284,7 +293,8 @@ public class RebuildWebInterceptor implements AsyncHandlerInterceptor, InstallSt
         try {
             String accept = StringUtils.defaultIfBlank(
                     request.getHeader("Accept"), MimeTypeUtils.TEXT_HTML_VALUE).split("[,;]")[0];
-            if (MimeTypeUtils.ALL_VALUE.equals(accept) || MimeTypeUtils.TEXT_HTML_VALUE.equals(accept)) return true;
+            if (MimeTypeUtils.ALL_VALUE.equals(accept) || MimeTypeUtils.TEXT_HTML_VALUE.equals(accept))
+                return true;
 
             MimeType mimeType = MimeTypeUtils.parseMimeType(accept);
             return MimeTypeUtils.TEXT_HTML.equals(mimeType);
@@ -295,12 +305,14 @@ public class RebuildWebInterceptor implements AsyncHandlerInterceptor, InstallSt
 
     private void sendRedirect(HttpServletResponse response, String url, String nexturl) throws IOException {
         String redirectUrl = AppUtils.getContextPath(url);
-        if (nexturl != null) redirectUrl += "?nexturl=" + CodecUtils.urlEncode(nexturl);
+        if (nexturl != null)
+            redirectUrl += "?nexturl=" + CodecUtils.urlEncode(nexturl);
         response.sendRedirect(redirectUrl);
     }
 
     private void checkSafeUse(String ipAddr, String requestUri) throws DefinedException {
-        if (!License.isRbvAttached()) return;
+        if (!License.isRbvAttached())
+            return;
 
         if ("localhost".equals(ipAddr) || "127.0.0.1".equals(ipAddr)) {
             log.debug("Allow localhost/127.0.0.1 use : {}", requestUri);
@@ -331,7 +343,8 @@ public class RebuildWebInterceptor implements AsyncHandlerInterceptor, InstallSt
         RequestEntry(HttpServletRequest request, String locale) {
             this.requestTime = System.currentTimeMillis();
             this.requestUri = request.getRequestURI();
-            this.requestUriWithQuery = this.requestUri + (request.getQueryString() == null ? "" : "?" + request.getQueryString());
+            this.requestUriWithQuery = this.requestUri
+                    + (request.getQueryString() == null ? "" : "?" + request.getQueryString());
             this.requestUser = AppUtils.getRequestUser(request, true);
             this.locale = locale;
         }

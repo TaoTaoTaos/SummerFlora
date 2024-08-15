@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.service.general;
 
@@ -38,7 +32,8 @@ public class GeneralEntityServiceContextHolder {
      */
     public static boolean isSkipSeriesValue(boolean once) {
         Boolean is = SKIP_SERIES_VALUE.get();
-        if (is != null && once) SKIP_SERIES_VALUE.remove();
+        if (is != null && once)
+            SKIP_SERIES_VALUE.remove();
         return is != null && is;
     }
 
@@ -57,7 +52,8 @@ public class GeneralEntityServiceContextHolder {
      */
     public static boolean isAllowForceUpdateOnce() {
         ID recordId = ALLOW_FORCE_UPDATE.get();
-        if (recordId != null) ALLOW_FORCE_UPDATE.remove();
+        if (recordId != null)
+            ALLOW_FORCE_UPDATE.remove();
         return recordId != null;
     }
 
@@ -76,7 +72,8 @@ public class GeneralEntityServiceContextHolder {
      */
     public static boolean isFromTrigger(boolean once) {
         ID recordId = FROM_TRIGGERS.get();
-        if (recordId != null && once) FROM_TRIGGERS.remove();
+        if (recordId != null && once)
+            FROM_TRIGGERS.remove();
         return recordId != null;
     }
 
@@ -102,7 +99,8 @@ public class GeneralEntityServiceContextHolder {
      */
     public static int getRepeatedCheckModeOnce() {
         Integer mode = REPEATED_CHECK_MODE.get();
-        if (mode != null) REPEATED_CHECK_MODE.remove();
+        if (mode != null)
+            REPEATED_CHECK_MODE.remove();
         return mode == null ? 0 : mode;
     }
 }

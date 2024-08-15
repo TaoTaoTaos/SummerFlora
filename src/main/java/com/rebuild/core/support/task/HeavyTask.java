@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.support.task;
 
@@ -176,7 +170,8 @@ public abstract class HeavyTask<T> extends SetUser implements Runnable {
      * @return
      */
     public boolean isInterruptState() {
-        if (this.interruptState) return true;
+        if (this.interruptState)
+            return true;
         if (Thread.currentThread().isInterrupted()) {
             log.warn("Current thread is interrupted (by VM) : {}", Thread.currentThread());
             setInterruptState();

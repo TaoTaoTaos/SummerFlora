@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.web.admin.metadata;
 
@@ -31,7 +25,7 @@ import javax.servlet.http.HttpServletResponse;
 @RequestMapping("/admin/field/")
 public class PickListController extends BaseController {
 
-    @RequestMapping({"picklist-gets", "multiselect-gets"})
+    @RequestMapping({ "picklist-gets", "multiselect-gets" })
     public void picklistGet(HttpServletRequest request, HttpServletResponse response) {
         String entity = getParameterNotNull(request, "entity");
         String field = getParameterNotNull(request, "field");
@@ -43,7 +37,7 @@ public class PickListController extends BaseController {
         writeSuccess(response, JSONUtils.toJSONArray(entries));
     }
 
-    @RequestMapping({"picklist-sets", "multiselect-sets"})
+    @RequestMapping({ "picklist-sets", "multiselect-sets" })
     public void picklistSet(HttpServletRequest request, HttpServletResponse response) {
         String entity = getParameterNotNull(request, "entity");
         String field = getParameterNotNull(request, "field");

@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.web.notification;
 
@@ -57,7 +51,8 @@ public class NotificationController extends BaseController {
         JSONObject state = JSONUtils.toJSONObject("unread", unread);
 
         JSON mm = buildMM();
-        if (mm != null) state.put("mm", mm);
+        if (mm != null)
+            state.put("mm", mm);
 
         return state;
     }
@@ -112,7 +107,7 @@ public class NotificationController extends BaseController {
                 .array();
         for (int i = 0; i < array.length; i++) {
             Object[] m = array[i];
-            m[0] = new Object[]{m[0], UserHelper.getName((ID) m[0])};
+            m[0] = new Object[] { m[0], UserHelper.getName((ID) m[0]) };
             m[1] = MessageBuilder.formatMessage((String) m[1], !preview);
             m[2] = I18nUtils.formatDate((Date) m[2]);
             array[i] = m;
@@ -136,7 +131,7 @@ public class NotificationController extends BaseController {
 
         for (int i = 0; i < array.length; i++) {
             Object[] m = array[i];
-            m[0] = new Object[]{m[0], UserHelper.getName((ID) m[0])};
+            m[0] = new Object[] { m[0], UserHelper.getName((ID) m[0]) };
             m[1] = MessageBuilder.formatMessage((String) m[1]);
             m[2] = I18nUtils.formatDate((Date) m[2]);
 
@@ -169,7 +164,8 @@ public class NotificationController extends BaseController {
 
     private JSON buildMM() {
         ConfigurationController.MaintenanceMode mm = ConfigurationController.getCurrentMm();
-        if (mm == null) return null;
+        if (mm == null)
+            return null;
 
         long time = (mm.getStartTime().getTime() - CalendarUtils.now().getTime()) / 1000;
         String note = mm.getNote() == null ? "" : String.format(" (%s)", mm.getNote());

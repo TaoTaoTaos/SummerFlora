@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.support.state;
 
@@ -67,12 +61,14 @@ public class StateManager {
         options = new JSONArray();
         for (Object c : state.getEnumConstants()) {
             StateSpec ss = (StateSpec) c;
-            if (ss instanceof ApprovalState && ss.getState() > 20) continue;
+            if (ss instanceof ApprovalState && ss.getState() > 20)
+                continue;
 
             JSONObject item = JSONUtils.toJSONObject(
-                    new String[]{"id", "text", "default"},
-                    new Object[]{ss.getState(), Language.L(ss), ss.isDefault()});
-            if (ss.getColor() != null) item.put("color", ss.getColor());
+                    new String[] { "id", "text", "default" },
+                    new Object[] { ss.getState(), Language.L(ss), ss.isDefault() });
+            if (ss.getColor() != null)
+                item.put("color", ss.getColor());
             options.add(item);
         }
 
@@ -91,9 +87,11 @@ public class StateManager {
         for (Object c : stateClass.getEnumConstants()) {
             StateSpec s = (StateSpec) c;
 
-            if (nv instanceof Integer && (Integer) nv == s.getState()) return s;
+            if (nv instanceof Integer && (Integer) nv == s.getState())
+                return s;
             if (s.getName().equalsIgnoreCase(nv.toString())
-                    || ((Enum<?>) s).name().equalsIgnoreCase(nv.toString())) return s;
+                    || ((Enum<?>) s).name().equalsIgnoreCase(nv.toString()))
+                return s;
         }
         throw new RebuildException("Cannot found state : " + nv);
     }

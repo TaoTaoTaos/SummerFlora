@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.configuration;
 
@@ -39,7 +33,8 @@ public class RebuildApiManager implements ConfigManager {
                 "select appSecret,bindUser,bindIps from RebuildApi where appId = ?")
                 .setParameter(1, appid)
                 .unique();
-        if (o == null) return null;
+        if (o == null)
+            return null;
 
         cb = new ConfigBean()
                 .set("appId", appid)

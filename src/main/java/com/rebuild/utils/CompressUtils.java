@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.utils;
 
@@ -32,7 +26,7 @@ public class CompressUtils {
 
     /**
      * @param fileOrDir
-     * @param destZip delete after create
+     * @param destZip   delete after create
      * @param filter
      * @throws IOException
      */
@@ -46,7 +40,8 @@ public class CompressUtils {
     }
 
     /**
-     * Creates a zip output stream at the specified path with the contents of the specified directory.
+     * Creates a zip output stream at the specified path with the contents of the
+     * specified directory.
      *
      * @param fileOrDir
      * @param zipOutputStream
@@ -74,7 +69,8 @@ public class CompressUtils {
         }
     }
 
-    private static void addFileToZip(ZipArchiveOutputStream zipArchiveOutputStream, File file, String path, FileFilter filter) throws IOException {
+    private static void addFileToZip(ZipArchiveOutputStream zipArchiveOutputStream, File file, String path,
+            FileFilter filter) throws IOException {
         // at first call it is the folder, otherwise is the relative path
         String entryName = (path != null) ? path + file.getName() : file.getName();
         ZipArchiveEntry zipEntry = new ZipArchiveEntry(file, entryName);

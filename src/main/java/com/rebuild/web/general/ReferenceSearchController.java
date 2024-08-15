@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.web.general;
 
@@ -57,13 +51,13 @@ import java.util.Set;
  */
 @Slf4j
 @RestController
-@RequestMapping({"/commons/search/","/app/entity/"})
+@RequestMapping({ "/commons/search/", "/app/entity/" })
 public class ReferenceSearchController extends EntityController {
 
     private static final String _SELF = "{@CURRENT}";
 
     // 引用字段-快速搜索
-    @GetMapping({"reference", "quick"})
+    @GetMapping({ "reference", "quick" })
     public JSON referenceSearch(@EntityParam Entity entity, HttpServletRequest request) {
         final ID user = getRequestUser(request);
 
@@ -72,7 +66,8 @@ public class ReferenceSearchController extends EntityController {
 
         // 引用字段数据过滤
         String cascadingValue = getParameter(request, "cascadingValue", StringUtils.EMPTY);
-        if (cascadingValue.contains(",")) cascadingValue = cascadingValue.split(",")[0];  // N2N
+        if (cascadingValue.contains(","))
+            cascadingValue = cascadingValue.split(",")[0]; // N2N
 
         String protocolFilter = new ProtocolFilterParser()
                 .parseRef(referenceField.getName() + "." + entity.getName(), cascadingValue);
@@ -89,7 +84,8 @@ public class ReferenceSearchController extends EntityController {
                     user, searchEntity.getName(), getParameter(request, "type"), protocolFilter);
 
             if (used.length == 0) {
-                if (!forceResults) return JSONUtils.EMPTY_ARRAY;
+                if (!forceResults)
+                    return JSONUtils.EMPTY_ARRAY;
             } else {
                 return RecentlyUsedSearchController.formatSelect2(used, Language.L("最近使用"));
             }
@@ -115,8 +111,10 @@ public class ReferenceSearchController extends EntityController {
             ID[] recently = RecentlyUsedHelper.gets(user, searchEntity.getName(), type);
 
             if (recently.length == 0) {
-                if (forceResults);  // Nothings
-                else return JSONUtils.EMPTY_ARRAY;
+                if (forceResults)
+                    ; // Nothings
+                else
+                    return JSONUtils.EMPTY_ARRAY;
             } else {
                 return RecentlyUsedSearchController.formatSelect2(recently, Language.L("最近使用"));
             }
@@ -128,7 +126,8 @@ public class ReferenceSearchController extends EntityController {
     }
 
     // 构建查询
-    private JSON buildResultSearch(Entity searchEntity, String quickFields, String q, String appendWhere, int maxResults, ID user) {
+    private JSON buildResultSearch(Entity searchEntity, String quickFields, String q, String appendWhere,
+            int maxResults, ID user) {
         String searchWhere = "(1=1)";
 
         if (StringUtils.isNotBlank(q)) {
@@ -152,9 +151,11 @@ public class ReferenceSearchController extends EntityController {
         final int sEntityCode = searchEntity.getEntityCode();
         if (MetadataHelper.isBizzEntity(sEntityCode)) {
             String s = UserFilters.getBizzFilter(sEntityCode, user);
-            if (s != null) searchWhere += " and " + s;
+            if (s != null)
+                searchWhere += " and " + s;
             s = UserFilters.getEnableBizzPartFilter(sEntityCode, user);
-            if (s != null) searchWhere += " and " + s;
+            if (s != null)
+                searchWhere += " and " + s;
         }
 
         List<Object> result = resultSearch(searchWhere, searchEntity, maxResults);
@@ -162,7 +163,7 @@ public class ReferenceSearchController extends EntityController {
         if ("self".equals(q)) {
             if (sEntityCode == EntityHelper.User || sEntityCode == EntityHelper.Department) {
                 result.add(JSONUtils.toJSONObject(
-                        new String[]{ "id", "text" }, new Object[] { _SELF, Language.L("本人/本部门") }));
+                        new String[] { "id", "text" }, new Object[] { _SELF, Language.L("本人/本部门") }));
             }
         }
 
@@ -171,6 +172,7 @@ public class ReferenceSearchController extends EntityController {
 
     /**
      * 搜索分类字段
+     * 
      * @see PickListDataController#fetchClassification(HttpServletRequest)
      */
     @GetMapping("classification")
@@ -180,7 +182,8 @@ public class ReferenceSearchController extends EntityController {
 
         Field fieldMeta = entity.getField(field);
         ID useClassification = ClassificationManager.instance.getUseClassification(fieldMeta, false);
-        if (useClassification == null) return JSONUtils.EMPTY_ARRAY;
+        if (useClassification == null)
+            return JSONUtils.EMPTY_ARRAY;
 
         String q = StringUtils.trim(getParameter(request, "q"));
         int openLevel = ClassificationManager.instance.getOpenLevel(fieldMeta);
@@ -249,7 +252,8 @@ public class ReferenceSearchController extends EntityController {
     @GetMapping("read-labels")
     public RespBody referenceLabel(HttpServletRequest request) {
         final String ids = getParameter(request, "ids", getParameter(request, "id", null));
-        if (StringUtils.isBlank(ids)) return RespBody.ok();
+        if (StringUtils.isBlank(ids))
+            return RespBody.ok();
 
         final ID user = getRequestUser(request);
 
@@ -268,12 +272,14 @@ public class ReferenceSearchController extends EntityController {
             }
 
             final ID recordId = ID.valueOf(id);
-            if (checkPrivileges && !Application.getPrivilegesManager().allowRead(user, recordId)) continue;
+            if (checkPrivileges && !Application.getPrivilegesManager().allowRead(user, recordId))
+                continue;
 
             if (ignoreMiss) {
                 try {
                     labels.put(id, FieldValueHelper.getLabel(recordId));
-                } catch (NoRecordFoundException ignored) {}
+                } catch (NoRecordFoundException ignored) {
+                }
             } else {
                 labels.put(id, FieldValueHelper.getLabelNotry(recordId));
             }
@@ -284,10 +290,13 @@ public class ReferenceSearchController extends EntityController {
 
     /**
      * 引用字段搜索页面
-     * @see com.rebuild.web.general.GeneralListController#pageList(String, HttpServletRequest, HttpServletResponse)
+     * 
+     * @see com.rebuild.web.general.GeneralListController#pageList(String,
+     *      HttpServletRequest, HttpServletResponse)
      */
     @GetMapping("reference-search")
-    public ModelAndView referenceSearchPage(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public ModelAndView referenceSearchPage(HttpServletRequest request, HttpServletResponse response)
+            throws IOException {
         String[] fieldAndEntity = getParameterNotNull(request, "field").split("\\.");
         if (!MetadataHelper.checkAndWarnField(fieldAndEntity[1], fieldAndEntity[0])) {
             response.sendError(404);

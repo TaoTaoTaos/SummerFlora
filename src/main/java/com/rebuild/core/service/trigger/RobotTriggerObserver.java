@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.service.trigger;
 
@@ -46,7 +40,8 @@ public class RobotTriggerObserver extends OperatingObserver {
     private static final ThreadLocal<Boolean> LAZY_TRIGGERS = new NamedThreadLocal<>("Lazy triggers");
     private static final ThreadLocal<List<Object>> LAZY_TRIGGERS_CTX = new NamedThreadLocal<>("Lazy triggers ctx");
 
-    private static final ThreadLocal<String> ALLOW_TRIGGERS_ONAPPROVED = new NamedThreadLocal<>("Allow triggers on approve-node");
+    private static final ThreadLocal<String> ALLOW_TRIGGERS_ONAPPROVED = new NamedThreadLocal<>(
+            "Allow triggers on approve-node");
 
     @Override
     public int getOrder() {
@@ -64,10 +59,12 @@ public class RobotTriggerObserver extends OperatingObserver {
 
         if (isLazyTriggers(false)) {
             List<Object> ctx = LAZY_TRIGGERS_CTX.get();
-            if (ctx == null) ctx = new ArrayList<>();
+            if (ctx == null)
+                ctx = new ArrayList<>();
             ctx.add(context);
             LAZY_TRIGGERS_CTX.set(ctx);
-            if (CommonsUtils.DEVLOG) System.out.println("[dev] Lazy triggers : " + ctx);
+            if (CommonsUtils.DEVLOG)
+                System.out.println("[dev] Lazy triggers : " + ctx);
         } else {
             super.update(o, context);
         }
@@ -112,7 +109,8 @@ public class RobotTriggerObserver extends OperatingObserver {
                 action.prepare(context);
             } catch (Exception ex) {
                 // DataValidate 直接抛出
-                if (ex instanceof DataValidateException) throw ex;
+                if (ex instanceof DataValidateException)
+                    throw ex;
 
                 log.error("Preparing context of trigger fails : {}", action, ex);
             }
@@ -142,7 +140,8 @@ public class RobotTriggerObserver extends OperatingObserver {
         TriggerAction[] beExecuted = when == TriggerWhen.DELETE
                 ? DELETE_BEFORE_HOLD.get(primaryId)
                 : RobotTriggerManager.instance.getActions(context.getFixedRecordId(), when);
-        if (beExecuted == null || beExecuted.length == 0) return;
+        if (beExecuted == null || beExecuted.length == 0)
+            return;
 
         TriggerSource triggerSource = getTriggerSource();
         final boolean originTriggerSource = triggerSource == null;
@@ -154,7 +153,8 @@ public class RobotTriggerObserver extends OperatingObserver {
 
             // 强制清理一次，正常不会出现此情况
             Object o = FieldAggregation.cleanTriggerChain();
-            if (o != null) log.warn("Force clean last trigger-chain : {}", o);
+            if (o != null)
+                log.warn("Force clean last trigger-chain : {}", o);
 
         } else {
             // v3.1-b5
@@ -185,19 +185,23 @@ public class RobotTriggerObserver extends OperatingObserver {
                                 break;
                             }
                         }
-                        if (!hasUpdated) continue;
+                        if (!hasUpdated)
+                            continue;
                     }
                 }
 
                 final int t = triggerSource.incrTriggerTimes();
-                final String w = String.format("Trigger.%s.%d [ %s ] executing on record (%s) : %s", sourceId, t, action, when, primaryId);
+                final String w = String.format("Trigger.%s.%d [ %s ] executing on record (%s) : %s", sourceId, t,
+                        action, when, primaryId);
                 log.info(w);
 
                 try {
                     Object res = action.execute(context);
 
                     boolean hasAffected = res instanceof TriggerResult && ((TriggerResult) res).hasAffected();
-                    if (CommonsUtils.DEVLOG) System.out.println("[dev] " + w + " > " + (res == null ? "N" : res) + (hasAffected ? " < REALLY AFFECTED" : ""));
+                    if (CommonsUtils.DEVLOG)
+                        System.out.println("[dev] " + w + " > " + (res == null ? "N" : res)
+                                + (hasAffected ? " < REALLY AFFECTED" : ""));
 
                     if (res instanceof TriggerResult) {
                         if (originTriggerSource) {
@@ -211,7 +215,8 @@ public class RobotTriggerObserver extends OperatingObserver {
                 } catch (Throwable ex) {
 
                     // DataValidate 直接抛出
-                    if (ex instanceof DataValidateException) throw ex;
+                    if (ex instanceof DataValidateException)
+                        throw ex;
 
                     log.error("Trigger execution failed : {} << {}", action, context, ex);
                     CommonsLog.createLog(TYPE_TRIGGER,
@@ -222,9 +227,12 @@ public class RobotTriggerObserver extends OperatingObserver {
                         throw (TriggerException) ex;
                     } else {
                         String errMsg = KnownExceptionConverter.convert2ErrorMsg(ex);
-                        if (errMsg == null) errMsg = ex.getLocalizedMessage();
-                        if (ex instanceof RepeatedRecordsException) errMsg = Language.L("存在重复记录");
-                        if (StringUtils.isBlank(errMsg)) errMsg = ex.getClass().getSimpleName().toUpperCase();
+                        if (errMsg == null)
+                            errMsg = ex.getLocalizedMessage();
+                        if (ex instanceof RepeatedRecordsException)
+                            errMsg = Language.L("存在重复记录");
+                        if (StringUtils.isBlank(errMsg))
+                            errMsg = ex.getClass().getSimpleName().toUpperCase();
 
                         errMsg = Language.L("触发器执行失败 : %s", errMsg);
 
@@ -279,7 +287,8 @@ public class RobotTriggerObserver extends OperatingObserver {
      */
     public static boolean isLazyTriggers(boolean once) {
         Boolean is = LAZY_TRIGGERS.get();
-        if (is != null && once) LAZY_TRIGGERS.remove();
+        if (is != null && once)
+            LAZY_TRIGGERS.remove();
         return is != null && is;
     }
 
@@ -293,7 +302,8 @@ public class RobotTriggerObserver extends OperatingObserver {
         isLazyTriggers(true);
 
         List<Object> ctx = LAZY_TRIGGERS_CTX.get();
-        if (ctx == null) return 0;
+        if (ctx == null)
+            return 0;
         LAZY_TRIGGERS_CTX.remove();
 
         log.info("Will execute lazy triggers : {}", ctx);

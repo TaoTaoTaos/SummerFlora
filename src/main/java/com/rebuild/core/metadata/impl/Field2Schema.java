@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.metadata.impl;
 
@@ -95,7 +89,8 @@ public class Field2Schema extends SetUser {
      * @param extConfig
      * @return
      */
-    public String createField(Entity entity, String fieldLabel, DisplayType type, String comments, String refEntity, JSON extConfig) {
+    public String createField(Entity entity, String fieldLabel, DisplayType type, String comments, String refEntity,
+            JSON extConfig) {
         return createField(entity, fieldLabel, null, type, comments, refEntity, extConfig);
     }
 
@@ -109,12 +104,15 @@ public class Field2Schema extends SetUser {
      * @param extConfig
      * @return
      */
-    public String createField(Entity entity, String fieldLabel, String fieldName, DisplayType type, String comments, String refEntity, JSON extConfig) {
+    public String createField(Entity entity, String fieldLabel, String fieldName, DisplayType type, String comments,
+            String refEntity, JSON extConfig) {
         fieldLabel = CommonsUtils.maxstr(StringUtils.trim(fieldLabel), 40);
         fieldName = StringUtils.trim(fieldName);
 
-        if (StringUtils.length(fieldName) < 4) fieldName = toPinyinName(fieldLabel);
-        else fieldName = toPinyinName(fieldName);
+        if (StringUtils.length(fieldName) < 4)
+            fieldName = toPinyinName(fieldLabel);
+        else
+            fieldName = toPinyinName(fieldName);
 
         for (int i = 0; i < 6; i++) {
             if (entity.containsField(fieldName) || MetadataHelper.isCommonsField(fieldName)) {
@@ -125,12 +123,14 @@ public class Field2Schema extends SetUser {
         }
 
         Field field = createUnsafeField(
-                entity, fieldName, fieldLabel, type, true, true, true, true, true, comments, refEntity, null, extConfig, null);
+                entity, fieldName, fieldLabel, type, true, true, true, true, true, comments, refEntity, null, extConfig,
+                null);
 
         Collection<String> uniqueKeyFields = null;
-        if (type == DisplayType.SERIES) uniqueKeyFields = Collections.singletonList(field.getName());
+        if (type == DisplayType.SERIES)
+            uniqueKeyFields = Collections.singletonList(field.getName());
 
-        boolean schemaReady = schema2Database(entity, new Field[]{field}, uniqueKeyFields);
+        boolean schemaReady = schema2Database(entity, new Field[] { field }, uniqueKeyFields);
         if (!schemaReady) {
             Application.getCommonsService().delete(recordedMetaIds.toArray(new ID[0]));
             throw new MetadataModificationException(Language.L("无法同步元数据到数据库"));
@@ -164,7 +164,8 @@ public class Field2Schema extends SetUser {
             }
         }
 
-        String ddl = String.format("alter table `%s` drop column `%s`", entity.getPhysicalName(), field.getPhysicalName());
+        String ddl = String.format("alter table `%s` drop column `%s`", entity.getPhysicalName(),
+                field.getPhysicalName());
         try {
             Application.getSqlExecutor().execute(ddl, DDL_TIMEOUT);
         } catch (Throwable ex) {
@@ -220,7 +221,7 @@ public class Field2Schema extends SetUser {
                 table.generateFieldDDL(field, ddl);
 
                 try {
-                    Application.getSqlExecutor().executeBatch(new String[]{ddl.toString()}, DDL_TIMEOUT);
+                    Application.getSqlExecutor().executeBatch(new String[] { ddl.toString() }, DDL_TIMEOUT);
                 } catch (Throwable ex) {
                     log.error("DDL ERROR : \n" + ddl, ex);
                     return false;
@@ -246,7 +247,7 @@ public class Field2Schema extends SetUser {
         ddl.deleteCharAt(ddl.length() - 1);
 
         try {
-            Application.getSqlExecutor().executeBatch(new String[]{ddl.toString()}, DDL_TIMEOUT);
+            Application.getSqlExecutor().executeBatch(new String[] { ddl.toString() }, DDL_TIMEOUT);
         } catch (Throwable ex) {
             // Duplicate column name: 'xxx'
             if (fields.length == 1
@@ -281,8 +282,9 @@ public class Field2Schema extends SetUser {
      * @see #createField(Entity, String, DisplayType, String, String, JSON)
      */
     public Field createUnsafeField(Entity entity, String fieldName, String fieldLabel, DisplayType dt,
-                                   boolean nullable, boolean creatable, boolean updatable, boolean repeatable, boolean queryable, String comments, String refEntity, CascadeModel cascade,
-                                   JSON extConfig, Object defaultValue) {
+            boolean nullable, boolean creatable, boolean updatable, boolean repeatable, boolean queryable,
+            String comments, String refEntity, CascadeModel cascade,
+            JSON extConfig, Object defaultValue) {
         if (dt == DisplayType.SERIES || EntityHelper.AutoId.equalsIgnoreCase(fieldName)) {
             nullable = false;
             creatable = false;
@@ -293,7 +295,7 @@ public class Field2Schema extends SetUser {
             creatable = false;
             updatable = false;
             queryable = true;
-        }else if (EntityHelper.QuickCode.equalsIgnoreCase(fieldName)) {
+        } else if (EntityHelper.QuickCode.equalsIgnoreCase(fieldName)) {
             creatable = false;
             queryable = false;
         }
@@ -342,7 +344,8 @@ public class Field2Schema extends SetUser {
 
             recordOfField.setString("refEntity", refEntity);
             if (cascade != null) {
-                String cascadeAlias = cascade == CascadeModel.RemoveLinks ? "remove-links" : cascade.name().toLowerCase();
+                String cascadeAlias = cascade == CascadeModel.RemoveLinks ? "remove-links"
+                        : cascade.name().toLowerCase();
                 recordOfField.setString("cascade", cascadeAlias);
             } else {
                 recordOfField.setString("cascade", CascadeModel.Ignore.name().toLowerCase());
@@ -460,8 +463,10 @@ public class Field2Schema extends SetUser {
             Object calcFormula = extraAttrs.remove(NUMBER_CALCFORMULA);
 
             extraAttrs.clear();
-            if (notNegative != null) extraAttrs.put(NUMBER_NOTNEGATIVE, notNegative);
-            if (calcFormula != null) extraAttrs.put(NUMBER_CALCFORMULA, calcFormula);
+            if (notNegative != null)
+                extraAttrs.put(NUMBER_NOTNEGATIVE, notNegative);
+            if (calcFormula != null)
+                extraAttrs.put(NUMBER_CALCFORMULA, calcFormula);
 
             if (!extraAttrs.isEmpty()) {
                 fieldMeta.setString("extConfig", extraAttrs.toJSONString());
@@ -496,7 +501,7 @@ public class Field2Schema extends SetUser {
                     field.getOwnEntity().getPhysicalName(), field.getPhysicalName());
             alterTypeSql += ddl.toString().trim().replace("  ", " ");
 
-            Application.getSqlExecutor().executeBatch(new String[]{alterTypeSql}, DDL_TIMEOUT);
+            Application.getSqlExecutor().executeBatch(new String[] { alterTypeSql }, DDL_TIMEOUT);
             log.info("Cast field type : {}", alterTypeSql);
 
         } catch (Throwable ex) {

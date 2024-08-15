@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.web.admin.bizz;
 
@@ -64,7 +58,8 @@ public class UserController extends EntityController {
 
     @RequestMapping("check-user-status")
     public RespBody checkUserStatus(@IdParam ID uid) {
-        if (!Application.getUserStore().existsUser(uid)) return RespBody.error();
+        if (!Application.getUserStore().existsUser(uid))
+            return RespBody.error();
 
         final User checkedUser = Application.getUserStore().getUser(uid);
 
@@ -125,7 +120,8 @@ public class UserController extends EntityController {
             String appends = data.getString("roleAppends");
             Set<ID> set = new HashSet<>();
             for (String s : appends.split(",")) {
-                if (ID.isId(s)) set.add(ID.valueOf(s));
+                if (ID.isId(s))
+                    set.add(ID.valueOf(s));
             }
 
             if (roleNew != null) {
@@ -180,7 +176,7 @@ public class UserController extends EntityController {
         }
 
         return JSONUtils.toJSONObject(
-                new String[] { "hasMember", "hasChild"},
+                new String[] { "hasMember", "hasChild" },
                 new Object[] { hasMember, hasChild });
     }
 
@@ -218,10 +214,12 @@ public class UserController extends EntityController {
         JSONObject resMap = new JSONObject();
 
         for (String id : ids) {
-            if (!ID.isId(id)) continue;
+            if (!ID.isId(id))
+                continue;
 
             Object[] o = Application.getQueryFactory().unique(ID.valueOf(id), "externalId");
-            if (o != null && o[0] != null) resMap.put(id, o[0]);
+            if (o != null && o[0] != null)
+                resMap.put(id, o[0]);
         }
         return resMap;
     }

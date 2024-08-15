@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.service.general;
 
@@ -44,13 +38,15 @@ public class BulkShare extends BulkOperator {
         ID firstShared = null;
         NotificationOnce.begin();
         for (ID id : records) {
-            if (isInterruptState()) break;
+            if (isInterruptState())
+                break;
 
             if (Application.getPrivilegesManager().allowShare(context.getOpUser(), id)) {
                 int a = ges.share(id, context.getToUser(), context.getCascades(), shareRights);
                 if (a > 0) {
                     this.addSucceeded();
-                    if (firstShared == null) firstShared = id;
+                    if (firstShared == null)
+                        firstShared = id;
                 }
 
             } else {

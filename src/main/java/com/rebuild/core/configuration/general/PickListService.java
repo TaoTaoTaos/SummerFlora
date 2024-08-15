@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.configuration.general;
 
@@ -109,7 +103,8 @@ public class PickListService extends BaseConfigurationService implements AdminGu
             ID id2id = ID.isId(id) ? ID.valueOf(id) : null;
 
             Record r = id2id == null
-                    ? EntityHelper.forNew(EntityHelper.PickList, user) : EntityHelper.forUpdate(id2id, user);
+                    ? EntityHelper.forNew(EntityHelper.PickList, user)
+                    : EntityHelper.forUpdate(id2id, user);
             r.setInt("seq", seq++);
             r.setString("text", item.getString("text"));
             r.setBoolean("isHide", false);

@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.support.integration;
 
@@ -190,7 +184,7 @@ public class QiniuCloud {
         if (seconds > 60) {
             Calendar c = CalendarUtils.getInstance();
             c.add(Calendar.SECOND, seconds);
-            c.set(Calendar.SECOND, 59);  // full seconds
+            c.set(Calendar.SECOND, 59); // full seconds
             deadline = c.getTimeInMillis() / 1000;
         }
 
@@ -228,7 +222,8 @@ public class QiniuCloud {
             if (resp.isOK()) {
                 return true;
             } else {
-                throw new RebuildException("Failed to delete file : " + this.bucketName + " < " + key + " : " + resp.bodyString());
+                throw new RebuildException(
+                        "Failed to delete file : " + this.bucketName + " < " + key + " : " + resp.bodyString());
             }
         } catch (QiniuException e) {
             throw new RebuildException("Failed to delete file : " + this.bucketName + " < " + key, e);
@@ -267,7 +262,7 @@ public class QiniuCloud {
      * 获取上传 Token
      *
      * @param fileKey
-     * @param fops 异步预处理
+     * @param fops    异步预处理
      * @return
      * @see #formatFileKey(String)
      */
@@ -275,7 +270,9 @@ public class QiniuCloud {
         // 上传策略参见 https://developer.qiniu.com/kodo/manual/1206/put-policy
         int maxSize = RebuildConfiguration.getInt(ConfigurationItem.PortalUploadMaxSize);
         StringMap policy = new StringMap().put("fsizeLimit", FileUtils.ONE_MB * maxSize);
-        if (fops != null) policy.put("persistentOps", fops).put("persistentNotifyUrl", "https://webhook.site/e2784dd3-cf2c-49ce-8d53-05666e7f5bd0");
+        if (fops != null)
+            policy.put("persistentOps", fops).put("persistentNotifyUrl",
+                    "https://webhook.site/e2784dd3-cf2c-49ce-8d53-05666e7f5bd0");
 
         return getAuth().uploadToken(bucketName, fileKey, 3600L, policy, true);
     }
@@ -335,7 +332,8 @@ public class QiniuCloud {
         } else {
             String fileExt = FileUtil.getSuffix(fileName);
             fileName = CommonsUtils.randomHex(true).substring(0, 20);
-            if (StringUtils.isNotBlank(fileExt)) fileName += "." + fileExt;
+            if (StringUtils.isNotBlank(fileExt))
+                fileName += "." + fileExt;
         }
 
         String datetime = CalendarUtils.getDateFormat("yyyyMMddHHmmssSSS").format(CalendarUtils.now());
@@ -388,7 +386,8 @@ public class QiniuCloud {
      */
     public static long getStorageSize() {
         Long size = (Long) Application.getCommonsCache().getx("_StorageSize");
-        if (size != null) return size;
+        if (size != null)
+            return size;
 
         if (QiniuCloud.instance().available()) {
             size = QiniuCloud.instance().stats();
@@ -399,7 +398,8 @@ public class QiniuCloud {
             }
         }
 
-        if (size == null) size = 0L;
+        if (size == null)
+            size = 0L;
 
         Application.getCommonsCache().putx("_StorageSize", size, CommonsCache.TS_HOUR);
         return size;
@@ -430,7 +430,8 @@ public class QiniuCloud {
             file = RebuildConfiguration.getFileOfData(filepath);
         }
 
-        if (file == null || !file.exists()) throw new RebuildException("Cannot read file : " + filepath);
+        if (file == null || !file.exists())
+            throw new RebuildException("Cannot read file : " + filepath);
         return file;
     }
 }

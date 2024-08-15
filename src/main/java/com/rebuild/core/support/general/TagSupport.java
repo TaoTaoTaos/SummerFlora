@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.support.general;
 
@@ -48,7 +42,8 @@ public class TagSupport {
                 .setParameter(1, field.getName())
                 .setParameter(2, recordId)
                 .array();
-        if (array.length == 0) return ArrayUtils.EMPTY_STRING_ARRAY;
+        if (array.length == 0)
+            return ArrayUtils.EMPTY_STRING_ARRAY;
 
         String[] tagNames = new String[array.length];
         for (int i = 0; i < array.length; i++) {
@@ -61,7 +56,7 @@ public class TagSupport {
      * 获取标签列表
      *
      * @param fieldPath
-     * @param recordId 主键
+     * @param recordId  主键
      * @return
      */
     public static String[] items(String fieldPath, ID recordId) {

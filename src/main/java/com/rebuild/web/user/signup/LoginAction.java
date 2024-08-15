@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.web.user.signup;
 
@@ -66,7 +60,8 @@ public class LoginAction extends BaseController {
      * @param autoLogin
      * @return
      */
-    protected Integer loginSuccessed(HttpServletRequest request, HttpServletResponse response, ID user, boolean autoLogin) {
+    protected Integer loginSuccessed(HttpServletRequest request, HttpServletResponse response, ID user,
+            boolean autoLogin) {
         return loginSuccessed(request, response, user, autoLogin, false);
     }
 
@@ -80,7 +75,8 @@ public class LoginAction extends BaseController {
         Map<String, Object> resMap = new HashMap<>();
 
         Integer ed = loginSuccessed(request, response, user, false, true);
-        if (ed != null) resMap.put("passwdExpiredDays", ed);
+        if (ed != null)
+            resMap.put("passwdExpiredDays", ed);
 
         String authToken = AuthTokenManager.generateAccessToken(user);
         resMap.put("authToken", authToken);
@@ -99,7 +95,8 @@ public class LoginAction extends BaseController {
      * @param fromH5
      * @return 密码过期时间（如有）
      */
-    private Integer loginSuccessed(HttpServletRequest request, HttpServletResponse response, ID user, boolean autoLogin, boolean fromH5) {
+    private Integer loginSuccessed(HttpServletRequest request, HttpServletResponse response, ID user, boolean autoLogin,
+            boolean fromH5) {
         // 自动登录
         if (autoLogin) {
             final String altToken = CodecUtils.randomCode(60);
@@ -154,16 +151,19 @@ public class LoginAction extends BaseController {
             uaClear = uas.getBrowser().name();
             if (uas.getBrowserVersion() != null) {
                 String mv = uas.getBrowserVersion().getMajorVersion();
-                if (!uaClear.endsWith(mv)) uaClear += "-" + mv;
+                if (!uaClear.endsWith(mv))
+                    uaClear += "-" + mv;
             }
 
             OperatingSystem os = uas.getOperatingSystem();
             if (os != null) {
                 uaClear += " (" + os + ")";
-                if (os.getDeviceType() != null && os.getDeviceType() == DeviceType.MOBILE) uaClear += " [Mobile]";
+                if (os.getDeviceType() != null && os.getDeviceType() == DeviceType.MOBILE)
+                    uaClear += " [Mobile]";
             }
 
-            if (request.getAttribute(SK_TEMP_AUTH) != null) uaClear += " [TempAuth]";
+            if (request.getAttribute(SK_TEMP_AUTH) != null)
+                uaClear += " [TempAuth]";
 
         } catch (Exception ex) {
             log.warn("Unknown user-agent : {}", ua);
@@ -183,7 +183,8 @@ public class LoginAction extends BaseController {
 
             User u = Application.getUserStore().getUser(user);
             String uid = StringUtils.defaultString(u.getEmail(), u.getName());
-            if (uid == null) uid = user.toLiteral();
+            if (uid == null)
+                uid = user.toLiteral();
 
             String uaUrl = String.format("api/authority/user/echo?user=%s&ip=%s&ua=%s&source=%s",
                     CodecUtils.base64UrlEncode(uid), ipAddr, CodecUtils.urlEncode(ua),

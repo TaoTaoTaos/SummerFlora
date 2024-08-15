@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.web.user;
 
@@ -53,7 +47,8 @@ public class UserAvatar extends BaseController {
     }
 
     @GetMapping("/user-avatar/{user}")
-    public void renderAvatat(@PathVariable String user, HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public void renderAvatat(@PathVariable String user, HttpServletRequest request, HttpServletResponse response)
+            throws IOException {
         renderUserAvatar(user, request, response);
     }
 
@@ -62,7 +57,8 @@ public class UserAvatar extends BaseController {
      * @param response
      * @throws IOException
      */
-    private void renderUserAvatar(Object user, HttpServletRequest request, HttpServletResponse response) throws IOException {
+    private void renderUserAvatar(Object user, HttpServletRequest request, HttpServletResponse response)
+            throws IOException {
         if (user == null) {
             response.sendRedirect(AppUtils.getContextPath(UserHelper.DEFAULT_AVATAR));
             return;
@@ -109,7 +105,8 @@ public class UserAvatar extends BaseController {
             } else {
                 avatarUrl = AppUtils.getContextPath("/filex/img/" + avatarUrl);
                 String authToken = request.getParameter(AppUtils.URL_AUTHTOKEN);
-                if (authToken != null) avatarUrl += String.format("&_authToken=%s", authToken);
+                if (authToken != null)
+                    avatarUrl += String.format("&_authToken=%s", authToken);
             }
 
             response.sendRedirect(avatarUrl);

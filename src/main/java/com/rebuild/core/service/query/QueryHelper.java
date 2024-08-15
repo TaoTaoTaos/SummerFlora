@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.service.query;
 
@@ -53,7 +47,8 @@ public class QueryHelper {
      * @see #isMatchFilter(ID, String)
      */
     public static boolean isMatchAdvFilter(ID recordId, JSONObject advFilter, boolean useVarRecord) {
-        if (!ParseHelper.validAdvFilter(advFilter)) return true;
+        if (!ParseHelper.validAdvFilter(advFilter))
+            return true;
 
         String filterSql = useVarRecord ? new AdvFilterParser(advFilter, recordId).toSqlWhere()
                 : new AdvFilterParser(advFilter).toSqlWhere();
@@ -69,7 +64,8 @@ public class QueryHelper {
      * @return
      */
     public static boolean isMatchFilter(ID recordId, String filterSql) {
-        if (StringUtils.isBlank(filterSql)) return true;
+        if (StringUtils.isBlank(filterSql))
+            return true;
 
         Entity entity = MetadataHelper.getEntity(recordId.getEntityCode());
         String sql = MessageFormat.format(
@@ -103,7 +99,8 @@ public class QueryHelper {
     public static Record recordNoFilter(ID recordId) throws NoRecordFoundException {
         Record o = Application.getQueryFactory().recordNoFilter(recordId);
 
-        if (o == null) throw new NoRecordFoundException(recordId);
+        if (o == null)
+            throw new NoRecordFoundException(recordId);
         return o;
     }
 
@@ -156,7 +153,8 @@ public class QueryHelper {
         Object[][] array = query.array();
         List<ID> ids = new ArrayList<>();
 
-        for (Object[] o : array) ids.add((ID) o[0]);
+        for (Object[] o : array)
+            ids.add((ID) o[0]);
         return ids;
     }
 
@@ -171,8 +169,10 @@ public class QueryHelper {
         Field dtmField = MetadataHelper.getDetailToMainField(MetadataHelper.getEntity(detailId.getEntityCode()));
         Object[] o = Application.getQueryFactory().uniqueNoFilter(detailId, dtmField.getName());
 
-        if (o == null) throw new NoRecordFoundException(detailId);
-        else return (ID) o[0];
+        if (o == null)
+            throw new NoRecordFoundException(detailId);
+        else
+            return (ID) o[0];
     }
 
     /**
@@ -200,7 +200,8 @@ public class QueryHelper {
                 String.format("select %s from %s where ", entity.getPrimaryField().getName(), entity.getName()));
         for (Field qf : queryFields) {
             String qfName = qf.getName();
-            if (forceQueryName && qf.getType() == FieldType.REFERENCE) qfName = "&" + qfName;
+            if (forceQueryName && qf.getType() == FieldType.REFERENCE)
+                qfName = "&" + qfName;
             sql.append(String.format("%s = '%s' or ", qfName, CommonsUtils.escapeSql(queryValue)));
         }
         sql = new StringBuilder(sql.substring(0, sql.length() - 4));
@@ -235,7 +236,8 @@ public class QueryHelper {
 
         Record snap = Application.getQueryFactory().recordNoFilter(primaryId, fields.toArray(new String[0]));
 
-        if (snap == null) throw new NoRecordFoundException(primaryId);
+        if (snap == null)
+            throw new NoRecordFoundException(primaryId);
         return snap;
     }
 }

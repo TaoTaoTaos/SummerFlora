@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.support.setup;
 
@@ -47,7 +41,8 @@ public class DatabaseBackup {
      */
     public File backup() throws IOException {
         File backupdir = RebuildConfiguration.getFileOfData("_backups");
-        if (!backupdir.exists()) FileUtils.forceMkdir(backupdir);
+        if (!backupdir.exists())
+            FileUtils.forceMkdir(backupdir);
 
         return backup(backupdir);
     }
@@ -85,12 +80,13 @@ public class DatabaseBackup {
 
         String echo = CommandUtils.execFor(cmd);
         boolean isGotError = echo.contains("Got error");
-        if (isGotError) throw new RuntimeException(echo);
+        if (isGotError)
+            throw new RuntimeException(echo);
 
         File zip = new File(backups, destName + ".zip");
         try {
             CompressUtils.forceZip(dest, zip, null);
-            
+
             FileUtils.deleteQuietly(dest);
             dest = zip;
         } catch (Exception e) {
@@ -101,7 +97,8 @@ public class DatabaseBackup {
 
         // 恢复
         // https://stackoverflow.com/questions/16735344/how-to-ignore-certain-mysql-tables-when-importing-a-database
-        // sed -r '/INSERT INTO `(revision_history|recycle_bin|rebuild_api_request)`/d' backup_database.20240326000045 > min.sql
+        // sed -r '/INSERT INTO `(revision_history|recycle_bin|rebuild_api_request)`/d'
+        // backup_database.20240326000045 > min.sql
 
         return dest;
     }

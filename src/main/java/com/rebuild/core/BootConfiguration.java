@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core;
 
@@ -52,8 +46,10 @@ public class BootConfiguration implements InstallState {
 
     @Bean
     JedisPool createJedisPool() {
-        if (checkInstalled()) return createJedisPoolInternal();
-        else return USE_EHCACHE;
+        if (checkInstalled())
+            return createJedisPoolInternal();
+        else
+            return USE_EHCACHE;
     }
 
     @Bean
@@ -108,7 +104,8 @@ public class BootConfiguration implements InstallState {
      */
     public static JedisPool createJedisPoolInternal() {
         String useHost = BootEnvironmentPostProcessor.getProperty("db.CacheHost");
-        if ("0".equals(useHost)) return USE_EHCACHE;
+        if ("0".equals(useHost))
+            return USE_EHCACHE;
 
         String spec = BootEnvironmentPostProcessor.getProperty(ConfigurationItem.RedisDatabase.name());
         int database = NumberUtils.toInt(spec, (Integer) ConfigurationItem.RedisDatabase.getDefaultValue());

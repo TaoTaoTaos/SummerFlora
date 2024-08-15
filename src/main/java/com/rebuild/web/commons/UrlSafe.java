@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.web.commons;
 
@@ -74,10 +68,12 @@ public class UrlSafe extends BaseController {
      * @return
      */
     public static boolean isTrusted(String url) {
-        if (RebuildConfiguration.getBool(ConfigurationItem.TrustedAllUrl)) return true;
+        if (RebuildConfiguration.getBool(ConfigurationItem.TrustedAllUrl))
+            return true;
 
         url = url.split("\\?")[0];
-        if (url.contains(RebuildConfiguration.getHomeUrl())) return true;
+        if (url.contains(RebuildConfiguration.getHomeUrl()))
+            return true;
 
         // 首次加载
         if (TRUSTED_URLS == null) {
@@ -87,7 +83,8 @@ public class UrlSafe extends BaseController {
         }
 
         for (Object t : TRUSTED_URLS) {
-            if (url.contains((String) t)) return true;
+            if (url.contains((String) t))
+                return true;
         }
         return false;
     }

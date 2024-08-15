@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.web;
 
@@ -83,7 +77,8 @@ public abstract class EntityController extends BaseController {
         }
 
         // 使用主实体权限
-        if (useEntity.getMainEntity() != null) useEntity = useEntity.getMainEntity();
+        if (useEntity.getMainEntity() != null)
+            useEntity = useEntity.getMainEntity();
 
         if (MetadataHelper.hasPrivilegesField(useEntity)) {
             Permission[] actions = new Permission[] {
@@ -154,7 +149,8 @@ public abstract class EntityController extends BaseController {
      */
     protected int getCanAccessStatus(String entity, ID user, HttpServletResponse sendError) throws IOException {
         int status = 0;
-        if (!MetadataHelper.containsEntity(entity)) status = 404;
+        if (!MetadataHelper.containsEntity(entity))
+            status = 404;
 
         final Entity checkEntity = MetadataHelper.getEntity(entity);
         if (status == 0) {
@@ -165,7 +161,8 @@ public abstract class EntityController extends BaseController {
         }
 
         if (status == 0) {
-            if (!Application.getPrivilegesManager().allowRead(user, checkEntity.getEntityCode())) status = 403;
+            if (!Application.getPrivilegesManager().allowRead(user, checkEntity.getEntityCode()))
+                status = 403;
         }
 
         if (sendError != null && status > 0) {
@@ -183,7 +180,7 @@ public abstract class EntityController extends BaseController {
         List<Object[]> list = new ArrayList<>();
         for (Entity de : MetadataSorter.sortDetailEntities(mainEntity)) {
             EasyEntity ee = EasyMetaFactory.valueOf(de);
-            list.add(new Object[] { de.getEntityCode(), de.getName(), ee.getLabel(), ee.getIcon() } );
+            list.add(new Object[] { de.getEntityCode(), de.getName(), ee.getLabel(), ee.getIcon() });
         }
         return list.toArray(new Object[0]);
     }

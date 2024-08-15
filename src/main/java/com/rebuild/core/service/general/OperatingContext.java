@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.service.general;
 
@@ -41,7 +35,8 @@ public class OperatingContext {
      * @param affected
      * @param operationIp
      */
-    private OperatingContext(ID operator, Permission action, Record beforeRecord, Record afterRecord, ID[] affected, String operationIp) {
+    private OperatingContext(ID operator, Permission action, Record beforeRecord, Record afterRecord, ID[] affected,
+            String operationIp) {
         Assert.isTrue(beforeRecord != null || afterRecord != null,
                 "At least one of `beforeRecord` or `afterRecord` is not null");
 
@@ -49,7 +44,7 @@ public class OperatingContext {
         this.action = action;
         this.beforeRecord = beforeRecord;
         this.afterRecord = afterRecord;
-        this.affected = affected == null ? new ID[]{ getFixedRecordId() } : affected;
+        this.affected = affected == null ? new ID[] { getFixedRecordId() } : affected;
         this.operationIp = operationIp;
     }
 

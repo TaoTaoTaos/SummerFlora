@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.api;
 
@@ -71,8 +65,10 @@ public class ApiContext {
      * @return
      */
     public ID getBindUser() {
-        if (bindUser == null) return UserService.SYSTEM_USER;
-        else return bindUser;
+        if (bindUser == null)
+            return UserService.SYSTEM_USER;
+        else
+            return bindUser;
     }
 
     /**
@@ -120,7 +116,8 @@ public class ApiContext {
      */
     public ID getParameterAsId(String name) {
         String value = getParameterNotBlank(name);
-        if (ID.isId(value)) return ID.valueOf(value);
+        if (ID.isId(value))
+            return ID.valueOf(value);
         throw new ApiInvokeException(ApiInvokeException.ERR_BADPARAMS, "Parameter [" + name + "] is invalid");
     }
 
@@ -131,8 +128,10 @@ public class ApiContext {
      */
     public int getParameterAsInt(String name, int defaultValue) {
         String value = reqParams.get(name);
-        if (NumberUtils.isNumber(value)) return NumberUtils.toInt(value);
-        else return defaultValue;
+        if (NumberUtils.isNumber(value))
+            return NumberUtils.toInt(value);
+        else
+            return defaultValue;
     }
 
     /**
@@ -142,7 +141,9 @@ public class ApiContext {
      */
     public boolean getParameterAsBool(String name, boolean defaultValue) {
         String value = reqParams.get(name);
-        if (StringUtils.isBlank(value)) return defaultValue;
-        else return BooleanUtils.toBoolean(value);
+        if (StringUtils.isBlank(value))
+            return defaultValue;
+        else
+            return BooleanUtils.toBoolean(value);
     }
 }

@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.privileges;
 
@@ -50,7 +44,8 @@ public class ChangeOwningDeptTask extends HeavyTask<Integer> {
                 "update `{0}` set `{1}` = ''%s'' where `{2}` = ''%s''", deptNew.toLiteral(), user.toLiteral());
         int changed = 0;
         for (Entity e : MetadataHelper.getEntities()) {
-            if (this.isInterruptState()) break;
+            if (this.isInterruptState())
+                break;
 
             if (!MetadataHelper.hasPrivilegesField(e)) {
                 this.addCompleted();

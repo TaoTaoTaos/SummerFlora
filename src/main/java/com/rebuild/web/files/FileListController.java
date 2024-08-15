@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.web.files;
 
@@ -54,7 +48,7 @@ public class FileListController extends BaseController {
 
     private static final String CK_LASTPATH = "rb.lastFilesPath";
 
-    @GetMapping({"home", "attachment", "docs"})
+    @GetMapping({ "home", "attachment", "docs" })
     public ModelAndView pageIndex(HttpServletRequest request, HttpServletResponse response) {
         String path = request.getRequestURI();
         if (path.contains("/files/docs")) {
@@ -65,7 +59,7 @@ public class FileListController extends BaseController {
             path = ServletUtils.readCookie(request, CK_LASTPATH);
             path = "attachment".equals(path) ? path : "docs";
         }
-        
+
         // 记住最后一次访问的文件类型
         ServletUtils.addCookie(response, CK_LASTPATH, path);
 
@@ -118,7 +112,8 @@ public class FileListController extends BaseController {
                 Entity entityMeta = MetadataHelper.getEntity(useEntity);
                 if (entityMeta.getDetailEntity() != null) {
                     sqlWhere.add(String.format(
-                            "(belongEntity = %d or belongEntity = %d)", useEntity, entityMeta.getDetailEntity().getEntityCode()));
+                            "(belongEntity = %d or belongEntity = %d)", useEntity,
+                            entityMeta.getDetailEntity().getEntityCode()));
                 } else {
                     sqlWhere.add("belongEntity = " + useEntity);
                 }
@@ -191,14 +186,14 @@ public class FileListController extends BaseController {
             item.put("filePath", o[1]);
             item.put("fileType", o[2]);
             item.put("fileSize", FileUtils.byteCountToDisplaySize(ObjectUtils.toLong(o[3])));
-            item.put("uploadBy", new Object[]{o[4], UserHelper.getName((ID) o[4])});
+            item.put("uploadBy", new Object[] { o[4], UserHelper.getName((ID) o[4]) });
             item.put("uploadOn", I18nUtils.formatDate((Date) o[5]));
             item.put("inFolder", o[6]);
 
             ID relatedRecord = (ID) o[7];
             if (relatedRecord != null && MetadataHelper.containsEntity(relatedRecord.getEntityCode())) {
                 Entity belongEntity = MetadataHelper.getEntity(relatedRecord.getEntityCode());
-                item.put("relatedRecord", new Object[]{relatedRecord, EasyMetaFactory.getLabel(belongEntity)});
+                item.put("relatedRecord", new Object[] { relatedRecord, EasyMetaFactory.getLabel(belongEntity) });
             }
 
             files.add(item);
@@ -229,12 +224,14 @@ public class FileListController extends BaseController {
 
         // 动态
         allows.add(EntityHelper.Feeds);
-        if (inQuery) allows.add(EntityHelper.FeedsComment);
+        if (inQuery)
+            allows.add(EntityHelper.FeedsComment);
 
         // 项目
         if (ProjectManager.instance.getAvailable(user).length > 0) {
             allows.add(EntityHelper.ProjectTask);
-            if (inQuery) allows.add(EntityHelper.ProjectTaskComment);
+            if (inQuery)
+                allows.add(EntityHelper.ProjectTaskComment);
         }
 
         for (Entity e : MetadataSorter.sortEntities(user, false, false)) {

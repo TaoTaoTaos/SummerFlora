@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.web.general;
 
@@ -65,14 +59,16 @@ public class GeneralModelController extends EntityController {
 
     @GetMapping("view/{id}")
     public ModelAndView pageView(@PathVariable String entity, @PathVariable ID id,
-                                 HttpServletRequest request, HttpServletResponse response) throws IOException {
+            HttpServletRequest request, HttpServletResponse response) throws IOException {
         final ID user = getRequestUser(request);
         int status = getCanAccessStatus(entity, user, response);
-        if (status > 0) return null;
+        if (status > 0)
+            return null;
 
         final Entity viewEntity = MetadataHelper.getEntity(entity);
 
-        if (Application.devMode() && !Objects.equals(id.getEntityCode(), MetadataHelper.getEntity(entity).getEntityCode())) {
+        if (Application.devMode()
+                && !Objects.equals(id.getEntityCode(), MetadataHelper.getEntity(entity).getEntityCode())) {
             log.warn("Entity and ID do not match : {}", request.getRequestURI());
         }
 
@@ -114,7 +110,7 @@ public class GeneralModelController extends EntityController {
 
     @RequestMapping("form-model")
     public JSON entityForm(@PathVariable String entity, @IdParam(required = false) ID id,
-                           HttpServletRequest request) {
+            HttpServletRequest request) {
         final ID user = getRequestUser(request);
         final Entity modelEntity = MetadataHelper.getEntity(entity);
 
@@ -145,7 +141,8 @@ public class GeneralModelController extends EntityController {
             if (StringUtils.isNotBlank(previewid)) {
                 model = new TransformerPreview37(previewid, user).buildForm();
             } else {
-                if (specLayout != null) FormsBuilderContextHolder.setSpecLayout(specLayout);
+                if (specLayout != null)
+                    FormsBuilderContextHolder.setSpecLayout(specLayout);
                 model = FormsBuilder.instance.buildForm(entity, user, id);
             }
 
@@ -169,7 +166,8 @@ public class GeneralModelController extends EntityController {
 
                             int ifAuto = ((JSONObject) c.getJSON("config")).getIntValue("importsMode2Auto");
                             if (ifAuto > 0) {
-                                JSONArray importsFilter = ((JSONObject) c.getJSON("config")).getJSONArray("importsFilter");
+                                JSONArray importsFilter = ((JSONObject) c.getJSON("config"))
+                                        .getJSONArray("importsFilter");
                                 Set<String> autoFields = new HashSet<>();
                                 for (Object o : importsFilter) {
                                     String name = ((JSONArray) o).getString(0);
@@ -201,17 +199,19 @@ public class GeneralModelController extends EntityController {
 
     @GetMapping("view-model")
     public JSON entityView(@PathVariable String entity, @IdParam ID id,
-                           HttpServletRequest request) {
+            HttpServletRequest request) {
         final ID user = getRequestUser(request);
         // 指定布局
         final ID forceLayout = getIdParameter(request, "layout");
-        if (forceLayout != null) FormsBuilderContextHolder.setSpecLayout(forceLayout);
+        if (forceLayout != null)
+            FormsBuilderContextHolder.setSpecLayout(forceLayout);
 
         JSONObject model;
         try {
             model = (JSONObject) FormsBuilder.instance.buildView(entity, user, id);
         } finally {
-            if (forceLayout != null) FormsBuilderContextHolder.getSpecLayout(true);
+            if (forceLayout != null)
+                FormsBuilderContextHolder.getSpecLayout(true);
         }
 
         // 返回扩展
@@ -254,7 +254,8 @@ public class GeneralModelController extends EntityController {
 
         Entity detailEntityMeta = MetadataHelper.getEntity(entity);
         List<ID> ids = QueryHelper.detailIdsNoFilter(mainid, detailEntityMeta);
-        if (ids.isEmpty()) return JSONUtils.EMPTY_ARRAY;
+        if (ids.isEmpty())
+            return JSONUtils.EMPTY_ARRAY;
 
         JSONArray details = new JSONArray();
 

@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.support.general;
 
@@ -130,7 +124,7 @@ public class FieldValueHelper {
         } catch (JSONException ex) {
             log.error("Bad JSONArray format : {} < {}", value, field.getRawMeta());
             return JSONUtils.EMPTY_ARRAY;
-//            throw new RebuildException("BAD VALUE FORMAT:" + value);
+            // throw new RebuildException("BAD VALUE FORMAT:" + value);
         }
     }
 
@@ -171,29 +165,34 @@ public class FieldValueHelper {
     public static String getLabel(ID id, String default4Null) throws NoRecordFoundException {
         Assert.notNull(id, "[id] cannot be null");
         // v3.6
-        if (EntityHelper.isUnsavedId(id)) return Language.L("新的");
+        if (EntityHelper.isUnsavedId(id))
+            return Language.L("新的");
 
         final Entity entity = MetadataHelper.getEntity(id.getEntityCode());
 
         if (id.getEntityCode() == EntityHelper.ClassificationData) {
             String hasValue = ClassificationManager.instance.getFullName(id);
-            if (hasValue == null) throw new NoRecordFoundException("No ClassificationData found by id : " + id);
+            if (hasValue == null)
+                throw new NoRecordFoundException("No ClassificationData found by id : " + id);
             return hasValue;
         } else if (id.getEntityCode() == EntityHelper.PickList) {
             String hasValue = PickListManager.instance.getLabel(id);
-            if (hasValue == null) throw new NoRecordFoundException("No PickList found by id : " + id);
+            if (hasValue == null)
+                throw new NoRecordFoundException("No PickList found by id : " + id);
             return hasValue;
         } else if (id.equals(ApprovalStepService.APPROVAL_NOID)) {
             return Language.L("自动审批");
         } else if (MetadataHelper.isBizzEntity(id.getEntityCode())) {
             String hasName = UserHelper.getName(id);
-            if (hasName == null) throw new NoRecordFoundException("No Bizz found by id : " + id);
+            if (hasName == null)
+                throw new NoRecordFoundException("No Bizz found by id : " + id);
             return hasName;
         }
 
         Field nameField = entity.getNameField();
         Object[] nameValue = Application.getQueryFactory().uniqueNoFilter(id, nameField.getName());
-        if (nameValue == null) throw new NoRecordFoundException(id);
+        if (nameValue == null)
+            throw new NoRecordFoundException(id);
 
         Object nameLabel = wrapFieldValue(nameValue[0], nameField, true);
         if (!CommonsUtils.hasLength(nameLabel)) {
@@ -229,6 +228,7 @@ public class FieldValueHelper {
 
     // 日期公式 {NOW+1D}
     private static final Pattern PATT_DATE = Pattern.compile("\\{NOW([-+])([0-9]{1,9})([YMDHI])}");
+
     /**
      * 解析日期表达式
      *
@@ -304,7 +304,8 @@ public class FieldValueHelper {
      * @return
      */
     public static Object desensitized(EasyField field, Object value) {
-        if (value == null) return null;
+        if (value == null)
+            return null;
 
         DisplayType dt = field.getDisplayType();
         if (dt == DisplayType.EMAIL) {
@@ -335,7 +336,8 @@ public class FieldValueHelper {
         }
         // N2N
         else if (mixValue instanceof JSONArray) {
-            for (Object o : (JSONArray) mixValue) desensitizedMixValue(field, (JSON) o);
+            for (Object o : (JSONArray) mixValue)
+                desensitizedMixValue(field, (JSON) o);
         }
     }
 
@@ -349,10 +351,12 @@ public class FieldValueHelper {
      */
     public static boolean checkRefDataFilter(EasyField field, ID value) {
         String dataFilter = field.getExtraAttr(EasyFieldConfigProps.REFERENCE_DATAFILTER);
-        if (!JSONUtils.wellFormat(dataFilter)) return true;
+        if (!JSONUtils.wellFormat(dataFilter))
+            return true;
 
         JSONObject dataFilterJson = JSON.parseObject(dataFilter);
-        if (!ParseHelper.validAdvFilter(dataFilterJson)) return true;
+        if (!ParseHelper.validAdvFilter(dataFilterJson))
+            return true;
 
         return QueryHelper.isMatchAdvFilter(value, dataFilterJson);
     }

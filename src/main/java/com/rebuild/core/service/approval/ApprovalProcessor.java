@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.service.approval;
 
@@ -128,7 +122,8 @@ public class ApprovalProcessor extends SetUser {
      * @param selectNextUsers
      * @throws ApprovalException
      */
-    public void approve(ID approver, ApprovalState state, String remark, JSONObject selectNextUsers) throws ApprovalException {
+    public void approve(ID approver, ApprovalState state, String remark, JSONObject selectNextUsers)
+            throws ApprovalException {
         approve(approver, state, remark, selectNextUsers, null, null, null, false);
     }
 
@@ -145,7 +140,8 @@ public class ApprovalProcessor extends SetUser {
      * @param batchMode
      * @throws ApprovalException
      */
-    public void approve(ID approver, ApprovalState state, String remark, JSONObject selectNextUsers, Record addedData, String checkUseGroup, String rejectNode, boolean batchMode) throws ApprovalException {
+    public void approve(ID approver, ApprovalState state, String remark, JSONObject selectNextUsers, Record addedData,
+            String checkUseGroup, String rejectNode, boolean batchMode) throws ApprovalException {
         final ApprovalStatus status = checkApprovalState(ApprovalState.PROCESSING);
 
         final Object[] stepApprover = Application.createQueryNoFilter(
@@ -169,7 +165,8 @@ public class ApprovalProcessor extends SetUser {
 
         if (batchMode) {
             JSONObject attrMore = JSONUtils.wellFormat((String) stepApprover[4])
-                    ? JSON.parseObject((String) stepApprover[4]) : new JSONObject();
+                    ? JSON.parseObject((String) stepApprover[4])
+                    : new JSONObject();
             attrMore.put("batchMode", true);
             approvedStep.setString("attrMore", attrMore.toJSONString());
         }
@@ -203,7 +200,8 @@ public class ApprovalProcessor extends SetUser {
         FlowNode currentNode = getFlowNode((String) stepApprover[2]);
         Assert.notNull(currentNode, "FlowNode is null");
         Application.getBean(ApprovalStepService.class)
-                .txApprove(approvedStep, currentNode.getSignMode(), ccUsers, ccAccounts, nextApprovers, nextNode, addedData, checkUseGroup);
+                .txApprove(approvedStep, currentNode.getSignMode(), ccUsers, ccAccounts, nextApprovers, nextNode,
+                        addedData, checkUseGroup);
 
         // 同意时共享
         if (state == ApprovalState.APPROVED) {
@@ -244,7 +242,8 @@ public class ApprovalProcessor extends SetUser {
         JSONArray step = getCurrentStep(status);
         for (Object o : step) {
             JSONObject s = (JSONObject) o;
-            if (s.getIntValue("state") != 1) continue;
+            if (s.getIntValue("state") != 1)
+                continue;
 
             ID approver = ID.valueOf(s.getString("approver"));
             String urgeMsg = Language.L("有一条 %s 记录正在等待你审批，请尽快审批", entityLabel);
@@ -279,7 +278,7 @@ public class ApprovalProcessor extends SetUser {
         if (instepApprover != null) {
             throw new ApprovalException(Language.L("审批人已在当前审批步骤中"));
         }
-        
+
         Application.getBean(ApprovalStepService.class).txReferral((ID) stepApprover[0], toUser);
     }
 
@@ -340,7 +339,8 @@ public class ApprovalProcessor extends SetUser {
         Assert.notNull(currentNode, "[currentNode] cannot be null");
 
         List<FlowNode> nextNodes = getFlowParser().getNextNodes(currentNode);
-        if (nextNodes.isEmpty()) return null;
+        if (nextNodes.isEmpty())
+            return null;
 
         FlowNode firstNode = nextNodes.get(0);
         if (!FlowNode.TYPE_BRANCH.equals(firstNode.getType())) {
@@ -402,7 +402,8 @@ public class ApprovalProcessor extends SetUser {
      * @return
      */
     private String getCurrentNodeId(ApprovalStatus useStatus) {
-        if (useStatus == null) useStatus = ApprovalHelper.getApprovalStatus(this.recordId);
+        if (useStatus == null)
+            useStatus = ApprovalHelper.getApprovalStatus(this.recordId);
 
         String currentNode = useStatus.getCurrentStepNode();
         if (StringUtils.isBlank(currentNode)
@@ -447,7 +448,8 @@ public class ApprovalProcessor extends SetUser {
      * @return returns [S, S]
      */
     public JSONArray getCurrentStep(ApprovalStatus useStatus) {
-        if (useStatus == null) useStatus = ApprovalHelper.getApprovalStatus(this.recordId);
+        if (useStatus == null)
+            useStatus = ApprovalHelper.getApprovalStatus(this.recordId);
 
         final String currentNode = useStatus.getCurrentStepNode();
 
@@ -464,7 +466,8 @@ public class ApprovalProcessor extends SetUser {
         // 2.同一批次的
         sql = "select approver,state,remark,approvedTime,createdOn from RobotApprovalStep"
                 + " where recordId = ? and approvalId = ? and node = ? and isCanceled = 'F' and isBacked = 'F'";
-        if (StringUtils.isNotBlank(nodeBatch)) sql += " and nodeBatch = '" + nodeBatch + "'";
+        if (StringUtils.isNotBlank(nodeBatch))
+            sql += " and nodeBatch = '" + nodeBatch + "'";
 
         Object[][] array = Application.createQueryNoFilter(sql)
                 .setParameter(1, this.recordId)
@@ -490,11 +493,13 @@ public class ApprovalProcessor extends SetUser {
         this.approval = status.getApprovalId();
 
         Object[][] array = Application.createQueryNoFilter(
-                "select approver,state,remark,approvedTime,createdOn,createdBy,node,prevNode,nodeBatch,ccUsers,ccAccounts,attrMore from RobotApprovalStep" +
+                "select approver,state,remark,approvedTime,createdOn,createdBy,node,prevNode,nodeBatch,ccUsers,ccAccounts,attrMore from RobotApprovalStep"
+                        +
                         " where recordId = ? and isWaiting = 'F' and isCanceled = 'F' order by createdOn")
                 .setParameter(1, this.recordId)
                 .array();
-        if (array.length == 0) return JSONUtils.EMPTY_ARRAY;
+        if (array.length == 0)
+            return JSONUtils.EMPTY_ARRAY;
 
         Object[] firstStep = null;
         Map<String, List<Object[]>> stepBatchMap = new LinkedHashMap<>();
@@ -514,15 +519,16 @@ public class ApprovalProcessor extends SetUser {
 
         JSONArray steps = new JSONArray();
         JSONObject submitStep = JSONUtils.toJSONObject(
-                new String[]{"submitter", "submitterName", "createdOn", "approvalId", "approvalName", "approvalState"},
-                new Object[]{firstStep[5],
+                new String[] { "submitter", "submitterName", "createdOn", "approvalId", "approvalName",
+                        "approvalState" },
+                new Object[] { firstStep[5],
                         UserHelper.getName((ID) firstStep[5]),
                         CalendarUtils.getUTCDateTimeFormat().format(firstStep[4]),
-                        status.getApprovalId(), status.getApprovalName(), status.getCurrentState().getState()});
+                        status.getApprovalId(), status.getApprovalName(), status.getCurrentState().getState() });
         steps.add(submitStep);
 
         int nodeIndex = 0;
-        Date prevNodeTime = (Date) firstStep[4];  // 提交时间
+        Date prevNodeTime = (Date) firstStep[4]; // 提交时间
         Map<String, String> nodeIndexNames = new HashMap<>();
         for (Map.Entry<String, List<Object[]>> e : stepBatchMap.entrySet()) {
             nodeIndex++;
@@ -571,7 +577,8 @@ public class ApprovalProcessor extends SetUser {
 
                     int state = s.getIntValue("state");
                     if (state == ApprovalState.DRAFT.getState()
-                            && (status.getCurrentState() == ApprovalState.REVOKED || status.getCurrentState() == ApprovalState.CANCELED)) {
+                            && (status.getCurrentState() == ApprovalState.REVOKED
+                                    || status.getCurrentState() == ApprovalState.CANCELED)) {
                         // 无需显示
                     } else {
                         Date nodeTime = (Date) (o[3] == null ? CalendarUtils.now() : o[3]);
@@ -595,8 +602,8 @@ public class ApprovalProcessor extends SetUser {
     private JSONObject formatStep(Object[] step, String signMode) {
         ID approver = (ID) step[0];
         JSONObject s = JSONUtils.toJSONObject(
-                new String[]{"approver", "approverName", "state", "remark", "approvedTime", "createdOn", "signMode"},
-                new Object[]{
+                new String[] { "approver", "approverName", "state", "remark", "approvedTime", "createdOn", "signMode" },
+                new Object[] {
                         approver, UserHelper.getName(approver),
                         step[1], step[2],
                         step[3] == null ? null : CalendarUtils.getUTCDateTimeFormat().format(step[3]),
@@ -604,7 +611,8 @@ public class ApprovalProcessor extends SetUser {
 
         if (step.length > 9 && step[9] != null) {
             List<String> names = new ArrayList<>();
-            for (ID u : (ID[]) step[9]) names.add(UserHelper.getName(u));
+            for (ID u : (ID[]) step[9])
+                names.add(UserHelper.getName(u));
             s.put("ccUsers", names);
         }
         if (step.length > 10 && step[10] != null) {
@@ -638,14 +646,15 @@ public class ApprovalProcessor extends SetUser {
         this.approval = status.getApprovalId();
 
         String currentNode = getCurrentNodeId(status);
-        if (FlowNode.NODE_ROOT.equals(currentNode)) return JSONUtils.EMPTY_ARRAY;
+        if (FlowNode.NODE_ROOT.equals(currentNode))
+            return JSONUtils.EMPTY_ARRAY;
 
         FlowParser flowParser = getFlowParser();
         LinkedList<String[]> backedNodes = new LinkedList<>();
         while (currentNode != null) {
             FlowNode node = flowParser.getNode(currentNode);
             if (FlowNode.TYPE_APPROVER.equals(node.getType())) {
-                backedNodes.addFirst(new String[]{node.getNodeId(), node.getNodeName()});
+                backedNodes.addFirst(new String[] { node.getNodeId(), node.getNodeName() });
             }
 
             currentNode = node.prevNodes;
@@ -654,7 +663,8 @@ public class ApprovalProcessor extends SetUser {
                 String[] nodes = currentNode.split("\\|");
                 String recNodeSql = String.format(
                         "select node from RobotApprovalStep where recordId = ? and isCanceled = 'F' and state = ?" +
-                                " and node in ('%s') order by createdOn desc", StringUtils.join(nodes, "','"));
+                                " and node in ('%s') order by createdOn desc",
+                        StringUtils.join(nodes, "','"));
                 Object[] recNode = Application.createQueryNoFilter(recNodeSql)
                         .setParameter(1, this.recordId)
                         .setParameter(2, ApprovalState.APPROVED.getState())
@@ -663,9 +673,11 @@ public class ApprovalProcessor extends SetUser {
                 currentNode = recNode == null ? nodes[0] : (String) recNode[0];
             }
 
-            if (FlowNode.NODE_ROOT.equals(currentNode)) currentNode = null;
+            if (FlowNode.NODE_ROOT.equals(currentNode))
+                currentNode = null;
         }
-        if (backedNodes.size() < 2) return JSONUtils.EMPTY_ARRAY;
+        if (backedNodes.size() < 2)
+            return JSONUtils.EMPTY_ARRAY;
 
         // 移除当前步骤
         backedNodes.removeLast();
@@ -674,8 +686,9 @@ public class ApprovalProcessor extends SetUser {
         int nodeIndex = 0;
         for (String[] s : backedNodes) {
             nodeIndex++;
-            if (StringUtils.isBlank(s[1])) s[1] = Language.L("审批人") + "#" + nodeIndex;
-            res.add(JSONUtils.toJSONObject(new String[]{"node", "nodeName"}, s ));
+            if (StringUtils.isBlank(s[1]))
+                s[1] = Language.L("审批人") + "#" + nodeIndex;
+            res.add(JSONUtils.toJSONObject(new String[] { "node", "nodeName" }, s));
         }
         return res;
     }
@@ -688,7 +701,8 @@ public class ApprovalProcessor extends SetUser {
      */
     public Set<ID> getSelfSelectedApprovers(FlowNodeGroup nextNodes) {
         String node = nextNodes.getApprovalNode() == null ? null : nextNodes.getApprovalNode().getNodeId();
-        if (node == null) return Collections.emptySet();
+        if (node == null)
+            return Collections.emptySet();
 
         Object[][] array = Application.createQueryNoFilter(
                 "select approver from RobotApprovalStep where recordId = ? and approvalId = ? and node = ? and isWaiting = 'T' and isCanceled = 'F'")
@@ -711,7 +725,8 @@ public class ApprovalProcessor extends SetUser {
      * @param shareTo
      */
     protected static void share2CcIfNeed(ID recordId, Set<ID> shareTo) {
-        if (!CommonsUtils.hasLength(shareTo)) return;
+        if (!CommonsUtils.hasLength(shareTo))
+            return;
 
         final EntityService es = Application.getEntityService(recordId.getEntityCode());
         for (ID user : shareTo) {

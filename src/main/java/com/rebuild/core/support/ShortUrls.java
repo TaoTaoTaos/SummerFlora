@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.support;
 
@@ -48,7 +42,8 @@ public class ShortUrls {
         Record record = EntityHelper.forNew(EntityHelper.ShortUrl,
                 ObjectUtils.defaultIfNull(user, UserService.SYSTEM_USER));
         record.setString("longUrl", longUrl);
-        if (seconds > 0) record.setDate("expireTime", CalendarUtils.add(seconds, Calendar.SECOND));
+        if (seconds > 0)
+            record.setDate("expireTime", CalendarUtils.add(seconds, Calendar.SECOND));
 
         final String shortKey = CodecUtils.randomCode(20);
         record.setString("shortKey", shortKey);
@@ -77,7 +72,8 @@ public class ShortUrls {
                 "select longUrl,expireTime,checkPasswd from ShortUrl where shortKey = ?")
                 .setParameter(1, shortKey)
                 .unique();
-        if (o == null) return null;
+        if (o == null)
+            return null;
 
         if (o[1] != null) {
             long exp = ((Date) o[1]).getTime() - CalendarUtils.now().getTime();

@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.service;
 
@@ -47,7 +41,8 @@ public class PerHourJob extends DistributedJobLock {
 
     @Scheduled(cron = "45 0 * * * ?")
     protected void executeJob() {
-        if (!tryLock()) return;
+        if (!tryLock())
+            return;
 
         final int hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
 
@@ -117,6 +112,7 @@ public class PerHourJob extends DistributedJobLock {
 
     /**
      * 清理过期共享文件
+     * 
      * @see com.rebuild.core.support.ShortUrls
      */
     protected void doCleanExpiredSharedUrls() {
@@ -129,6 +125,7 @@ public class PerHourJob extends DistributedJobLock {
 
     /**
      * TODO 清理系统级引用
+     * 
      * @see RecycleBinCleanerJob
      */
     protected void doCleanSystemRefs() {
@@ -138,9 +135,11 @@ public class PerHourJob extends DistributedJobLock {
 
     @Scheduled(fixedRate = 300000, initialDelay = 300000)
     protected void executeJobPer5min() {
-        if (Application.devMode()) return;
+        if (Application.devMode())
+            return;
         JSONObject res = License.siteApi("api/ucenter/bind-query");
-        if (StringUtils.isBlank(res.getString("bindAccount"))) return;
+        if (StringUtils.isBlank(res.getString("bindAccount")))
+            return;
 
         Map<String, Object> map = new HashMap<>();
         map.put("ok", ServerStatus.isStatusOK());

@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core;
 
@@ -67,7 +61,8 @@ public final class ServerStatus {
      */
     public static boolean isStatusOK() {
         for (Status s : getLastStatus(false)) {
-            if (!s.success) return false;
+            if (!s.success)
+                return false;
         }
         return true;
     }
@@ -94,8 +89,10 @@ public final class ServerStatus {
      */
     static Status checkDatabase() {
         String name = "Database";
-        if (Installer.isUseH2()) name += "/H2";
-        else name += "/MYSQL";
+        if (Installer.isUseH2())
+            name += "/H2";
+        else
+            name += "/MYSQL";
 
         String url = BootEnvironmentPostProcessor.getProperty("db.url");
         try {

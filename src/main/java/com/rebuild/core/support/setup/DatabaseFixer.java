@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.support.setup;
 
@@ -56,7 +50,8 @@ public class DatabaseFixer {
                     KVStorage.setCustomValue(KEY_41, "true");
                     log.info("Database fixed `#41` all succeeded");
                 } catch (Exception ex) {
-                    log.error("Database fixing `#41` failed : {}", ThrowableUtils.getRootCause(ex).getLocalizedMessage());
+                    log.error("Database fixing `#41` failed : {}",
+                            ThrowableUtils.getRootCause(ex).getLocalizedMessage());
                 }
             });
         }
@@ -69,7 +64,8 @@ public class DatabaseFixer {
                     KVStorage.setCustomValue(KEY_346, "true");
                     log.info("Database fixed `V346` all succeeded");
                 } catch (Exception ex) {
-                    log.error("Database fixing `V346` failed : {}", ThrowableUtils.getRootCause(ex).getLocalizedMessage());
+                    log.error("Database fixing `V346` failed : {}",
+                            ThrowableUtils.getRootCause(ex).getLocalizedMessage());
                 }
             });
         }
@@ -82,7 +78,8 @@ public class DatabaseFixer {
                     KVStorage.setCustomValue(KEY_370, "true");
                     log.info("Database fixed `V370` all succeeded");
                 } catch (Exception ex) {
-                    log.error("Database fixing `V370` failed : {}", ThrowableUtils.getRootCause(ex).getLocalizedMessage());
+                    log.error("Database fixing `V370` failed : {}",
+                            ThrowableUtils.getRootCause(ex).getLocalizedMessage());
                 }
             });
         }
@@ -91,10 +88,12 @@ public class DatabaseFixer {
     // #41:多引用字段改为三方表
     private static void fixV41() {
         for (Entity entity : MetadataHelper.getEntities()) {
-            if (EasyMetaFactory.valueOf(entity).isBuiltin()) continue;
+            if (EasyMetaFactory.valueOf(entity).isBuiltin())
+                continue;
 
             Field[] n2nFields = MetadataSorter.sortFields(entity, DisplayType.N2NREFERENCE);
-            if (n2nFields.length == 0) continue;
+            if (n2nFields.length == 0)
+                continue;
 
             int count = 0;
             for (Field field : n2nFields) {
@@ -104,7 +103,8 @@ public class DatabaseFixer {
 
                 for (Object[] o : array) {
                     ID[] n2nIds = (ID[]) o[1];
-                    if (n2nIds == null || n2nIds.length == 0) continue;
+                    if (n2nIds == null || n2nIds.length == 0)
+                        continue;
 
                     final Record record = EntityHelper.forNew(EntityHelper.NreferenceItem, UserService.SYSTEM_USER);
                     record.setString("belongEntity", entity.getName());
@@ -129,10 +129,12 @@ public class DatabaseFixer {
     // V346:标签无效值问题
     private static void fixV346() {
         for (Entity entity : MetadataHelper.getEntities()) {
-            if (EasyMetaFactory.valueOf(entity).isBuiltin()) continue;
+            if (EasyMetaFactory.valueOf(entity).isBuiltin())
+                continue;
 
             Field[] tagFields = MetadataSorter.sortFields(entity, DisplayType.TAG);
-            if (tagFields.length == 0) continue;
+            if (tagFields.length == 0)
+                continue;
 
             int count = 0;
             for (Field field : tagFields) {

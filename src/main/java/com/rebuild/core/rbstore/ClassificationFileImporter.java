@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.rbstore;
 
@@ -42,30 +36,36 @@ public class ClassificationFileImporter extends ClassificationImporter {
 
         boolean first = true;
         for (Cell[] row : rows) {
-            if (isInterruptState()) break;
+            if (isInterruptState())
+                break;
 
             if (first) {
                 first = false;
                 continue;
             }
-            if (row.length == 0) continue;
+            if (row.length == 0)
+                continue;
 
             this.addCompleted();
 
             String L1 = row[0].asString();
-            if (StringUtils.isBlank(L1)) continue;
+            if (StringUtils.isBlank(L1))
+                continue;
             ID L1Id = findOrCreate2(L1, null, LEVEL_BEGIN);
 
             String L2 = row.length > 1 ? row[1].asString() : null;
-            if (StringUtils.isBlank(L2)) continue;
+            if (StringUtils.isBlank(L2))
+                continue;
             ID L2Id = findOrCreate2(L2, L1Id, LEVEL_BEGIN + 1);
 
             String L3 = row.length > 2 ? row[2].asString() : null;
-            if (StringUtils.isBlank(L3)) continue;
+            if (StringUtils.isBlank(L3))
+                continue;
             ID L3Id = findOrCreate2(L3, L2Id, LEVEL_BEGIN + 2);
 
             String L4 = row.length > 3 ? row[3].asString() : null;
-            if (StringUtils.isBlank(L4)) continue;
+            if (StringUtils.isBlank(L4))
+                continue;
             findOrCreate2(L4, L3Id, LEVEL_BEGIN + 3);
         }
 

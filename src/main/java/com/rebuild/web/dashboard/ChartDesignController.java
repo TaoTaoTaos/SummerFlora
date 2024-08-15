@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.web.dashboard;
 
@@ -60,8 +54,8 @@ public class ChartDesignController extends EntityController {
 
     @GetMapping("/chart-design")
     public ModelAndView pageDesign(@IdParam(required = false) ID chartId,
-                                   @EntityParam(name = "source", required = false) Entity entity,
-                                   HttpServletRequest request, HttpServletResponse response) throws IOException {
+            @EntityParam(name = "source", required = false) Entity entity,
+            HttpServletRequest request, HttpServletResponse response) throws IOException {
         final ID user = getRequestUser(request);
         RbAssert.isAllow(
                 Application.getPrivilegesManager().allow(user, ZeroEntry.AllowCustomChart),
@@ -151,10 +145,10 @@ public class ChartDesignController extends EntityController {
                 type = "list";
             }
 
-            dest.add(new String[]{
+            dest.add(new String[] {
                     (parent == null ? "" : (parent.getName() + ".")) + easyField.getName(),
                     (parent == null ? "" : (EasyMetaFactory.getLabel(parent) + ".")) + easyField.getLabel(),
-                    type});
+                    type });
         }
     }
 

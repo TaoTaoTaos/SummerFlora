@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.web.robot.approval;
 
@@ -56,7 +50,7 @@ import java.util.Set;
  */
 @Slf4j
 @RestController
-@RequestMapping({"/app/entity/approval/", "/app/RobotApprovalConfig/"})
+@RequestMapping({ "/app/entity/approval/", "/app/RobotApprovalConfig/" })
 public class ApprovalController extends BaseController {
 
     @GetMapping("workable")
@@ -134,7 +128,7 @@ public class ApprovalController extends BaseController {
 
     @GetMapping("fetch-nextstep")
     public JSON fetchNextStep(HttpServletRequest request,
-                              @IdParam(name = "record") ID recordId, @IdParam(name = "approval") ID approvalId) {
+            @IdParam(name = "record") ID recordId, @IdParam(name = "approval") ID approvalId) {
         final ID user = getRequestUser(request);
 
         ApprovalProcessor approvalProcessor = new ApprovalProcessor(recordId, approvalId);
@@ -195,7 +189,7 @@ public class ApprovalController extends BaseController {
 
     @PostMapping("submit")
     public RespBody doSubmit(HttpServletRequest request,
-                             @IdParam(name = "record") ID recordId, @IdParam(name = "approval") ID approvalId) {
+            @IdParam(name = "record") ID recordId, @IdParam(name = "approval") ID approvalId) {
         JSONObject selectUsers = (JSONObject) ServletUtils.getRequestJson(request);
 
         try {
@@ -233,7 +227,8 @@ public class ApprovalController extends BaseController {
 
         try {
             new ApprovalProcessor(recordId).approve(
-                    approver, (ApprovalState) ApprovalState.valueOf(state), remark, selectUsers, addedRecord, useGroup, rejectNode, false);
+                    approver, (ApprovalState) ApprovalState.valueOf(state), remark, selectUsers, addedRecord, useGroup,
+                    rejectNode, false);
             return RespBody.ok();
 
         } catch (DataSpecificationNoRollbackException ex) {
@@ -280,7 +275,8 @@ public class ApprovalController extends BaseController {
     }
 
     @RequestMapping("referral")
-    public RespBody doReferral(@IdParam(name = "record") ID recordId, @IdParam(name = "to") ID toUser, HttpServletRequest request) {
+    public RespBody doReferral(@IdParam(name = "record") ID recordId, @IdParam(name = "to") ID toUser,
+            HttpServletRequest request) {
         try {
             new ApprovalProcessor(recordId).referral(getRequestUser(request), toUser);
             return RespBody.ok();

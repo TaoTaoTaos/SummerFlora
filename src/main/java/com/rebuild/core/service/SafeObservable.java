@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.service;
 
@@ -26,7 +20,8 @@ public class SafeObservable {
     }
 
     public void addObserver(SafeObserver o) {
-        if (o == null) throw new NullPointerException();
+        if (o == null)
+            throw new NullPointerException();
         if (!obs.contains(o)) {
             obs.add(o);
             obs.sort(Comparator.comparingInt(SafeObserver::getOrder));

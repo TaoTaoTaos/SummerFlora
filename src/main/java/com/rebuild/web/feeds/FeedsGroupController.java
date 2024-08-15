@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.web.feeds;
 
@@ -61,8 +55,8 @@ public class FeedsGroupController extends BaseController {
             if (StringUtils.isEmpty(query)
                     || StringUtils.containsIgnoreCase(t.getName(), query)) {
                 res.add(JSONUtils.toJSONObject(
-                        new String[]{"id", "name", "star"},
-                        new Object[]{t.getIdentity(), t.getName(), true}));
+                        new String[] { "id", "name", "star" },
+                        new Object[] { t.getIdentity(), t.getName(), true }));
                 starsId.add(t.getIdentity());
             }
         }
@@ -71,12 +65,14 @@ public class FeedsGroupController extends BaseController {
         for (Member t : UserHelper.sortMembers((Member[]) filterMembers32(teams, user))) {
             if (StringUtils.isEmpty(query)
                     || StringUtils.containsIgnoreCase(t.getName(), query)) {
-                if (starsId.contains(t.getIdentity())) continue;
+                if (starsId.contains(t.getIdentity()))
+                    continue;
 
                 res.add(JSONUtils.toJSONObject(
-                        new String[]{"id", "name"},
-                        new Object[]{t.getIdentity(), t.getName()}));
-                if (res.size() >= 20) break;
+                        new String[] { "id", "name" },
+                        new Object[] { t.getIdentity(), t.getName() }));
+                if (res.size() >= 20)
+                    break;
             }
         }
 
@@ -97,10 +93,11 @@ public class FeedsGroupController extends BaseController {
         for (Member m : UserHelper.sortMembers(stars.toArray(new Member[0]))) {
             User u = (User) m;
             if (StringUtils.isEmpty(query)
-                    || CommonsUtils.containsIgnoreCase(new String[] { u.getName(), u.getFullName(), u.getEmail() }, query)) {
+                    || CommonsUtils.containsIgnoreCase(new String[] { u.getName(), u.getFullName(), u.getEmail() },
+                            query)) {
                 res.add(JSONUtils.toJSONObject(
-                        new String[]{"id", "name", "star"},
-                        new Object[]{u.getId(), u.getFullName(), true}));
+                        new String[] { "id", "name", "star" },
+                        new Object[] { u.getId(), u.getFullName(), true }));
                 starsId.add(u.getId());
             }
         }
@@ -110,13 +107,16 @@ public class FeedsGroupController extends BaseController {
         for (Member m : users2) {
             User u = (User) m;
             if (StringUtils.isBlank(query)
-                    || CommonsUtils.containsIgnoreCase(new String[] { u.getName(), u.getFullName(), u.getEmail() }, query)) {
-                if (starsId.contains(u.getId())) continue;
+                    || CommonsUtils.containsIgnoreCase(new String[] { u.getName(), u.getFullName(), u.getEmail() },
+                            query)) {
+                if (starsId.contains(u.getId()))
+                    continue;
 
                 res.add(JSONUtils.toJSONObject(
-                        new String[]{"id", "name"},
-                        new Object[]{u.getId(), u.getFullName()}));
-                if (res.size() >= 20) break;
+                        new String[] { "id", "name" },
+                        new Object[] { u.getId(), u.getFullName() }));
+                if (res.size() >= 20)
+                    break;
             }
         }
 
@@ -151,14 +151,17 @@ public class FeedsGroupController extends BaseController {
                     .replace("," + starUser, "")
                     .replace(starUser.toLiteral(), "");
         } else {
-            if (feedStars == null) feedStars = "";
+            if (feedStars == null)
+                feedStars = "";
             feedStars += "," + starUser;
         }
 
         Set<String> clearStars = new HashSet<>();
         for (String id : feedStars.split(",")) {
-            if (!ID.isId(id)) continue;
-            if (Application.getUserStore().existsUser(ID.valueOf(id))) clearStars.add(id);
+            if (!ID.isId(id))
+                continue;
+            if (Application.getUserStore().existsUser(ID.valueOf(id)))
+                clearStars.add(id);
         }
 
         KVStorage.setCustomValue(key, StringUtils.join(clearStars, ","));
@@ -172,12 +175,15 @@ public class FeedsGroupController extends BaseController {
 
         Set<Member> set = new HashSet<>();
         for (String s : StringUtils.split(feedStars, ",")) {
-            if (!ID.isId(s)) continue;
+            if (!ID.isId(s))
+                continue;
 
             ID id = ID.valueOf(s);
             if (id.getEntityCode() == type && UserHelper.isActive(id)) {
-                if (type == EntityHelper.User) set.add(Application.getUserStore().getUser(id));
-                else if (type == EntityHelper.Team) set.add(Application.getUserStore().getTeam(id));
+                if (type == EntityHelper.User)
+                    set.add(Application.getUserStore().getUser(id));
+                else if (type == EntityHelper.Team)
+                    set.add(Application.getUserStore().getTeam(id));
             }
         }
 

@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.service.feeds;
 
@@ -52,7 +46,8 @@ class FeedsHelperTest extends TestSupport {
         System.out.println(
                 FeedsHelper.formatContent("123 @" + UserService.ADMIN_USER));
         System.out.println(
-                FeedsHelper.formatContent("如遇问题请加 Q 群 819865721 咨询或 https://getrebuild.com/docs/1 2/ 查阅文档 https://getrebuild.com"));
+                FeedsHelper.formatContent(
+                        "如遇问题请加 Q 群 819865721 咨询或 https://getrebuild.com/docs/1 2/ 查阅文档 https://getrebuild.com"));
     }
 
     private ID createFeeds() {

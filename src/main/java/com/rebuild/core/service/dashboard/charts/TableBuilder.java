@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.service.dashboard.charts;
 
@@ -94,10 +88,11 @@ public class TableBuilder {
         if (chart.isMergeCell()) {
             for (int i = 0; i < chart.getDimensions().length; i++) {
                 // 行号
-                if (chart.isShowLineNumber() && i == 0) continue;
+                if (chart.isShowLineNumber() && i == 0)
+                    continue;
 
                 TD last = null;
-                int sumMinus = 0;  // 合并的单元格
+                int sumMinus = 0; // 合并的单元格
                 int childrenLen = tbody.children.size();
                 for (TR tr : tbody.children) {
                     TD current = tr.children.get(i);

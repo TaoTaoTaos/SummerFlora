@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.configuration;
 
@@ -75,8 +69,7 @@ public class NavBuilder extends NavManager {
     // 新建项目
     private static final JSONObject NAV_PROJECT__ADD = JSONUtils.toJSONObject(
             NAV_ITEM_PROPS,
-            new String[] { "plus", "添加项目", "BUILTIN", NAV_PROJECT + "--add" }
-    );
+            new String[] { "plus", "添加项目", "BUILTIN", NAV_PROJECT + "--add" });
 
     /**
      * 获取指定用户的导航菜单
@@ -104,12 +97,14 @@ public class NavBuilder extends NavManager {
                 for (Object[] c : cached) {
                     if (c[0].equals(useNavId)) {
                         boolean allowUse = UserHelper.isAdmin(user) || isShareTo((String) c[1], user);
-                        if (!allowUse) useNavId = null;
+                        if (!allowUse)
+                            useNavId = null;
                         break;
                     }
                 }
 
-                if (useNavId != null) config = findConfigBean(cached, useNavId);
+                if (useNavId != null)
+                    config = findConfigBean(cached, useNavId);
             }
         }
 
@@ -125,13 +120,13 @@ public class NavBuilder extends NavManager {
 
         // 过滤
         JSONArray navs = (JSONArray) config.getJSON("config");
-        for (Iterator<Object> iter = navs.iterator(); iter.hasNext(); ) {
+        for (Iterator<Object> iter = navs.iterator(); iter.hasNext();) {
             JSONObject nav = (JSONObject) iter.next();
             JSONArray subNavs = nav.getJSONArray("sub");
 
             // 父级菜单
             if (subNavs != null && !subNavs.isEmpty()) {
-                for (Iterator<Object> subIter = subNavs.iterator(); subIter.hasNext(); ) {
+                for (Iterator<Object> subIter = subNavs.iterator(); subIter.hasNext();) {
                     JSONObject subNav = (JSONObject) subIter.next();
                     if (isFilterNavItem(subNav, user)) {
                         subIter.remove();
@@ -139,7 +134,8 @@ public class NavBuilder extends NavManager {
                 }
 
                 // 无子级，移除主菜单
-                if (subNavs.isEmpty()) iter.remove();
+                if (subNavs.isEmpty())
+                    iter.remove();
 
             } else if (isFilterNavItem(nav, user)) {
                 iter.remove();
@@ -192,8 +188,10 @@ public class NavBuilder extends NavManager {
                     Application.getCommonsCache().put(key, ptoken, PageTokenVerify.TOKEN_EXPIRES);
                 }
 
-                if (value.contains("$RBTOKEN$")) value = value.replace("$RBTOKEN$", ptoken);
-                else value = value.replace("%24RBTOKEN%24", ptoken);
+                if (value.contains("$RBTOKEN$"))
+                    value = value.replace("$RBTOKEN$", ptoken);
+                else
+                    value = value.replace("%24RBTOKEN%24", ptoken);
 
                 item.put("value", value);
             }
@@ -202,7 +200,8 @@ public class NavBuilder extends NavManager {
             // 如 https://www.baidu.com/::ENTITY_NAME
 
             String[] ss = value.split("::");
-            if (ss.length != 2) return false;
+            if (ss.length != 2)
+                return false;
 
             String bindEntity = ss[1];
             if (MetadataHelper.containsEntity(bindEntity)) {
@@ -296,10 +295,12 @@ public class NavBuilder extends NavManager {
      */
     public List<Object[]> getAllowTopNav(ID user) {
         String topNav = KVStorage.getCustomValue("TopNav32");
-        if (!JSONUtils.wellFormat(topNav)) return null;
+        if (!JSONUtils.wellFormat(topNav))
+            return null;
 
         JSONArray sets = JSON.parseArray(topNav);
-        if (sets.isEmpty()) return null;
+        if (sets.isEmpty())
+            return null;
 
         final boolean isAdmin = UserHelper.isAdmin(user);
         final Object[][] alls = getAllConfig(null, TYPE_NAV);
@@ -311,10 +312,12 @@ public class NavBuilder extends NavManager {
             String dash = ndAnd.getString(1);
 
             ID useNav = ID.isId(nav) ? ID.valueOf(nav) : null;
-            if (useNav == null) continue;
+            if (useNav == null)
+                continue;
 
             for (Object[] d : alls) {
-                if (!useNav.equals(d[0])) continue;
+                if (!useNav.equals(d[0]))
+                    continue;
 
                 // 管理员、有共享的
                 if ((isAdmin && RoleService.ADMIN_ROLE.equals(d[5])) || isShareTo((String) d[1], user)) {
@@ -348,7 +351,8 @@ public class NavBuilder extends NavManager {
     }
 
     static String renderNav2(HttpServletRequest request, String activeNav) {
-        if (activeNav == null) activeNav = "dashboard-home";
+        if (activeNav == null)
+            activeNav = "dashboard-home";
 
         ID user = AppUtils.getRequestUser(request);
         String useNav = ServletUtils.readCookie(request, "AppHome.Nav");
@@ -408,8 +412,10 @@ public class NavBuilder extends NavManager {
         }
 
         String iconClazz = StringUtils.defaultIfBlank(item.getString("icon"), "texture");
-        if (iconClazz.startsWith("mdi-")) iconClazz = "mdi " + iconClazz;
-        else iconClazz = "zmdi zmdi-" + iconClazz;
+        if (iconClazz.startsWith("mdi-"))
+            iconClazz = "mdi " + iconClazz;
+        else
+            iconClazz = "zmdi zmdi-" + iconClazz;
 
         String navText = item.getString("text");
         navText = CommonsUtils.escapeHtml(navText);
@@ -427,7 +433,8 @@ public class NavBuilder extends NavManager {
             navItemHtml = "<li class=\"divider\">" + navText;
         } else {
             String parentClass = " parent";
-            if (item.getBooleanValue("open")) parentClass += " open";
+            if (item.getBooleanValue("open"))
+                parentClass += " open";
 
             navItemHtml = String.format(
                     "<li class=\"%s\" data-entity=\"%s\"><a href=\"%s\" target=\"%s\"><i class=\"icon %s\"></i><span>%s</span></a>",
@@ -464,12 +471,12 @@ public class NavBuilder extends NavManager {
                 if (activeNav.startsWith("nav_entity-") || activeNav.startsWith("nav_project-")) {
                     Element navParent = nav.parent();
                     if (navParent != null && navParent.hasClass("sub-menu-ul")) {
-                        //noinspection ConstantConditions
+                        // noinspection ConstantConditions
                         navParent.parent().parent().parent().parent().addClass("open active");
                     }
                 }
             }
-            //noinspection ConstantConditions
+            // noinspection ConstantConditions
             return navBody.selectFirst("li").outerHtml();
         }
         return navHtml.toString();
@@ -509,15 +516,18 @@ public class NavBuilder extends NavManager {
 
     static String renderTopNav2(HttpServletRequest request) {
         List<Object[]> topNav = instance.getAllowTopNav(AppUtils.getRequestUser(request));
-        if (topNav == null || topNav.isEmpty()) return StringUtils.EMPTY;
+        if (topNav == null || topNav.isEmpty())
+            return StringUtils.EMPTY;
 
         StringBuilder topNavHtml = new StringBuilder();
 
         for (Object[] nd : topNav) {
             String url = AppUtils.getContextPath("/app/home?def=" + nd[0]);
-            if (nd[1] != null) url += ":" + nd[1];
+            if (nd[1] != null)
+                url += ":" + nd[1];
             topNavHtml.append(String.format(
-                    "<li class=\"nav-item\" data-id=\"%s\"><a class=\"nav-link text-ellipsis\" href=\"%s\">%s</a></li>", nd[0], url, nd[2]));
+                    "<li class=\"nav-item\" data-id=\"%s\"><a class=\"nav-link text-ellipsis\" href=\"%s\">%s</a></li>",
+                    nd[0], url, nd[2]));
         }
         return topNavHtml.toString();
     }

@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.utils;
 
@@ -64,13 +58,13 @@ public class MarkdownUtils {
      *
      * @param md
      * @param targetBlank
-     * @param keepHtml HTML 代码保持
+     * @param keepHtml    HTML 代码保持
      * @return
      */
     public static String render(String md, boolean targetBlank, boolean keepHtml) {
         if (!keepHtml) {
             md = CommonsUtils.escapeHtml(md);
-            md = md.replace("&gt; ", "> ");  // for MD quote
+            md = md.replace("&gt; ", "> "); // for MD quote
         }
 
         if (targetBlank) {

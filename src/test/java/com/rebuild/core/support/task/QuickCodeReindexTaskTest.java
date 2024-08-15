@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.support.task;
 
@@ -21,11 +15,14 @@ public class QuickCodeReindexTaskTest extends TestSupport {
 
     @Test
     void testGenerateQuickCode() {
-        Assertions.assertTrue("NIHAOHELLOSHIJIE".equalsIgnoreCase(QuickCodeReindexTask.generateQuickCode("你 好     hello      世 界")));
-        Assertions.assertTrue("HELLOWORLD".equalsIgnoreCase(QuickCodeReindexTask.generateQuickCode("hello     world     ........")));
+        Assertions.assertTrue(
+                "NIHAOHELLOSHIJIE".equalsIgnoreCase(QuickCodeReindexTask.generateQuickCode("你 好     hello      世 界")));
+        Assertions.assertTrue(
+                "HELLOWORLD".equalsIgnoreCase(QuickCodeReindexTask.generateQuickCode("hello     world     ........")));
         Assertions.assertTrue("HELLOWORLD".equalsIgnoreCase(QuickCodeReindexTask.generateQuickCode("HelloWorld!")));
         Assertions.assertTrue("NIHAOSHIJIE".equalsIgnoreCase(QuickCodeReindexTask.generateQuickCode("你好世界")));
-        Assertions.assertTrue("NIHAOSHIJIE".equalsIgnoreCase(QuickCodeReindexTask.generateQuickCode("你 好           世 界")));
+        Assertions.assertTrue(
+                "NIHAOSHIJIE".equalsIgnoreCase(QuickCodeReindexTask.generateQuickCode("你 好           世 界")));
     }
 
     @Test
@@ -35,7 +32,8 @@ public class QuickCodeReindexTaskTest extends TestSupport {
         // EMail, contains `@` and `.`
         Assertions.assertTrue("".equalsIgnoreCase(QuickCodeReindexTask.generateQuickCode("1234@getrebuild.com")));
         // URL
-        Assertions.assertTrue("".equalsIgnoreCase(QuickCodeReindexTask.generateQuickCode("http://getrebuild.com/aswell")));
+        Assertions.assertTrue(
+                "".equalsIgnoreCase(QuickCodeReindexTask.generateQuickCode("http://getrebuild.com/aswell")));
 
         Assertions.assertTrue("".equalsIgnoreCase(QuickCodeReindexTask.generateQuickCode("54325432543")));
         Assertions.assertTrue("".equalsIgnoreCase(QuickCodeReindexTask.generateQuickCode("helloworld")));

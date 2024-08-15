@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.service.query;
 
@@ -38,8 +32,8 @@ import java.util.List;
 @Service
 public class QueryFactory {
 
-    private static final int QUERY_TIMEOUT = 15;  // s
-    private static final int SLOW_LOGGER_TIME = 3 * 1000;  // ms
+    private static final int QUERY_TIMEOUT = 15; // s
+    private static final int SLOW_LOGGER_TIME = 3 * 1000; // ms
 
     private final PersistManagerFactory aPMFactory;
 
@@ -129,7 +123,7 @@ public class QueryFactory {
 
     /**
      * @param recordId
-     * @param fields 不指定则返所有字段
+     * @param fields   不指定则返所有字段
      * @return
      */
     public Object[] unique(ID recordId, String... fields) {
@@ -139,7 +133,7 @@ public class QueryFactory {
 
     /**
      * @param recordId
-     * @param fields 不指定则返所有字段
+     * @param fields   不指定则返所有字段
      * @return
      */
     public Object[] uniqueNoFilter(ID recordId, String... fields) {
@@ -149,7 +143,7 @@ public class QueryFactory {
 
     /**
      * @param recordId
-     * @param fields 不指定则返所有字段
+     * @param fields   不指定则返所有字段
      * @return
      */
     public Record record(ID recordId, String... fields) {
@@ -159,7 +153,7 @@ public class QueryFactory {
 
     /**
      * @param recordId
-     * @param fields 不指定则返所有字段
+     * @param fields   不指定则返所有字段
      * @return
      */
     public Record recordNoFilter(ID recordId, String... fields) {
@@ -173,14 +167,16 @@ public class QueryFactory {
         Entity entity = MetadataHelper.getEntity(recordId.getEntityCode());
         List<String> selectFields = new ArrayList<>();
         if (fields.length == 0) {
-            for (Field field : entity.getFields()) selectFields.add(field.getName());
+            for (Field field : entity.getFields())
+                selectFields.add(field.getName());
         } else {
             Collections.addAll(selectFields, fields);
         }
 
         String pkName = entity.getPrimaryField().getName();
         // fix: v3.6
-        if (!selectFields.contains(pkName)) selectFields.add(pkName);
+        if (!selectFields.contains(pkName))
+            selectFields.add(pkName);
 
         return String.format("select %s from %s where %s = ?",
                 StringUtils.join(selectFields, ","), entity.getName(), pkName);

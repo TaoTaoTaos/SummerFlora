@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.utils;
 
@@ -87,7 +81,8 @@ public class ExcelUtils {
                     }
 
                     @Override
-                    public void doAfterAllAnalysed(AnalysisContext analysisContext) {}
+                    public void doAfterAllAnalysed(AnalysisContext analysisContext) {
+                    }
                 }).sheet().doRead();
             }
 
@@ -137,7 +132,8 @@ public class ExcelUtils {
                     }
 
                     @Override
-                    public void doAfterAllAnalysed(AnalysisContext analysisContext) {}
+                    public void doAfterAllAnalysed(AnalysisContext analysisContext) {
+                    }
                 }).sheet(sheetNo).doRead();
             }
 
@@ -173,23 +169,27 @@ public class ExcelUtils {
      * 保存 Excel 为 CSV
      *
      * @param excelSource
-     * @param encoding 默认 UTF-8
+     * @param encoding    默认 UTF-8
      * @return
      */
     public static Path saveToCsv(Path excelSource, String encoding) {
         // 公式生效
         reSaveAndCalcFormula(excelSource);
 
-        File csvFile = RebuildConfiguration.getFileOfTemp(String.format("%s.csv", excelSource.getFileName().toString()));
-        if (encoding == null) encoding = AppUtils.UTF8;
+        File csvFile = RebuildConfiguration
+                .getFileOfTemp(String.format("%s.csv", excelSource.getFileName().toString()));
+        if (encoding == null)
+            encoding = AppUtils.UTF8;
         FileWriter fw = new FileWriter(csvFile, encoding);
 
         // UTF8 BOM
-        if (AppUtils.UTF8.equalsIgnoreCase(encoding)) fw.write("\ufeff");
+        if (AppUtils.UTF8.equalsIgnoreCase(encoding))
+            fw.write("\ufeff");
 
         final List<Cell[]> rows = new DataFileParser(excelSource.toFile()).parse();
         rows.forEach(row -> {
-            String rowData = Arrays.stream(row).map(cell -> Optional.ofNullable(cell).map(Cell::asString).orElse("")).collect(Collectors.joining(","));
+            String rowData = Arrays.stream(row).map(cell -> Optional.ofNullable(cell).map(Cell::asString).orElse(""))
+                    .collect(Collectors.joining(","));
             fw.write(rowData + System.lineSeparator(), true);
         });
         return csvFile.toPath();

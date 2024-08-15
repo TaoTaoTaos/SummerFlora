@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.web.dashboard;
 
@@ -94,7 +88,7 @@ public class DashboardController extends BaseController {
 
                 chart.removeValue("createdBy");
                 Record chartRecord = EntityHelper.forNew(EntityHelper.ChartConfig, user);
-                for (Iterator<String> iter = chart.getAvailableFieldIterator(); iter.hasNext(); ) {
+                for (Iterator<String> iter = chart.getAvailableFieldIterator(); iter.hasNext();) {
                     String field = iter.next();
                     chartRecord.setObjectValue(field, chart.getObjectValue(field));
                 }
@@ -152,7 +146,8 @@ public class DashboardController extends BaseController {
         // 附加内置图表
         if (!("ENTITY".equalsIgnoreCase(type) || "MYSELF".equalsIgnoreCase(type))) {
             for (BuiltinChart b : ChartsFactory.getBuiltinCharts()) {
-                if (b.getChartId().equals(DataList.MYID)) continue;
+                if (b.getChartId().equals(DataList.MYID))
+                    continue;
 
                 charts.add(JSONUtils.toJSONObject(
                         new String[] { "id", "title", "type", "entityLabel" },

@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.service.notification;
 
@@ -52,7 +46,7 @@ public class NotificationObserver extends OperatingObserver {
         String content = buildMessage(context.getAffected(), relatedId, BizzPermission.ASSIGN);
         content = MessageFormat.format(content,
                 from, context.getAffected().length, EasyMetaFactory.valueOf(relatedId.getEntityCode()).getLabel());
-        
+
         Application.getNotifications().send(
                 MessageBuilder.createMessage(to, content, Message.TYPE_ASSIGN, relatedId));
     }

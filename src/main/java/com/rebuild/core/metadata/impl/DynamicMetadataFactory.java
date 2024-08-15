@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.metadata.impl;
 
@@ -188,7 +182,7 @@ public class DynamicMetadataFactory extends ConfigurationMetadataFactory {
             if (StringUtils.isNotBlank(anyRefEs)) {
                 field.addAttribute("ref-entity", anyRefEs);
             }
-            
+
             field.addAttribute("extra-attrs", extraAttrs.toJSONString());
         }
 
@@ -226,7 +220,8 @@ public class DynamicMetadataFactory extends ConfigurationMetadataFactory {
             // FIXME v35 多个子级（使用 ; 分割）
         }
 
-        if (log.isDebugEnabled()) XmlHelper.dump(rootElement);
+        if (log.isDebugEnabled())
+            XmlHelper.dump(rootElement);
     }
 
     @Override

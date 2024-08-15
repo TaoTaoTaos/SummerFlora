@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.service.general;
 
@@ -33,12 +27,14 @@ public class BulkDelete extends BulkOperator {
 
         String lastError = null;
         for (ID id : records) {
-            if (isInterruptState()) break;
+            if (isInterruptState())
+                break;
 
             if (Application.getPrivilegesManager().allowDelete(context.getOpUser(), id)) {
                 try {
                     int d = ges.delete(id, context.getCascades());
-                    if (d > 0) this.addSucceeded();
+                    if (d > 0)
+                        this.addSucceeded();
 
                 } catch (DataSpecificationException ex) {
                     lastError = ex.getLocalizedMessage();
@@ -47,7 +43,8 @@ public class BulkDelete extends BulkOperator {
                 } finally {
                     // 可能有级联触发器
                     Object ts = FieldAggregation.cleanTriggerChain();
-                    if (ts != null) log.info("Clean current-loop : {}", ts);
+                    if (ts != null)
+                        log.info("Clean current-loop : {}", ts);
                 }
 
             } else {

@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.support.distributed;
 
@@ -29,12 +23,13 @@ public interface UseRedis {
      * @return
      */
     default boolean testJedisPool(JedisPool pool) {
-        if (pool == BootConfiguration.USE_EHCACHE) return false;
+        if (pool == BootConfiguration.USE_EHCACHE)
+            return false;
 
         Jedis jedis = null;
         try {
             jedis = pool.getResource();
-            _log.debug("Use redis server : {}", jedis.info("server"));  // test NOAUTH
+            _log.debug("Use redis server : {}", jedis.info("server")); // test NOAUTH
             return true;
         } catch (Exception ex) {
             _log.warn("Acquisition J/Redis failed : {}  !!! falling back to EhCache ({})",

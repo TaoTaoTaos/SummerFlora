@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.web.configuration;
 
@@ -66,7 +60,8 @@ public class AdvFilterController extends BaseController implements ShareTo {
         if (filterId == null) {
             record = EntityHelper.forNew(EntityHelper.FilterConfig, user);
             record.setString("belongEntity", entity);
-            if (StringUtils.isBlank(filterName)) filterName =  Language.L("我的查询");
+            if (StringUtils.isBlank(filterName))
+                filterName = Language.L("我的查询");
         } else {
             record = EntityHelper.forUpdate(filterId, user);
         }
@@ -100,7 +95,8 @@ public class AdvFilterController extends BaseController implements ShareTo {
     @RequestMapping("advfilter/test-equation")
     public RespBody testEquation(@PathVariable String entity, HttpServletRequest request) {
         final String equation = ServletUtils.getRequestString(request);
-        if (StringUtils.isBlank(equation)) return RespBody.ok();
+        if (StringUtils.isBlank(equation))
+            return RespBody.ok();
 
         String valid = AdvFilterParser.validEquation(equation);
         return valid == null ? RespBody.error() : RespBody.ok();

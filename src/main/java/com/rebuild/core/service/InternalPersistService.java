@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.service;
 
@@ -46,7 +40,8 @@ public abstract class InternalPersistService implements ServiceSpec {
     @Override
     public String toString() {
         if (getEntityCode() > 0) {
-            return "service." + aPMFactory.getMetadataFactory().getEntity(getEntityCode()).getName() + "@" + Integer.toHexString(hashCode());
+            return "service." + aPMFactory.getMetadataFactory().getEntity(getEntityCode()).getName() + "@"
+                    + Integer.toHexString(hashCode());
         } else {
             return super.toString();
         }

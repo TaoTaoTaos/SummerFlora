@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.service.datareport;
 
@@ -45,7 +39,8 @@ public class ValueConvertFunc {
      */
     public static Object convert(EasyField field, Object value, String varName) {
         String thatFunc = splitFunc(varName);
-        if (thatFunc == null) return value;
+        if (thatFunc == null)
+            return value;
 
         final DisplayType type = field.getDisplayType();
         if (type == DisplayType.NUMBER || type == DisplayType.DECIMAL) {
@@ -66,11 +61,14 @@ public class ValueConvertFunc {
         } else if (type == DisplayType.DATE || type == DisplayType.DATETIME) {
             if ("CHINESEDATE".equals(thatFunc)) {
                 Date d = CommonsUtils.parseDate(value.toString());
-                if (d == null) return value;
+                if (d == null)
+                    return value;
 
                 int len = field.wrapValue(CalendarUtils.now()).toString().length();
-                if (len <= 10) len += 1;  // yyyy-MM-dd
-                else len += 2;
+                if (len <= 10)
+                    len += 1; // yyyy-MM-dd
+                else
+                    len += 2;
 
                 String format = CalendarUtils.CN_DATETIME_FORMAT.substring(0, len);
                 return CalendarUtils.getDateFormat(format).format(d);
@@ -91,7 +89,8 @@ public class ValueConvertFunc {
         Pictures.PictureBuilder builder = Pictures.ofBytes(value);
 
         String thatFunc = splitFunc(varName);
-        if (thatFunc == null) return builder.create();
+        if (thatFunc == null)
+            return builder.create();
 
         if (thatFunc.startsWith("SIZE") && thatFunc.length() > 4) {
             String[] wh = thatFunc.substring(4).split("\\*");
@@ -116,7 +115,8 @@ public class ValueConvertFunc {
                 height = NumberUtils.toInt(wh[1]);
             }
 
-            if (height < 0) height = width;
+            if (height < 0)
+                height = width;
             builder = Pictures.ofBytes(value).size(width, height);
         }
 

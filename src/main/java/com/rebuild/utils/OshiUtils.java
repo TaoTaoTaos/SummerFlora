@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.utils;
 
@@ -42,7 +36,8 @@ public class OshiUtils {
      * @return
      */
     synchronized public static SystemInfo getSI() {
-        if (SI == null) SI = new SystemInfo();
+        if (SI == null)
+            SI = new SystemInfo();
         return SI;
     }
 
@@ -56,7 +51,7 @@ public class OshiUtils {
         long memoryTotal = memory.getTotal();
         long memoryFree = memory.getAvailable();
         double memoryUsage = (memoryTotal - memoryFree) * 1.0 / memoryTotal;
-        return new double[]{
+        return new double[] {
                 (int) (memoryTotal / MemoryInformationBean.MEGABYTES),
                 ObjectUtils.round(memoryUsage * 100, 1)
         };
@@ -71,7 +66,7 @@ public class OshiUtils {
         double memoryTotal = Runtime.getRuntime().totalMemory();
         double memoryFree = Runtime.getRuntime().freeMemory();
         double memoryUsage = (memoryTotal - memoryFree) / memoryTotal;
-        return new double[]{
+        return new double[] {
                 (int) (memoryTotal / MemoryInformationBean.MEGABYTES),
                 ObjectUtils.round(memoryUsage * 100, 1)
         };
@@ -94,16 +89,19 @@ public class OshiUtils {
      */
     public static String getLocalIp() {
         List<NetworkIF> nets = getSI().getHardware().getNetworkIFs();
-        if (nets == null || nets.isEmpty()) return "localhost";
+        if (nets == null || nets.isEmpty())
+            return "localhost";
 
         String bestipv4 = null;
         for (NetworkIF net : nets) {
             for (String ip : net.getIPv4addr()) {
-                if (bestipv4 == null) bestipv4 = ip;
+                if (bestipv4 == null)
+                    bestipv4 = ip;
                 break;
             }
 
-            if (net.isKnownVmMacAddr()) continue;
+            if (net.isKnownVmMacAddr())
+                continue;
 
             String[] ipsv4 = net.getIPv4addr();
             if (ipsv4.length > 0) {
@@ -154,7 +152,8 @@ public class OshiUtils {
     public static boolean isDockerEnv() {
         try {
             // #1
-            if (new File("/.dockerenv").exists()) return true;
+            if (new File("/.dockerenv").exists())
+                return true;
         } catch (Exception ignored) {
             // #2
             try (Stream<String> stream = Files.lines(Paths.get("/proc/self/cgroup"))) {
@@ -185,7 +184,8 @@ public class OshiUtils {
                 }
 
                 for (File root : listRoots) {
-                    if (!root.exists()) continue;
+                    if (!root.exists())
+                        continue;
                     String name = StringUtils.defaultIfBlank(root.getName(), root.getPath());
                     double total = (double) root.getTotalSpace() / FileUtils.ONE_GB;
                     double used = total - ((double) root.getFreeSpace() / FileUtils.ONE_GB);

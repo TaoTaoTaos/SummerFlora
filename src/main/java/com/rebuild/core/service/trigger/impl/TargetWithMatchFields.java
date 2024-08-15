@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.service.trigger.impl;
 
@@ -82,7 +76,8 @@ public class TargetWithMatchFields {
      * @see GroupAggregation#prepare(OperatingContext)
      */
     private Object match(ActionContext actionContext, boolean m) {
-        if (sourceEntity != null) return targetRecordId;  // 已做匹配
+        if (sourceEntity != null)
+            return targetRecordId; // 已做匹配
 
         final JSONObject actionContent = (JSONObject) actionContext.getActionContent();
         sourceEntity = actionContext.getSourceEntity();
@@ -93,7 +88,8 @@ public class TargetWithMatchFields {
         Map<String, String> matchFieldsMapping = new HashMap<>();
 
         JSONArray matchFields = actionContent.getJSONArray("targetEntityMatchFields");
-        if (matchFields == null) matchFields = actionContent.getJSONArray("groupFields");
+        if (matchFields == null)
+            matchFields = actionContent.getJSONArray("groupFields");
 
         for (Object o : matchFields) {
             JSONObject item = (JSONObject) o;
@@ -135,7 +131,8 @@ public class TargetWithMatchFields {
             String sourceField = e.getKey();
             String targetField = e.getValue();
             // @see Dimension#getSqlName
-            EasyField sourceFieldEasy = EasyMetaFactory.valueOf(MetadataHelper.getLastJoinField(sourceEntity, sourceField));
+            EasyField sourceFieldEasy = EasyMetaFactory
+                    .valueOf(MetadataHelper.getLastJoinField(sourceEntity, sourceField));
             EasyField targetFieldEasy = EasyMetaFactory.valueOf(targetEntity.getField(targetField));
 
             // fix: 3.7.1
@@ -145,11 +142,15 @@ public class TargetWithMatchFields {
             String dateFormat = null;
             if (isDateField) {
                 targetFieldLength = StringUtils.defaultIfBlank(
-                        targetFieldEasy.getExtraAttr(EasyFieldConfigProps.DATE_FORMAT), targetFieldEasy.getDisplayType().getDefaultFormat()).length();
+                        targetFieldEasy.getExtraAttr(EasyFieldConfigProps.DATE_FORMAT),
+                        targetFieldEasy.getDisplayType().getDefaultFormat()).length();
 
-                if (targetFieldLength == 4) dateFormat = "%Y";
-                else if (targetFieldLength == 7) dateFormat = "%Y-%m";
-                else dateFormat = "%Y-%m-%d";
+                if (targetFieldLength == 4)
+                    dateFormat = "%Y";
+                else if (targetFieldLength == 7)
+                    dateFormat = "%Y-%m";
+                else
+                    dateFormat = "%Y-%m-%d";
             }
 
             Object val = sourceRecord.getObjectValue(sourceField);
@@ -171,7 +172,8 @@ public class TargetWithMatchFields {
                             ? EasyFieldConfigProps.DATE_FORMAT
                             : EasyFieldConfigProps.DATETIME_FORMAT;
                     int sourceFieldLength = StringUtils.defaultIfBlank(
-                            sourceFieldEasy.getExtraAttr(formatKey), sourceFieldEasy.getDisplayType().getDefaultFormat()).length();
+                            sourceFieldEasy.getExtraAttr(formatKey),
+                            sourceFieldEasy.getDisplayType().getDefaultFormat()).length();
 
                     // 目标格式（长度）必须小于等于源格式
                     Assert.isTrue(targetFieldLength <= sourceFieldLength,
@@ -179,11 +181,11 @@ public class TargetWithMatchFields {
 
                     sourceField = String.format("DATE_FORMAT(%s,'%s')", sourceField, dateFormat);
                     targetField = String.format("DATE_FORMAT(%s,'%s')", targetField, dateFormat);
-                    if (targetFieldLength == 4) {  // 'Y'
+                    if (targetFieldLength == 4) { // 'Y'
                         val = CalendarUtils.format("yyyy", (Date) val);
-                    } else if (targetFieldLength == 7) {  // 'M'
+                    } else if (targetFieldLength == 7) { // 'M'
                         val = CalendarUtils.format("yyyy-MM", (Date) val);
-                    } else {  // 'D' is default
+                    } else { // 'D' is default
                         val = CalendarUtils.format("yyyy-MM-dd", (Date) val);
                     }
                 }
@@ -206,7 +208,7 @@ public class TargetWithMatchFields {
                         sourceRecord.setID(sourceField, (ID) val);
 
                         for (int i = 0; i < sourceFieldLevel - targetFieldLevel; i++) {
-                            //noinspection StringConcatenationInLoop
+                            // noinspection StringConcatenationInLoop
                             sourceField += ".parent";
                         }
                     }
@@ -234,7 +236,8 @@ public class TargetWithMatchFields {
         if (m) {
             Object[][] array = Application.createQueryNoFilter(aSql).array();
             List<ID> targetRecordIds = new ArrayList<>();
-            for (Object[] o : array) targetRecordIds.add((ID) o[0]);
+            for (Object[] o : array)
+                targetRecordIds.add((ID) o[0]);
 
             targetRecordId = targetRecordIds.toArray(new ID[0]);
             return targetRecordId;
@@ -261,11 +264,15 @@ public class TargetWithMatchFields {
                     .setParameter(1, current)
                     .unique();
 
-            if (o == null) break;
-            if ((int) o[0] < specLevel) break;
+            if (o == null)
+                break;
+            if ((int) o[0] < specLevel)
+                break;
 
-            if ((int) o[0] == specLevel) return current;
-            else current = (ID) o[1];
+            if ((int) o[0] == specLevel)
+                return current;
+            else
+                current = (ID) o[1];
         }
         return null;
     }

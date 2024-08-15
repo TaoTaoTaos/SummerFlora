@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.support.integration;
 
@@ -38,7 +32,8 @@ public class QiniuCloudTest extends TestSupport {
 
     @Test
     void testUploadAndMakeUrl() throws Exception {
-        if (!QiniuCloud.instance().available()) return;
+        if (!QiniuCloud.instance().available())
+            return;
 
         File file = ResourceUtils.getFile("classpath:classification-demo.xlsx");
         String uploadKey = QiniuCloud.instance().upload(file);
@@ -55,7 +50,8 @@ public class QiniuCloudTest extends TestSupport {
 
     @Test
     void makeUrlCache() {
-        if (!QiniuCloud.instance().available()) return;
+        if (!QiniuCloud.instance().available())
+            return;
 
         for (int i = 0; i < 10; i++) {
             System.out.println(i + " = " + QiniuCloud.instance().makeUrl("rb/20190830/170016833__0190815223938.png"));
@@ -65,14 +61,16 @@ public class QiniuCloudTest extends TestSupport {
 
     @Test
     void stats() {
-        if (!QiniuCloud.instance().available()) return;
+        if (!QiniuCloud.instance().available())
+            return;
 
         System.out.println(QiniuCloud.instance().stats());
     }
 
     @Test
     void getStorageFile() throws IOException {
-        File file = QiniuCloud.getStorageFile("https://cn.bing.com/th?id=OHR.LowerAntelopeAZ_ZH-CN4758496750_1920x1080.jpg&rf=LaDigue_1920x1080.jpg&pid=hp");
+        File file = QiniuCloud.getStorageFile(
+                "https://cn.bing.com/th?id=OHR.LowerAntelopeAZ_ZH-CN4758496750_1920x1080.jpg&rf=LaDigue_1920x1080.jpg&pid=hp");
         System.out.println(file);
     }
 }

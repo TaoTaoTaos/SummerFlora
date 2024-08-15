@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.service.general.recyclebin;
 
@@ -45,7 +39,8 @@ public class RestoreRecordCreator extends JsonRecordCreator {
             }
 
             Object value = e.getValue();
-            if (value == null || StringUtils.isEmpty(value.toString())) continue;
+            if (value == null || StringUtils.isEmpty(value.toString()))
+                continue;
 
             // fix: v3.5.6/v3.6
             DisplayType dt = EasyMetaFactory.getDisplayType(entity.getField(fileName));

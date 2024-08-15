@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.support;
 
@@ -26,7 +20,7 @@ import org.apache.commons.lang3.ObjectUtils;
 @Slf4j
 public class CommonsLog {
 
-    public static final int STATUS_OK = 1;  // default
+    public static final int STATUS_OK = 1; // default
     public static final int STATUS_ERROR = 2;
 
     public static final String TYPE_TRIGGER = "TRIGGER";
@@ -68,7 +62,8 @@ public class CommonsLog {
         clog.setID("source", ObjectUtils.defaultIfNull(source, user));
         clog.setInt("status", status);
         clog.setDate("logTime", CalendarUtils.now());
-        if (content != null) clog.setString("logContent", CommonsUtils.maxstr(content, 32767));
+        if (content != null)
+            clog.setString("logContent", CommonsUtils.maxstr(content, 32767));
 
         TaskExecutors.queue(() -> Application.getCommonsService().create(clog, false));
     }

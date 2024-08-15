@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.service.general;
 
@@ -37,10 +31,12 @@ public class BulkUnshare extends BulkOperator {
 
         // 这里的取消实际是删除了共享表记录
         for (ID id : records) {
-            if (isInterruptState()) break;
+            if (isInterruptState())
+                break;
 
             int a = ges.unshare(realTarget, id);
-            if (a > 0) this.addSucceeded();
+            if (a > 0)
+                this.addSucceeded();
 
             this.addCompleted();
         }

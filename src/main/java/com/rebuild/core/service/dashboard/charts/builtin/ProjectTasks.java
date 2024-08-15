@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.service.dashboard.charts.builtin;
 
@@ -60,7 +54,8 @@ public class ProjectTasks extends ChartData implements BuiltinChart {
             ID projectId = (ID) o[1];
             ConfigBean cbProject = ProjectManager.instance.getProject(projectId, null);
             // 已归档不显示
-            if (cbProject.getInteger("status") == ProjectManager.STATUS_ARCHIVED) continue;
+            if (cbProject.getInteger("status") == ProjectManager.STATUS_ARCHIVED)
+                continue;
 
             ConfigBean cbPlan = ProjectManager.instance.getPlanOfProject((ID) o[2], projectId);
 
@@ -69,7 +64,8 @@ public class ProjectTasks extends ChartData implements BuiltinChart {
             String taskNumber = String.format("%s-%s", cbProject.getString("projectCode"), o[3]);
 
             array.add(JSONUtils.toJSONObject(
-                    new String[] { "id", "projectName", "planFlow", "taskNumber", "taskName", "createdOn", "deadline", "endTime", "status", "priority" },
+                    new String[] { "id", "projectName", "planFlow", "taskNumber", "taskName", "createdOn", "deadline",
+                            "endTime", "status", "priority" },
                     new Object[] { o[0], projectName, cbPlan.getInteger("flowStatus"), taskNumber, o[4],
                             I18nUtils.formatDate((Date) o[5]),
                             I18nUtils.formatDate((Date) o[6]),

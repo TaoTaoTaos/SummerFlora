@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild;
 
@@ -47,13 +41,14 @@ public class TestSupport {
 
     @BeforeAll
     public static void setUp() {
-        if (RebuildReady) return;
+        if (RebuildReady)
+            return;
         _log.warn("TESTING Setup ...");
 
         try {
-            System.setProperty("rbdev", "true");  // dev/debug mode
-            System.setProperty("spring.main.web-application-type", "none");  // No Web
-            System.setProperty("server.port", "0");  // random port
+            System.setProperty("rbdev", "true"); // dev/debug mode
+            System.setProperty("spring.main.web-application-type", "none"); // No Web
+            System.setProperty("server.port", "0"); // random port
             BootApplication.main(new String[0]);
             RebuildReady = true;
 
@@ -142,7 +137,8 @@ public class TestSupport {
                 }
 
                 String fieldName = dt.name().toUpperCase();
-                if (BlockList.isBlock(fieldName)) fieldName += "1";
+                if (BlockList.isBlock(fieldName))
+                    fieldName += "1";
 
                 if (dt == DisplayType.REFERENCE || dt == DisplayType.N2NREFERENCE) {
                     new Field2Schema(UserService.ADMIN_USER)

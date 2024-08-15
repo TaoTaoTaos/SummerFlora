@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.service.dashboard.charts;
 
@@ -47,12 +41,13 @@ public class TreemapChart extends ChartData {
         TreeBuilder builder = new TreeBuilder(dataRaw, this);
 
         JSONObject renderOption = config.getJSONObject("option");
-        if (renderOption == null) renderOption = new JSONObject();
+        if (renderOption == null)
+            renderOption = new JSONObject();
         renderOption.put("dataFlags", new String[] { getNumericalFlag(num1) });
 
         return JSONUtils.toJSONObject(
-                new String[]{"data", "xLabel", "xAmount", "_renderOption"},
-                new Object[]{builder.toJSON(), num1.getLabel(), xAmount, renderOption});
+                new String[] { "data", "xLabel", "xAmount", "_renderOption" },
+                new Object[] { builder.toJSON(), num1.getLabel(), xAmount, renderOption });
     }
 
     @Override
@@ -61,7 +56,7 @@ public class TreemapChart extends ChartData {
         if (nums.length == 0) {
             Numerical n = new Numerical(
                     getSourceEntity().getPrimaryField(), FormatSort.NONE, FormatCalc.COUNT, null, 0, null, null);
-            return new Numerical[]{n};
+            return new Numerical[] { n };
         }
         return nums;
     }

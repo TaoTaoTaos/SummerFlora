@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.web.feeds;
 
@@ -80,11 +74,15 @@ public class FeedsListController extends BaseController {
 
         int type = getIntParameter(request, "type", 0);
         if (type == 1) {
-            sqlWhere += String.format(" and exists (select feedsId from FeedsMention where ^feedsId = feedsId and user = '%s')", user);
+            sqlWhere += String.format(
+                    " and exists (select feedsId from FeedsMention where ^feedsId = feedsId and user = '%s')", user);
         } else if (type == 2) {
-            sqlWhere += String.format(" and exists (select feedsId from FeedsComment where ^feedsId = feedsId and createdBy = '%s')", user);
+            sqlWhere += String.format(
+                    " and exists (select feedsId from FeedsComment where ^feedsId = feedsId and createdBy = '%s')",
+                    user);
         } else if (type == 3) {
-            sqlWhere += String.format(" and exists (select source from FeedsLike where ^feedsId = source and createdBy = '%s')", user);
+            sqlWhere += String.format(
+                    " and exists (select source from FeedsLike where ^feedsId = source and createdBy = '%s')", user);
         } else if (type == 10) {
             sqlWhere += String.format(" and createdBy ='%s'", user);
         }
@@ -110,7 +108,8 @@ public class FeedsListController extends BaseController {
         if (pageNo == 1) {
             count = (Long) Application.createQueryNoFilter(
                     "select count(feedsId) from Feeds where " + sqlWhere).unique()[0];
-            if (count == 0) return RespBody.ok();
+            if (count == 0)
+                return RespBody.ok();
         }
 
         String sql = ITEM_SQL + sqlWhere;
@@ -134,7 +133,8 @@ public class FeedsListController extends BaseController {
                 Object[] o = Application.createQueryNoFilter(sql + " and feedsId = ?")
                         .setParameter(1, s)
                         .unique();
-                if (o != null) userTopFeeds.add(o);
+                if (o != null)
+                    userTopFeeds.add(o);
             }
         }
 
@@ -153,18 +153,23 @@ public class FeedsListController extends BaseController {
         array = add2Top(foucsFeed, array);
         if (userTopFeeds != null) {
             // 最多 3
-            if (userTopFeeds.size() > 2) array = add2Top(userTopFeeds.get(2), array);
-            if (userTopFeeds.size() > 1) array = add2Top(userTopFeeds.get(1), array);
-            if (userTopFeeds.size() > 0) array = add2Top(userTopFeeds.get(0), array);
+            if (userTopFeeds.size() > 2)
+                array = add2Top(userTopFeeds.get(2), array);
+            if (userTopFeeds.size() > 1)
+                array = add2Top(userTopFeeds.get(1), array);
+            if (userTopFeeds.size() > 0)
+                array = add2Top(userTopFeeds.get(0), array);
         }
 
         Set<ID> set = new HashSet<>();
         List<JSON> list = new ArrayList<>();
         for (Object[] o : array) {
-            if (set.contains((ID) o[0])) continue;
+            if (set.contains((ID) o[0]))
+                continue;
 
             JSONObject feed = buildItem(o, user);
-            if (userTop != null && userTop.contains((ID) o[0])) feed.put("usertop", true);
+            if (userTop != null && userTop.contains((ID) o[0]))
+                feed.put("usertop", true);
 
             list.add(feed);
             set.add((ID) o[0]);
@@ -175,7 +180,8 @@ public class FeedsListController extends BaseController {
     }
 
     private Object[][] add2Top(Object[] topFeed, Object[][] array) {
-        if (topFeed == null) return array;
+        if (topFeed == null)
+            return array;
 
         Object[][] newArray = new Object[array.length + 1][];
         newArray[0] = topFeed;
@@ -188,7 +194,8 @@ public class FeedsListController extends BaseController {
         final ID user = getRequestUser(request);
         String sql = ITEM_SQL + "feedsId = ?";
         Object[] o = Application.createQueryNoFilter(sql).setParameter(1, feedsId).unique();
-        if (o == null) throw new NoRecordFoundException(feedsId, Boolean.TRUE);
+        if (o == null)
+            throw new NoRecordFoundException(feedsId, Boolean.TRUE);
 
         JSONObject data = buildItem(o, user);
 
@@ -206,7 +213,8 @@ public class FeedsListController extends BaseController {
     }
 
     private static final String ITEM_SQL = "select" +
-            " feedsId,createdBy,createdOn,modifiedOn,content,images,attachments,scope,type,relatedRecord,contentMore,autoLocation" +
+            " feedsId,createdBy,createdOn,modifiedOn,content,images,attachments,scope,type,relatedRecord,contentMore,autoLocation"
+            +
             " from Feeds where ";
 
     private JSONObject buildItem(Object[] o, ID user) {
@@ -216,7 +224,7 @@ public class FeedsListController extends BaseController {
         item.put("scopeRaw", o[7]);
         if (scope == FeedsScope.GROUP) {
             Team team = Application.getUserStore().getTeam(ID.valueOf((String) o[7]));
-            item.put("scope", new Object[]{team.getIdentity(), team.getName()});
+            item.put("scope", new Object[] { team.getIdentity(), team.getName() });
         } else {
             item.put("scope", Language.L(scope.getName()));
         }
@@ -297,7 +305,7 @@ public class FeedsListController extends BaseController {
         JSONObject item = new JSONObject();
         item.put("id", o[0]);
         item.put("self", o[1].equals(user));
-        item.put("createdBy", new Object[]{o[1], UserHelper.getName((ID) o[1])});
+        item.put("createdBy", new Object[] { o[1], UserHelper.getName((ID) o[1]) });
         item.put("createdOn", I18nUtils.formatDate((Date) o[2]));
         item.put("modifiedOn", I18nUtils.formatDate((Date) o[3]));
         item.put("content", FeedsHelper.formatContent((String) o[4]));

@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.utils.codec;
 
@@ -32,7 +26,8 @@ public class RbRecordCodec implements ObjectSerializer {
     public final static RbRecordCodec instance = new RbRecordCodec();
 
     @Override
-    public void write(JSONSerializer serializer, Object object, Object fieldName, Type fieldType, int features) throws IOException {
+    public void write(JSONSerializer serializer, Object object, Object fieldName, Type fieldType, int features)
+            throws IOException {
         SerializeWriter out = serializer.out;
         if (object == null) {
             out.writeNull();
@@ -42,7 +37,7 @@ public class RbRecordCodec implements ObjectSerializer {
         Record record = (Record) object;
         Entity entity = record.getEntity();
         JSONObject map = new JSONObject();
-        for (Iterator<String> iter = record.getAvailableFieldIterator(); iter.hasNext(); ) {
+        for (Iterator<String> iter = record.getAvailableFieldIterator(); iter.hasNext();) {
             String field = iter.next();
             Object value = record.getObjectValue(field);
 

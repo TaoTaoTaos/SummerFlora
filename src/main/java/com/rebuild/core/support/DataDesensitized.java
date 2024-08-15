@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.support;
 
@@ -26,7 +20,8 @@ public class DataDesensitized {
      * @return
      */
     public static String any(String text) {
-        if (StringUtils.isBlank(text)) return text;
+        if (StringUtils.isBlank(text))
+            return text;
 
         int textLen = text.length();
         if (textLen == 1) {
@@ -47,7 +42,8 @@ public class DataDesensitized {
      * @return
      */
     public static String phone(String phone) {
-        if (StringUtils.isBlank(phone)) return phone;
+        if (StringUtils.isBlank(phone))
+            return phone;
 
         if (phone.length() <= 7) {
             return phone.substring(0, 3) + StringUtils.repeat("*", phone.length() - 3);
@@ -61,8 +57,10 @@ public class DataDesensitized {
      * @return
      */
     public static String email(String email) {
-        if (StringUtils.isBlank(email)) return email;
-        if (!email.contains("@")) return any(email);
+        if (StringUtils.isBlank(email))
+            return email;
+        if (!email.contains("@"))
+            return any(email);
 
         String[] nd = email.split("@");
         int nLen = nd[0].length();

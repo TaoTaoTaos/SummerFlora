@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.web.general;
 
@@ -39,7 +33,8 @@ public class ListAndViewRedirection extends BaseController {
 
     // compatible: v3.1 "/app/list-and-view"
     @GetMapping({ "/app/list-and-view", "/app/redirect" })
-    public void redirect(@IdParam ID anyId, HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public void redirect(@IdParam ID anyId, HttpServletRequest request, HttpServletResponse response)
+            throws IOException {
         String url = null;
 
         if (MetadataHelper.containsEntity(anyId.getEntityCode())) {
@@ -51,7 +46,8 @@ public class ListAndViewRedirection extends BaseController {
 
             } else if (entity.getEntityCode() == EntityHelper.FeedsComment) {
                 ID found = findFeedsId(anyId);
-                if (found != null) url = "../feeds/home#s=" + found;
+                if (found != null)
+                    url = "../feeds/home#s=" + found;
 
             } else if (entity.getEntityCode() == EntityHelper.ProjectTask
                     || entity.getEntityCode() == EntityHelper.ProjectTaskComment) {

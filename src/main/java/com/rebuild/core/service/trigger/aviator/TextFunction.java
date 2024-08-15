@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.service.trigger.aviator;
 
@@ -59,21 +53,24 @@ public class TextFunction extends AbstractFunction {
     }
 
     @Override
-    public AviatorObject call(Map<String, Object> env, AviatorObject arg1, AviatorObject arg2, AviatorObject arg3, AviatorObject arg4) {
+    public AviatorObject call(Map<String, Object> env, AviatorObject arg1, AviatorObject arg2, AviatorObject arg3,
+            AviatorObject arg4) {
         final Object $id = arg1.getValue(env);
         final Object $defaultValue = arg2.getValue(env);
         final String sep = ObjectUtils.defaultIfNull(arg3.getValue(env), ", ").toString();
         final String fieldName = arg4.getValue(env) == null ? null : arg4.getValue(env).toString();
 
         // No value
-        if ($id == null) return arg2;
+        if ($id == null)
+            return arg2;
 
         // 引用 ID
         if (ID.isId($id)) {
             ID anyid = $id instanceof ID ? (ID) $id : ID.valueOf($id.toString());
             String text = getLabel(anyid, fieldName);
 
-            if (text == null && $defaultValue != null) text = $defaultValue.toString();
+            if (text == null && $defaultValue != null)
+                text = $defaultValue.toString();
             return new AviatorString(text);
         }
 
@@ -85,9 +82,11 @@ public class TextFunction extends AbstractFunction {
             List<ID> list = new ArrayList<>();
             while (iter.hasNext()) {
                 Object o = iter.next();
-                if (o instanceof ID) list.add((ID) o);
+                if (o instanceof ID)
+                    list.add((ID) o);
             }
-            if (!list.isEmpty()) idArray = list.toArray(new ID[0]);
+            if (!list.isEmpty())
+                idArray = list.toArray(new ID[0]);
         }
 
         if (idArray instanceof ID[]) {
@@ -95,11 +94,14 @@ public class TextFunction extends AbstractFunction {
             for (ID anyid : (ID[]) idArray) {
                 String item = getLabel(anyid, fieldName);
 
-                if (item == null && $defaultValue != null) item = $defaultValue.toString();
-                if (item != null) text.add(item);
+                if (item == null && $defaultValue != null)
+                    item = $defaultValue.toString();
+                if (item != null)
+                    text.add(item);
             }
 
-            if (text.isEmpty()) return arg2;
+            if (text.isEmpty())
+                return arg2;
 
             return new AviatorString(StringUtils.join(text, sep));
         }
@@ -115,13 +117,15 @@ public class TextFunction extends AbstractFunction {
 
     // 获取字段内容
     private String getLabel(ID id, String fieldName) {
-        if (fieldName == null) return FieldValueHelper.getLabelNotry(id);
+        if (fieldName == null)
+            return FieldValueHelper.getLabelNotry(id);
 
         Entity entity = MetadataHelper.getEntity(id.getEntityCode());
         Field field = MetadataHelper.getLastJoinField(entity, fieldName);
 
         Object[] o = Application.getQueryFactory().uniqueNoFilter(id, fieldName);
-        if (o == null || o[0] == null) return null;
+        if (o == null || o[0] == null)
+            return null;
 
         Object label = FieldValueHelper.wrapFieldValue(o[0], field, true);
         return label == null ? null : label.toString();

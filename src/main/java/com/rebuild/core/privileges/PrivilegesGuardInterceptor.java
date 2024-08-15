@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.privileges;
 
@@ -56,7 +50,8 @@ public class PrivilegesGuardInterceptor implements MethodInterceptor, Guard {
         }
 
         final ID caller = UserContextHolder.getUser();
-        if (Application.devMode()) log.info("User [ {} ] call : {}", caller, invocation.getMethod());
+        if (Application.devMode())
+            log.info("User [ {} ] call : {}", caller, invocation.getMethod());
 
         Class<?> invocationClass = Objects.requireNonNull(invocation.getThis()).getClass();
 
@@ -103,7 +98,8 @@ public class PrivilegesGuardInterceptor implements MethodInterceptor, Guard {
         }
 
         // 忽略
-        if (EasyMetaFactory.valueOf(entity).isPlainEntity()) return;
+        if (EasyMetaFactory.valueOf(entity).isPlainEntity())
+            return;
 
         // 检查权限
         Permission action = getPermissionByMethod(invocation.getMethod(), recordId == null);
@@ -146,7 +142,8 @@ public class PrivilegesGuardInterceptor implements MethodInterceptor, Guard {
             log.warn("User [ {} ] not allowed execute action [ {} ]. {}",
                     caller, action, recordId == null ? "Entity : " + entity : "Record : " + recordId);
 
-            if (errorMsg == null) errorMsg = formatHumanMessage(action, entity, recordId);
+            if (errorMsg == null)
+                errorMsg = formatHumanMessage(action, entity, recordId);
             throw new AccessDeniedException(errorMsg);
         }
     }
@@ -186,7 +183,7 @@ public class PrivilegesGuardInterceptor implements MethodInterceptor, Guard {
             return BizzPermission.DELETE;
         } else if (action.startsWith("update")) {
             return BizzPermission.UPDATE;
-        }  else if (action.startsWith("assign")) {
+        } else if (action.startsWith("assign")) {
             return BizzPermission.ASSIGN;
         } else if (action.startsWith("share")) {
             return BizzPermission.SHARE;

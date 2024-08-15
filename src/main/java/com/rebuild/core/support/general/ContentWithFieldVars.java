@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.support.general;
 
@@ -66,7 +60,8 @@ public class ContentWithFieldVars {
                 fieldVars.add(field);
             }
         }
-        if (fieldVars.isEmpty()) return content;
+        if (fieldVars.isEmpty())
+            return content;
 
         fieldVars.add(pkName);
         Record o = Application.getQueryFactory().recordNoFilter(recordId, fieldVars.toArray(new String[0]));
@@ -98,7 +93,8 @@ public class ContentWithFieldVars {
                 fieldVars.put(field, null);
             }
         }
-        if (fieldVars.isEmpty()) return content;
+        if (fieldVars.isEmpty())
+            return content;
 
         for (String field : fieldVars.keySet()) {
             Object value = record.getObjectValue(field);
@@ -115,7 +111,8 @@ public class ContentWithFieldVars {
             String value = e.getValue();
 
             if (value != null) {
-                DisplayType dt = EasyMetaFactory.valueOf(MetadataHelper.getLastJoinField(entity, field)).getDisplayType();
+                DisplayType dt = EasyMetaFactory.valueOf(MetadataHelper.getLastJoinField(entity, field))
+                        .getDisplayType();
                 if (dt == DisplayType.IMAGE || dt == DisplayType.FILE) {
                     // 处理图片 UnsafeImgAccess
                     if (dt == DisplayType.IMAGE && RebuildConfiguration.getBool(ConfigurationItem.UnsafeImgAccess)) {

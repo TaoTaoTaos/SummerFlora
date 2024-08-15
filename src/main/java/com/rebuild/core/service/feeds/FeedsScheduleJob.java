@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.service.feeds;
 
@@ -35,7 +29,8 @@ public class FeedsScheduleJob extends DistributedJobLock {
 
     @Scheduled(cron = "0 * * * * ?")
     public void executeJob() {
-        if (!tryLock()) return;
+        if (!tryLock())
+            return;
 
         Calendar time = CalendarUtils.getInstance();
         time.set(Calendar.SECOND, 0);
@@ -60,7 +55,8 @@ public class FeedsScheduleJob extends DistributedJobLock {
         Map<ID, List<Object[]>> map = new HashMap<>();
         for (Object[] o : array) {
             int reminds = JSON.parseObject((String) o[3]).getIntValue("scheduleRemind");
-            if (reminds == 0) continue;
+            if (reminds == 0)
+                continue;
 
             List<Object[]> list = map.computeIfAbsent((ID) o[0], k -> new ArrayList<>());
             list.add(o);
@@ -76,9 +72,12 @@ public class FeedsScheduleJob extends DistributedJobLock {
             // 分类
             for (Object[] o : list) {
                 int reminds = JSON.parseObject((String) o[3]).getIntValue("scheduleRemind");
-                if ((reminds & 1) != 0) notifications.add(o);
-                if ((reminds & 2) != 0) emails.add(o);
-                if ((reminds & 4) != 0) smss.add(o);
+                if ((reminds & 1) != 0)
+                    notifications.add(o);
+                if ((reminds & 2) != 0)
+                    emails.add(o);
+                if ((reminds & 4) != 0)
+                    smss.add(o);
             }
 
             ID toUser = (ID) list.get(0)[0];
@@ -118,8 +117,10 @@ public class FeedsScheduleJob extends DistributedJobLock {
         Object[] first = msgs.get(0);
 
         String clickUrl = "/app/redirect?id=" + first[1];
-        if (fullUrl) clickUrl = RebuildConfiguration.getHomeUrl(clickUrl);
-        else clickUrl = AppUtils.getContextPath(clickUrl);
+        if (fullUrl)
+            clickUrl = RebuildConfiguration.getHomeUrl(clickUrl);
+        else
+            clickUrl = AppUtils.getContextPath(clickUrl);
 
         String content = String.format("\n\n> [%s](%s)",
                 CommonsUtils.maxstr((String) first[2], 100), clickUrl);

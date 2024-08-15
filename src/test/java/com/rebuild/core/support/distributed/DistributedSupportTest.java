@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.support.distributed;
 
@@ -24,7 +18,8 @@ class DistributedSupportTest extends TestSupport {
 
     @Test
     void testMap() {
-        DistributedSupport distributedSupport = (DistributedSupport) Application.getContext().getBean("DistributedSupport");
+        DistributedSupport distributedSupport = (DistributedSupport) Application.getContext()
+                .getBean("DistributedSupport");
 
         ConcurrentMap<String, User> users = distributedSupport.getMap("RB_USER");
         users.put("User1", Application.getUserStore().getUser(UserService.SYSTEM_USER));

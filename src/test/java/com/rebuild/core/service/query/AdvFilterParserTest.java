@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.service.query;
 
@@ -29,7 +23,7 @@ public class AdvFilterParserTest extends TestSupport {
 
         // Filter items
         items.add(JSON.parseObject("{ op:'LK', field:'loginName', value:'admin' }"));
-        items.add(JSON.parseObject("{ op:'EQ', field:'deptId.name', value:'总部' }"));  // Joins
+        items.add(JSON.parseObject("{ op:'EQ', field:'deptId.name', value:'总部' }")); // Joins
 
         String where = new AdvFilterParser(filterExp).toSqlWhere();
         System.out.println(where);
@@ -46,7 +40,7 @@ public class AdvFilterParserTest extends TestSupport {
         items.add(JSON.parseObject("{ op:'LK', field:'loginName.name', value:'总部' }"));
 
         String where = new AdvFilterParser(filterExp).toSqlWhere();
-        System.out.println(where);  // null
+        System.out.println(where); // null
     }
 
     @Test

@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.service.general;
 
@@ -46,7 +40,8 @@ public class BulkBatchUpdate extends BulkOperator {
         final ID[] willUpdates = prepareRecords();
         this.setTotal(willUpdates.length);
 
-        if (isInterruptState()) return getSucceeded();
+        if (isInterruptState())
+            return getSucceeded();
 
         JSONArray updateContents = ((JSONObject) context.getExtraParams().get("customData"))
                 .getJSONArray("updateContents");
@@ -75,13 +70,15 @@ public class BulkBatchUpdate extends BulkOperator {
 
         GeneralEntityServiceContextHolder.setRepeatedCheckMode(GeneralEntityServiceContextHolder.RCM_CHECK_ALL);
         for (ID id : willUpdates) {
-            if (isInterruptState()) break;
+            if (isInterruptState())
+                break;
 
             if (Application.getPrivilegesManager().allowUpdate(context.getOpUser(), id)) {
                 // 更新记录
                 formJson.getJSONObject(JsonRecordCreator.META_FIELD).put("id", id.toLiteral());
 
-                GeneralEntityServiceContextHolder.setRepeatedCheckMode(GeneralEntityServiceContextHolder.RCM_CHECK_MAIN);
+                GeneralEntityServiceContextHolder
+                        .setRepeatedCheckMode(GeneralEntityServiceContextHolder.RCM_CHECK_MAIN);
                 try {
                     Record record = EntityHelper.parse(formJson, context.getOpUser());
                     ges.createOrUpdate(record);
@@ -95,7 +92,8 @@ public class BulkBatchUpdate extends BulkOperator {
 
                     // 可能有级联触发器
                     Object ts = FieldAggregation.cleanTriggerChain();
-                    if (ts != null) log.info("Clean current-loop : {}", ts);
+                    if (ts != null)
+                        log.info("Clean current-loop : {}", ts);
                 }
 
             } else {

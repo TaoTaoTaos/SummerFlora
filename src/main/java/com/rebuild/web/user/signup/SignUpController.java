@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.web.user.signup;
 
@@ -156,7 +150,7 @@ public class SignUpController extends BaseController {
     public RespBody checkoutName(HttpServletRequest request) {
         String fullName = getParameterNotNull(request, "fullName");
 
-        //noinspection UnnecessaryUnicodeEscape
+        // noinspection UnnecessaryUnicodeEscape
         fullName = fullName.replaceAll("[^a-zA-Z0-9\u4e00-\u9fa5]", "");
         String loginName = HanLP.convertToPinyinString(fullName, "", false);
         if (loginName.length() > 20) {

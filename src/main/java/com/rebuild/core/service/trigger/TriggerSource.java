@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.service.trigger;
 
@@ -39,10 +33,12 @@ public class TriggerSource {
     protected TriggerSource(OperatingContext origin, TriggerWhen originAction) {
         this.id = TSNO.incrementAndGet() + "-";
         addNext(origin, originAction);
-        if (CommonsUtils.DEVLOG) System.out.println("[dev] New trigger-source : " + this);
+        if (CommonsUtils.DEVLOG)
+            System.out.println("[dev] New trigger-source : " + this);
 
         // Clear
-        if (this.id.length() > 4) TSNO.set(0);
+        if (this.id.length() > 4)
+            TSNO.set(0);
     }
 
     public void addNext(OperatingContext next, TriggerWhen nextAction) {

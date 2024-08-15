@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.service;
 
@@ -38,7 +32,7 @@ public class CommonsServiceTest extends TestSupport {
         Application.getCommonsService().update(record, false);
         System.out.println("Update record : " + record.getPrimary());
 
-        Application.getCommonsService().createOrUpdateAndDelete(new Record[0], new ID[]{record.getPrimary()}, false);
+        Application.getCommonsService().createOrUpdateAndDelete(new Record[0], new ID[] { record.getPrimary() }, false);
         System.out.println("Delete record : " + record.getPrimary());
     }
 

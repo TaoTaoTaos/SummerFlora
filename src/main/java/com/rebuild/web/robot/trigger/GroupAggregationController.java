@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.web.robot.trigger;
 
@@ -45,7 +39,8 @@ public class GroupAggregationController extends BaseController {
         // 任意目标实体
         List<String[]> entities = new ArrayList<>();
         for (Entity entity : MetadataSorter.sortEntities(null, false, true)) {
-            if (entity.equals(sourceEntity)) continue;
+            if (entity.equals(sourceEntity))
+                continue;
             entities.add(new String[] { entity.getName(), EasyMetaFactory.getLabel(entity) });
         }
 
@@ -115,7 +110,8 @@ public class GroupAggregationController extends BaseController {
                 item.put("type", type2);
             } else if (DisplayType.CLASSIFICATION.name().equals(type)) {
                 Field clazz = MetadataHelper.getLastJoinField(entity, item.getString("name"));
-                String type2 = type + ":" + EasyMetaFactory.valueOf(clazz).getExtraAttr(EasyFieldConfigProps.CLASSIFICATION_USE);
+                String type2 = type + ":"
+                        + EasyMetaFactory.valueOf(clazz).getExtraAttr(EasyFieldConfigProps.CLASSIFICATION_USE);
                 item.put("type", type2);
             }
         }

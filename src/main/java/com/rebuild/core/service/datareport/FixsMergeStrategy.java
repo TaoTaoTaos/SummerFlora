@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.service.datareport;
 
@@ -33,32 +27,34 @@ public class FixsMergeStrategy extends AbstractMergeStrategy {
             return;
         }
 
-//        int rowIndex = cell.getRowIndex();
-//        int colIndex = cell.getColumnIndex();
-//        sheet = cell.getSheet();
-//        Row prevRow = sheet.getRow(rowIndex - 1);
-//        if (prevRow == null) return;
-//        Cell prevCell = prevRow.getCell(colIndex);
-//        List<CellRangeAddress> craList = sheet.getMergedRegions();
-//        CellStyle cs = cell.getCellStyle();
-//        cell.setCellStyle(cs);
-//
-//        for (CellRangeAddress cellRangeAddress : craList) {
-//            if (cellRangeAddress.containsRow(prevCell.getRowIndex()) && cellRangeAddress.containsColumn(prevCell.getColumnIndex())) {
-//                int lastColIndex = cellRangeAddress.getLastColumn();
-//                int firstColIndex = cellRangeAddress.getFirstColumn();
-//                CellRangeAddress cra = new CellRangeAddress(cell.getRowIndex(), cell.getRowIndex(), firstColIndex, lastColIndex);
-//                sheet.addMergedRegion(cra);
-//
-//                // 复制线框样式
-//                RegionUtil.setBorderBottom(cs.getBorderBottom(), cra, sheet);
-//                RegionUtil.setBorderLeft(cs.getBorderLeft(), cra, sheet);
-//                RegionUtil.setBorderRight(cs.getBorderRight(), cra, sheet);
-//                RegionUtil.setBorderTop(cs.getBorderTop(), cra, sheet);
-//
-//                break;
-//            }
-//        }
+        // int rowIndex = cell.getRowIndex();
+        // int colIndex = cell.getColumnIndex();
+        // sheet = cell.getSheet();
+        // Row prevRow = sheet.getRow(rowIndex - 1);
+        // if (prevRow == null) return;
+        // Cell prevCell = prevRow.getCell(colIndex);
+        // List<CellRangeAddress> craList = sheet.getMergedRegions();
+        // CellStyle cs = cell.getCellStyle();
+        // cell.setCellStyle(cs);
+        //
+        // for (CellRangeAddress cellRangeAddress : craList) {
+        // if (cellRangeAddress.containsRow(prevCell.getRowIndex()) &&
+        // cellRangeAddress.containsColumn(prevCell.getColumnIndex())) {
+        // int lastColIndex = cellRangeAddress.getLastColumn();
+        // int firstColIndex = cellRangeAddress.getFirstColumn();
+        // CellRangeAddress cra = new CellRangeAddress(cell.getRowIndex(),
+        // cell.getRowIndex(), firstColIndex, lastColIndex);
+        // sheet.addMergedRegion(cra);
+        //
+        // // 复制线框样式
+        // RegionUtil.setBorderBottom(cs.getBorderBottom(), cra, sheet);
+        // RegionUtil.setBorderLeft(cs.getBorderLeft(), cra, sheet);
+        // RegionUtil.setBorderRight(cs.getBorderRight(), cra, sheet);
+        // RegionUtil.setBorderTop(cs.getBorderTop(), cra, sheet);
+        //
+        // break;
+        // }
+        // }
 
         try {
             merge37(sheet, cell, head, relativeRowIndex);
@@ -68,7 +64,8 @@ public class FixsMergeStrategy extends AbstractMergeStrategy {
     }
 
     // v3.7
-    // THANKS https://github.com/alibaba/easyexcel/issues/2963#issuecomment-1432827475
+    // THANKS
+    // https://github.com/alibaba/easyexcel/issues/2963#issuecomment-1432827475
     private void merge37(Sheet sheet, Cell cell, Head head, Integer relativeRowIndex) {
         int rowIndex = cell.getRowIndex();
         int colIndex = cell.getColumnIndex();
@@ -81,10 +78,12 @@ public class FixsMergeStrategy extends AbstractMergeStrategy {
 
         for (int i = 0; i < list.size(); i++) {
             CellRangeAddress cellRangeAddress = list.get(i);
-            if (cellRangeAddress.containsRow(preCell.getRowIndex()) && cellRangeAddress.containsColumn(preCell.getColumnIndex())) {
+            if (cellRangeAddress.containsRow(preCell.getRowIndex())
+                    && cellRangeAddress.containsColumn(preCell.getColumnIndex())) {
                 int lastColIndex = cellRangeAddress.getLastColumn();
                 int firstColIndex = cellRangeAddress.getFirstColumn();
-                CellRangeAddress cra = new CellRangeAddress(cell.getRowIndex(), cell.getRowIndex(), firstColIndex, lastColIndex);
+                CellRangeAddress cra = new CellRangeAddress(cell.getRowIndex(), cell.getRowIndex(), firstColIndex,
+                        lastColIndex);
                 thisSheet.addMergedRegion(cra);
                 for (int j = firstColIndex; j <= lastColIndex; j++) {
                     tmpCell = thisRow.getCell(j);

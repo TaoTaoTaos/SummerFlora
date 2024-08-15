@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.support.task;
 
@@ -52,7 +46,7 @@ public class HeavyTaskTest extends TestSupport {
 
     @Test
     public void testCancel() {
-        ThreadPool.waitFor(1000);  // Wait testRejected
+        ThreadPool.waitFor(1000); // Wait testRejected
 
         String taskid = TaskExecutors.submit(new TestTask("testCancel", 100), UserService.SYSTEM_USER);
         System.out.println("Submit Task : " + taskid);
@@ -85,7 +79,7 @@ public class HeavyTaskTest extends TestSupport {
                     break;
                 }
 
-                ThreadPool.waitFor(50);  // Mock time
+                ThreadPool.waitFor(50); // Mock time
                 System.out.println(this.name + "Mock ... " + i);
                 this.addCompleted();
             }

@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.metadata.impl;
 
@@ -22,9 +16,9 @@ class CopyEntityTest extends TestSupport {
     void copy() {
         String sourceName = TestAllFields;
 
-        String newName =
-                ((CopyEntity) new CopyEntity(MetadataHelper.getEntity(sourceName)).setUser(UserService.ADMIN_USER))
-                        .copy(sourceName + "Copy", null);
+        String newName = ((CopyEntity) new CopyEntity(MetadataHelper.getEntity(sourceName))
+                .setUser(UserService.ADMIN_USER))
+                .copy(sourceName + "Copy", null);
         System.out.println("New entity : " + newName);
     }
 }

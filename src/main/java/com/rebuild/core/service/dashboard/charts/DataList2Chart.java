@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.service.dashboard.charts;
 
@@ -40,8 +34,10 @@ public class DataList2Chart extends ChartData {
         List<String> fields = new ArrayList<>();
         String sort = null;
         for (Dimension listField : dims) {
-            Map<String, Object> m = DataListManager.instance.formatField(listField.getField(), listField.getParentField());
-            if (listField.getLabel() != null) m.put("label", listField.getLabel());
+            Map<String, Object> m = DataListManager.instance.formatField(listField.getField(),
+                    listField.getParentField());
+            if (listField.getLabel() != null)
+                m.put("label", listField.getLabel());
             fieldsRich.add(m);
 
             String fieldPath = (String) m.get("field");
@@ -49,8 +45,10 @@ public class DataList2Chart extends ChartData {
 
             // 排序
             FormatSort formatSort = listField.getFormatSort();
-            if (formatSort == FormatSort.ASC) sort = fieldPath + ":asc";
-            else if (formatSort == FormatSort.DESC) sort = fieldPath + ":desc";
+            if (formatSort == FormatSort.ASC)
+                sort = fieldPath + ":asc";
+            else if (formatSort == FormatSort.DESC)
+                sort = fieldPath + ":desc";
         }
 
         Map<String, Object> params = getExtraParams();
@@ -60,8 +58,10 @@ public class DataList2Chart extends ChartData {
         }
 
         int pageSize = config.getJSONObject("option").getIntValue("pageSize");
-        if (pageSize <= 0) pageSize = 40;
-        if (pageSize >= 2000) pageSize = 2000;
+        if (pageSize <= 0)
+            pageSize = 40;
+        if (pageSize >= 2000)
+            pageSize = 2000;
 
         JSONObject listConfig = new JSONObject();
         listConfig.put("pageNo", 1);
@@ -71,7 +71,8 @@ public class DataList2Chart extends ChartData {
         listConfig.put("entity", entity.getName());
         listConfig.put("fields", fields);
         listConfig.put("filter", config.getJSONObject("filter"));
-        if (sort != null) listConfig.put("sort", sort);
+        if (sort != null)
+            listConfig.put("sort", sort);
 
         DataListBuilder builder = new DataListBuilderImpl(listConfig, getUser());
         JSONObject data = (JSONObject) builder.getJSONResult();

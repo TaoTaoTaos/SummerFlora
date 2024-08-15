@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.service.dashboard.charts;
 
@@ -212,7 +206,8 @@ public abstract class ChartData extends SetUser implements ChartSpec {
         if (withAxisFilter != null && ParseHelper.validAdvFilter(withAxisFilter.getFilter())) {
             AdvFilterParser filterParser = new AdvFilterParser(withAxisFilter.getFilter());
             String fieldWhere = filterParser.toSqlWhere();
-            if (fieldWhere != null) where = String.format("((%s) and (%s))", where, fieldWhere);
+            if (fieldWhere != null)
+                where = String.format("((%s) and (%s))", where, fieldWhere);
         }
         return where;
     }
@@ -260,10 +255,10 @@ public abstract class ChartData extends SetUser implements ChartSpec {
                 sorts.add(dim.getSqlName() + " " + fs.toString().toLowerCase());
             }
         }
-//        // NOTE 优先维度排序
-//        if (!sorts.isEmpty()) {
-//            return String.join(", ", sorts);
-//        }
+        // // NOTE 优先维度排序
+        // if (!sorts.isEmpty()) {
+        // return String.join(", ", sorts);
+        // }
 
         for (Numerical num : getNumericals()) {
             FormatSort fs = num.getFormatSort();
@@ -302,12 +297,15 @@ public abstract class ChartData extends SetUser implements ChartSpec {
             format = StringUtils.rightPad(format, format.length() + numerical.getScale(), "0");
         }
 
-        if (useThousands) format = "#," + format;
+        if (useThousands)
+            format = "#," + format;
 
-        if (ID.isId(value)) value = 1;
+        if (ID.isId(value))
+            value = 1;
 
         String n = new DecimalFormat(format).format(value);
-        if (useThousands) n = formatAxisValue(numerical, n);
+        if (useThousands)
+            n = formatAxisValue(numerical, n);
         return n;
     }
 
@@ -316,11 +314,15 @@ public abstract class ChartData extends SetUser implements ChartSpec {
      */
     private String formatAxisValue(Numerical numerical, String value) {
         String type = getNumericalFlag(numerical);
-        if (type == null) return value;
+        if (type == null)
+            return value;
 
-        if ("%".equals(type)) value += "%";
-        else if (type.contains("%s")) value = String.format(type, value);
-        else value = type + " " + value;
+        if ("%".equals(type))
+            value += "%";
+        else if (type.contains("%s"))
+            value = String.format(type, value);
+        else
+            value = type + " " + value;
         return value;
     }
 
@@ -328,7 +330,8 @@ public abstract class ChartData extends SetUser implements ChartSpec {
      * @see com.rebuild.core.metadata.easymeta.EasyDecimal#wrapValue(Object)
      */
     protected String getNumericalFlag(Numerical numerical) {
-        if (numerical.getField().getType() != FieldType.DECIMAL) return null;
+        if (numerical.getField().getType() != FieldType.DECIMAL)
+            return null;
 
         if (!(numerical.getFormatCalc() == FormatCalc.SUM
                 || numerical.getFormatCalc() == FormatCalc.AVG
@@ -338,8 +341,10 @@ public abstract class ChartData extends SetUser implements ChartSpec {
         }
 
         String type = EasyMetaFactory.valueOf(numerical.getField()).getExtraAttr(EasyFieldConfigProps.DECIMAL_TYPE);
-        if (type == null || "0".equalsIgnoreCase(type)) return null;
-        else return type;
+        if (type == null || "0".equalsIgnoreCase(type))
+            return null;
+        else
+            return type;
     }
 
     /**
@@ -535,7 +540,8 @@ public abstract class ChartData extends SetUser implements ChartSpec {
      */
     protected String appendSqlSort(String sql) {
         String sorts = getSortSql();
-        if (sorts != null) sql += " order by " + sorts;
+        if (sorts != null)
+            sql += " order by " + sorts;
         return sql;
     }
 }

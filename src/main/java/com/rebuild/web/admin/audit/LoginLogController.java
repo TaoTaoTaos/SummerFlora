@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.web.admin.audit;
 
@@ -57,18 +51,20 @@ public class LoginLogController extends EntityController {
         JSONArray online = new JSONArray();
         for (HttpSession s : Application.getSessionStore().getAllSession()) {
             ID user = (ID) s.getAttribute(WebUtils.CURRENT_USER);
-            if (user == null) continue;
+            if (user == null)
+                continue;
 
             Object[] active = (Object[]) s.getAttribute(OnlineSessionStore.SK_LASTACTIVE);
             if (active == null) {
-                active = new Object[]{ null, "/dashboard/home", null };
+                active = new Object[] { null, "/dashboard/home", null };
             } else {
                 active = active.clone();
                 active[0] = I18nUtils.formatDate(new Date((Long) active[0]));
             }
 
             String fullName = UserHelper.getName(user);
-            if (currentSid.equals(s.getId())) fullName += " [" + Language.L("当前") + "]";
+            if (currentSid.equals(s.getId()))
+                fullName += " [" + Language.L("当前") + "]";
 
             JSONObject item = JSONUtils.toJSONObject(
                     new String[] { "user", "fullName", "activeTime", "activeUrl", "activeIp", "sid" },

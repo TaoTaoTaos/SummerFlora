@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.web;
 
@@ -49,14 +43,16 @@ public class OnlineSessionStore implements HttpSessionListener {
 
     @Override
     public void sessionCreated(HttpSessionEvent event) {
-        if (log.isDebugEnabled()) log.info("Created session : {}", event.getSession().getId());
+        if (log.isDebugEnabled())
+            log.info("Created session : {}", event.getSession().getId());
 
         ONLINE_SESSIONS.add(event.getSession());
     }
 
     @Override
     public void sessionDestroyed(HttpSessionEvent event) {
-        if (log.isDebugEnabled()) log.info("Destroyed session : {}", event.getSession().getId());
+        if (log.isDebugEnabled())
+            log.info("Destroyed session : {}", event.getSession().getId());
 
         HttpSession s = event.getSession();
         ONLINE_SESSIONS.remove(s);
@@ -99,10 +95,10 @@ public class OnlineSessionStore implements HttpSessionListener {
         if (requestUri.contains("/filex/access/")) {
             return;
         }
-        
+
         HttpSession s = request.getSession();
         s.setAttribute(SK_LASTACTIVE,
-                new Object[]{System.currentTimeMillis(), requestUri, ServletUtils.getRemoteAddr(request)});
+                new Object[] { System.currentTimeMillis(), requestUri, ServletUtils.getRemoteAddr(request) });
     }
 
     /**
@@ -154,7 +150,8 @@ public class OnlineSessionStore implements HttpSessionListener {
                 found.invalidate();
                 log.warn("Kill session with {}", sessionOrUser);
             }
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) {
+        }
 
         return found != null;
     }

@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.service.general;
 
@@ -89,7 +83,8 @@ public abstract class ObservableService extends SafeObservable implements Servic
         if (countObservers() > 0) {
             deleted = EntityHelper.forUpdate(recordId, currentUser, Boolean.FALSE);
             deleted = recordSnap(deleted, true);
-            if (deleted == null) return 0;
+            if (deleted == null)
+                return 0;
 
             // 删除前触发，做一些状态保持
             notifyObservers(OperatingContext.create(currentUser, InternalPermission.DELETE_BEFORE, deleted, deleted));
@@ -145,7 +140,7 @@ public abstract class ObservableService extends SafeObservable implements Servic
      * 获取原始调用用户
      *
      * @return
-     * @see UserContextHolder#replaceUser(ID) 
+     * @see UserContextHolder#replaceUser(ID)
      */
     protected ID getCurrentUser() {
         return UserContextHolder.getReplacedUser();

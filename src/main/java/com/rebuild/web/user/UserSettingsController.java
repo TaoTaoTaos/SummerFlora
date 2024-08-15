@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.web.user;
 
@@ -66,7 +60,8 @@ public class UserSettingsController extends BaseController {
                     .setParameter(1, ub.getId())
                     .setParameter(2, dingtalkCorpid)
                     .unique();
-            if (dingtalkUser != null) mv.getModelMap().put("dingtalkUser", dingtalkUser[0]);
+            if (dingtalkUser != null)
+                mv.getModelMap().put("dingtalkUser", dingtalkUser[0]);
         }
         String wxworkCorpid = RebuildConfiguration.get(ConfigurationItem.WxworkCorpid);
         if (wxworkCorpid != null) {
@@ -75,7 +70,8 @@ public class UserSettingsController extends BaseController {
                     .setParameter(1, ub.getId())
                     .setParameter(2, wxworkCorpid)
                     .unique();
-            if (wxworkUser != null) mv.getModelMap().put("wxworkUser", wxworkUser[0]);
+            if (wxworkUser != null)
+                mv.getModelMap().put("wxworkUser", wxworkUser[0]);
         }
 
         return mv;
@@ -97,7 +93,8 @@ public class UserSettingsController extends BaseController {
         String content = Language.L("你的邮箱验证码是 : **%s**", vcode);
         String sentid = SMSender.sendMail(email, subject, content);
 
-        if (sentid != null) return RespBody.ok();
+        if (sentid != null)
+            return RespBody.ok();
         return RespBody.errorl("操作失败，请稍后重试");
     }
 
@@ -213,6 +210,7 @@ public class UserSettingsController extends BaseController {
 
     private void throwIfTempAuth(HttpServletRequest request) {
         Object tempAuth = ServletUtils.getSessionAttribute(request, LoginController.SK_TEMP_AUTH);
-        if (tempAuth != null) throw new DefinedException(Language.L("无权访问该页面"));
+        if (tempAuth != null)
+            throw new DefinedException(Language.L("无权访问该页面"));
     }
 }

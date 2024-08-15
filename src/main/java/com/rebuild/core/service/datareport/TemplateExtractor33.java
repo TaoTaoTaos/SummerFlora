@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.service.datareport;
 
@@ -61,7 +55,8 @@ public class TemplateExtractor33 extends TemplateExtractor {
 
         final Entity detailEntity = entity.getDetailEntity();
         final Entity approvalEntity = MetadataHelper.hasApprovalField(entity)
-                ? MetadataHelper.getEntity(EntityHelper.RobotApprovalStep) : null;
+                ? MetadataHelper.getEntity(EntityHelper.RobotApprovalStep)
+                : null;
 
         Map<String, String> map = new HashMap<>();
         for (final String varName : vars) {
@@ -78,7 +73,8 @@ public class TemplateExtractor33 extends TemplateExtractor {
                 // 审批流程
                 else if (thatName.startsWith(APPROVAL_PREFIX) || thatName.startsWith(APPROVAL_PREFIX2)) {
                     String stepNodeField = listField.substring(APPROVAL_PREFIX.length());
-                    if (approvalEntity != null && MetadataHelper.getLastJoinField(approvalEntity, stepNodeField) != null) {
+                    if (approvalEntity != null
+                            && MetadataHelper.getLastJoinField(approvalEntity, stepNodeField) != null) {
                         map.put(varName, stepNodeField);
                     } else {
                         map.put(varName, null);
@@ -101,7 +97,8 @@ public class TemplateExtractor33 extends TemplateExtractor {
                     String ref2Field = split[0];
                     String ref2Entity = split.length > 1 ? split[1] : null;
                     Field ref2FieldMeta = ref2Entity != null && MetadataHelper.containsField(ref2Entity, ref2Field)
-                            ? MetadataHelper.getField(ref2Entity, ref2Field) : null;
+                            ? MetadataHelper.getField(ref2Entity, ref2Field)
+                            : null;
 
                     if (ref2FieldMeta != null && entity.equals(ref2FieldMeta.getReferenceEntity())) {
                         String refName = NROW_PREFIX + ref2Field + "." + ref2Entity;
@@ -140,8 +137,10 @@ public class TemplateExtractor33 extends TemplateExtractor {
         // 有多个字段排序的，其排序顺序取决于字段出现在模板中的位置
         if (hasSort != null) {
             String useSorts = sortFields.get(refName);
-            if (useSorts != null) useSorts += "," + hasSort;
-            else useSorts = hasSort;
+            if (useSorts != null)
+                useSorts += "," + hasSort;
+            else
+                useSorts = hasSort;
             sortFields.put(refName, useSorts);
         }
 
@@ -181,7 +180,8 @@ public class TemplateExtractor33 extends TemplateExtractor {
                 Drawing<?> drawing = sheet.getDrawingPatriarch();
                 if (drawing != null) {
                     for (Object o : sheet.getDrawingPatriarch()) {
-                        if (!(o instanceof XSSFSimpleShape)) continue;  // 仅文本
+                        if (!(o instanceof XSSFSimpleShape))
+                            continue; // 仅文本
                         XSSFSimpleShape shape = (XSSFSimpleShape) o;
                         String shapeText = shape.getText();
                         Matcher matcher = PATT_V2.matcher(shapeText);

@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.service.general;
 
@@ -42,8 +36,8 @@ class BulkBacthUpdateTest extends TestSupport {
         customData.getJSONObject("queryData").put("_selected", recordId.toLiteral());
 
         JSONObject useSet = JSONUtils.toJSONObject(
-                new String[]{"field", "op", "value"},
-                new String[]{"text", BulkBatchUpdate.OP_SET, "BatchUpdate-" + System.currentTimeMillis()});
+                new String[] { "field", "op", "value" },
+                new String[] { "text", BulkBatchUpdate.OP_SET, "BatchUpdate-" + System.currentTimeMillis() });
         JSONArray updateContents = new JSONArray();
         updateContents.add(useSet);
         customData.put("updateContents", updateContents);
@@ -72,7 +66,7 @@ class BulkBacthUpdateTest extends TestSupport {
     private JSONObject createCustomData() {
         JSONObject queryData = new JSONObject();
         queryData.put("entity", TestAllFields);
-        queryData.put("fields", new String[]{EntityHelper.OwningUser});
+        queryData.put("fields", new String[] { EntityHelper.OwningUser });
         queryData.put("advFilter", null);
         queryData.put("pageNo", 1);
         queryData.put("pageSize", 5);

@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core;
 
@@ -45,7 +39,8 @@ public class BootEnvironmentPostProcessor implements EnvironmentPostProcessor, I
 
     @Override
     public void postProcessEnvironment(ConfigurableEnvironment env, SpringApplication application) {
-        if (env == null) env = ENV_HOLD;
+        if (env == null)
+            env = ENV_HOLD;
 
         try {
             // LogbackLoggingSystem#beforeInitialize
@@ -96,11 +91,13 @@ public class BootEnvironmentPostProcessor implements EnvironmentPostProcessor, I
         for (ConfigurationItem item : ConfigurationItem.values()) {
             String name = V2_PREFIX + item.name();
             String value = env.getProperty(name);
-            if (value != null) confPs.put(name, value);
+            if (value != null)
+                confPs.put(name, value);
 
             name = Installer.CONF_PREFIX + item.name();
             value = env.getProperty(name);
-            if (value != null) confPs.put(name, value);
+            if (value != null)
+                confPs.put(name, value);
         }
 
         String dbUrl = env.getProperty("db.url");
@@ -110,8 +107,10 @@ public class BootEnvironmentPostProcessor implements EnvironmentPostProcessor, I
             dbUrl = "jdbc:mysql://127.0.0.1:3306/rebuild30?characterEncoding=UTF8";
             confPs.put("db.url", dbUrl);
         }
-        if (env.getProperty("db.user") == null) confPs.put("db.user", "rebuild");
-        if (env.getProperty("db.passwd") == null) confPs.put("db.passwd", "rebuild");
+        if (env.getProperty("db.user") == null)
+            confPs.put("db.user", "rebuild");
+        if (env.getProperty("db.passwd") == null)
+            confPs.put("db.passwd", "rebuild");
 
         // fix: v2.1
         if (dbUrl.contains("jdbc:mysql") && !dbUrl.contains("serverTimezone")) {

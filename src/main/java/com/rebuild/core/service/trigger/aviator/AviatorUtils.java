@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.service.trigger.aviator;
 
@@ -93,7 +87,7 @@ public class AviatorUtils {
      *
      * @param expression
      * @param env
-     * @param quietly true 表示不抛出异常
+     * @param quietly    true 表示不抛出异常
      * @return
      */
     public static Object eval(String expression, Map<String, Object> env, boolean quietly) {
@@ -105,7 +99,8 @@ public class AviatorUtils {
             }
 
             log.error("Bad aviator expression : \n>> {}\n>> {}\n>> {}", expression, env, ex.getLocalizedMessage());
-            if (!quietly) throw ex;
+            if (!quietly)
+                throw ex;
         }
         return null;
     }
@@ -149,8 +144,10 @@ public class AviatorUtils {
      */
     @SuppressWarnings("unchecked")
     public static Iterator<Object> toIterator(Object value) {
-        if (value instanceof Collection) return ((Collection<Object>) value).iterator();
-        if (value instanceof Sequence) return ((Sequence<Object>) value).iterator();
+        if (value instanceof Collection)
+            return ((Collection<Object>) value).iterator();
+        if (value instanceof Sequence)
+            return ((Sequence<Object>) value).iterator();
 
         throw new UnsupportedOperationException("Unsupport type : " + value);
     }

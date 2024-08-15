@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.api.user;
 
@@ -52,8 +46,8 @@ public class LoginToken extends BaseApi {
         String loginToken = AuthTokenManager.generateOnceToken(loginUser.getId());
 
         JSON ret = JSONUtils.toJSONObject(
-                new String[]{"login_token", "login_url"},
-                new String[]{loginToken, RebuildConfiguration.getHomeUrl("user/login?token=" + loginToken)});
+                new String[] { "login_token", "login_url" },
+                new String[] { loginToken, RebuildConfiguration.getHomeUrl("user/login?token=" + loginToken) });
         return formatSuccess(ret);
     }
 

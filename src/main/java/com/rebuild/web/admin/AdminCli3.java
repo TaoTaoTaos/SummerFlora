@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.web.admin;
 
@@ -63,12 +57,13 @@ public class AdminCli3 {
      * @return
      */
     public String exec() {
-        if (this.commands.length == 0) return "WRAN: Bad command";
+        if (this.commands.length == 0)
+            return "WRAN: Bad command";
 
         String result = null;
         switch (commands[0]) {
             case C_HELP:
-            case "?" : {
+            case "?": {
                 result = " Usage : " +
                         " \ncache [clean|get] [KEY]" +
                         " \nsyscfg NAME [VALUE]" +
@@ -95,11 +90,11 @@ public class AdminCli3 {
                 result = this.execAes();
                 break;
             }
-            case C_CLEAN_APPROVAL : {
+            case C_CLEAN_APPROVAL: {
                 result = this.execCleanApproval();
                 break;
             }
-            case C_ADD_TESTENTITY : {
+            case C_ADD_TESTENTITY: {
                 result = this.execAddTestentity();
                 break;
             }
@@ -117,7 +112,8 @@ public class AdminCli3 {
      * @return
      */
     protected String execCache() {
-        if (commands.length < 2) return "WRAN: Bad arguments";
+        if (commands.length < 2)
+            return "WRAN: Bad arguments";
 
         String result = SUCCESS;
 
@@ -125,11 +121,14 @@ public class AdminCli3 {
         if ("clean".equals(name)) {
             Installer.clearAllCache();
         } else if ("get".equals(name)) {
-            if (commands.length < 3) return "WRAN: Bad arguments";
+            if (commands.length < 3)
+                return "WRAN: Bad arguments";
             String key = commands[2];
             Object value = Application.getCommonsCache().getx(key);
-            if (value == null) result = "/NULL/";
-            else result = value.toString();
+            if (value == null)
+                result = "/NULL/";
+            else
+                result = value.toString();
         } else {
             result = "WRAN: Bad arguments";
         }
@@ -144,7 +143,8 @@ public class AdminCli3 {
      * @see ConfigurationItem
      */
     protected String execSyscfg() {
-        if (commands.length < 2) return "WRAN: Bad arguments";
+        if (commands.length < 2)
+            return "WRAN: Bad arguments";
 
         String name = commands[1];
         try {
@@ -184,7 +184,8 @@ public class AdminCli3 {
 
     private void removeItems(String itemPrefix) {
         for (ConfigurationItem i : ConfigurationItem.values()) {
-            if (i.name().startsWith(itemPrefix)) RebuildConfiguration.set(i, RebuildConfiguration.SETNULL);
+            if (i.name().startsWith(itemPrefix))
+                RebuildConfiguration.set(i, RebuildConfiguration.SETNULL);
         }
     }
 
@@ -220,7 +221,8 @@ public class AdminCli3 {
      * @return
      */
     protected String execAes() {
-        if (commands.length < 2) return "WRAN: Bad arguments";
+        if (commands.length < 2)
+            return "WRAN: Bad arguments";
 
         String value = commands.length > 2 ? commands[2] : commands[1];
         if ("decrypt".equalsIgnoreCase(commands[1])) {
@@ -236,7 +238,8 @@ public class AdminCli3 {
      * @return
      */
     private String execCleanApproval() {
-        if (commands.length < 2) return "WRAN: Bad arguments";
+        if (commands.length < 2)
+            return "WRAN: Bad arguments";
 
         String entity = commands[1];
         if (!MetadataHelper.containsEntity(entity)) {
@@ -255,7 +258,9 @@ public class AdminCli3 {
         String name = commands.length > 1 ? commands[1] : "TestAllFields999";
         String entityName = new TsetEntity().create(name);
 
-        if (entityName.startsWith("EXISTS:")) return "WRAN: " + entityName;
-        else return "OK: " + entityName;
+        if (entityName.startsWith("EXISTS:"))
+            return "WRAN: " + entityName;
+        else
+            return "OK: " + entityName;
     }
 }

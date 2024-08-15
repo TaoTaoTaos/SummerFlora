@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.metadata;
 
@@ -25,76 +19,76 @@ import java.util.Map;
  */
 public class EntityOverview {
 
-    private final Entity entity;
+        private final Entity entity;
 
-    public EntityOverview(Entity entity) {
-        this.entity = entity;
-    }
-
-    /**
-     * @return
-     */
-    public Map<String, Object> overview() {
-        Map<String, Object> map = new HashMap<>();
-
-        // FIELD
-
-        List<Object> FIELDS = new ArrayList<>();
-        for (Field field : entity.getFields()) {
-            FIELDS.add(new String[] { field.getName(), EasyMetaFactory.getLabel(field) });
+        public EntityOverview(Entity entity) {
+                this.entity = entity;
         }
-        map.put("FIELDS", FIELDS);
 
-        // AUTOFILLIN
+        /**
+         * @return
+         */
+        public Map<String, Object> overview() {
+                Map<String, Object> map = new HashMap<>();
 
-        Object[][] array = Application.createQuery(
-                "select sourceField from AutoFillinConfig where belongEntity = ?")
-                .setParameter(1, entity.getName()).array();
-        map.put("AUTOFILLINS", array);
+                // FIELD
 
-        // APPROVAL
+                List<Object> FIELDS = new ArrayList<>();
+                for (Field field : entity.getFields()) {
+                        FIELDS.add(new String[] { field.getName(), EasyMetaFactory.getLabel(field) });
+                }
+                map.put("FIELDS", FIELDS);
 
-        array = Application.createQuery(
-                "select configId,name from RobotApprovalConfig where belongEntity = ?")
-                .setParameter(1, entity.getName()).array();
-        map.put("APPROVALS", array);
+                // AUTOFILLIN
 
-        // TRANSFORM
+                Object[][] array = Application.createQuery(
+                                "select sourceField from AutoFillinConfig where belongEntity = ?")
+                                .setParameter(1, entity.getName()).array();
+                map.put("AUTOFILLINS", array);
 
-        List<Object> TRANSFORMS = new ArrayList<>();
-        for (ConfigBean cb : TransformManager.instance.getRawTransforms(entity.getName())) {
-            TRANSFORMS.add(new Object[] { cb.getID("id"), cb.getString("name") });
+                // APPROVAL
+
+                array = Application.createQuery(
+                                "select configId,name from RobotApprovalConfig where belongEntity = ?")
+                                .setParameter(1, entity.getName()).array();
+                map.put("APPROVALS", array);
+
+                // TRANSFORM
+
+                List<Object> TRANSFORMS = new ArrayList<>();
+                for (ConfigBean cb : TransformManager.instance.getRawTransforms(entity.getName())) {
+                        TRANSFORMS.add(new Object[] { cb.getID("id"), cb.getString("name") });
+                }
+                map.put("TRANSFORMS", TRANSFORMS);
+
+                // TRIGGER
+
+                array = Application.createQuery(
+                                "select configId,name from RobotTriggerConfig where belongEntity = ?")
+                                .setParameter(1, entity.getName()).array();
+                map.put("TRIGGERS", array);
+
+                // EXTFORM
+
+                array = Application.createQuery(
+                                "select configId,name from ExtformConfig where belongEntity = ?")
+                                .setParameter(1, entity.getName()).array();
+                map.put("EXTFORMS", array);
+
+                // REPORT
+
+                array = Application.createQuery(
+                                "select configId,name from DataReportConfig where belongEntity = ?")
+                                .setParameter(1, entity.getName()).array();
+                map.put("REPORTS", array);
+
+                // SOP
+
+                array = Application.createQuery(
+                                "select configId,name from RobotSopConfig where belongEntity = ?")
+                                .setParameter(1, entity.getName()).array();
+                map.put("SOPS", array);
+
+                return map;
         }
-        map.put("TRANSFORMS", TRANSFORMS);
-
-        // TRIGGER
-
-        array = Application.createQuery(
-                "select configId,name from RobotTriggerConfig where belongEntity = ?")
-                .setParameter(1, entity.getName()).array();
-        map.put("TRIGGERS", array);
-
-        // EXTFORM
-
-        array = Application.createQuery(
-                "select configId,name from ExtformConfig where belongEntity = ?")
-                .setParameter(1, entity.getName()).array();
-        map.put("EXTFORMS", array);
-
-        // REPORT
-
-        array = Application.createQuery(
-                "select configId,name from DataReportConfig where belongEntity = ?")
-                .setParameter(1, entity.getName()).array();
-        map.put("REPORTS", array);
-
-        // SOP
-
-        array = Application.createQuery(
-                "select configId,name from RobotSopConfig where belongEntity = ?")
-                .setParameter(1, entity.getName()).array();
-        map.put("SOPS", array);
-
-        return map;
-    }
 }

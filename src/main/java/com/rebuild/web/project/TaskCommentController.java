@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.web.project;
 
@@ -46,13 +40,14 @@ public class TaskCommentController extends BaseController {
 
         JSONArray ret = new JSONArray();
         for (Object[] o : array) {
-            if (o[2] != null) o[2] = JSON.parse((String) o[2]);
+            if (o[2] != null)
+                o[2] = JSON.parse((String) o[2]);
             o[3] = I18nUtils.formatDate((Date) o[3]);
-            o[4] = new Object[]{o[4], UserHelper.getName((ID) o[4])};
+            o[4] = new Object[] { o[4], UserHelper.getName((ID) o[4]) };
             o[5] = ProjectHelper.isManageable((ID) o[0], user);
 
             JSONObject item = JSONUtils.toJSONObject(
-                    new String[]{"id", "content", "attachments", "createdOn", "createdBy", "isManageable"},
+                    new String[] { "id", "content", "attachments", "createdOn", "createdBy", "isManageable" },
                     o);
             ret.add(item);
         }

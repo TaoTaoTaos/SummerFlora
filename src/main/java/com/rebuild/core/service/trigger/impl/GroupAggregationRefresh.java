@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.service.trigger.impl;
 
@@ -94,8 +88,10 @@ public class GroupAggregationRefresh {
         for (Object[] o : targetRecords4Refresh) {
             final ID targetRecordId = (ID) o[o.length - 1];
             // 排重
-            if (refreshedIds.contains(targetRecordId)) continue;
-            else refreshedIds.add(targetRecordId);
+            if (refreshedIds.contains(targetRecordId))
+                continue;
+            else
+                refreshedIds.add(targetRecordId);
 
             List<String> qFieldsFollow = new ArrayList<>();
             for (int i = 0; i < o.length - 1; i++) {
@@ -118,7 +114,8 @@ public class GroupAggregationRefresh {
 
             // FIXME v35 可能导致数据聚合条件中的字段变量不准
             Record fakeSourceRecord = EntityHelper.forUpdate(originSourceId, triggerUser, false);
-            OperatingContext oCtx = OperatingContext.create(triggerUser, BizzPermission.NONE, fakeSourceRecord, fakeSourceRecord);
+            OperatingContext oCtx = OperatingContext.create(triggerUser, BizzPermission.NONE, fakeSourceRecord,
+                    fakeSourceRecord);
 
             try {
                 ga.execute(oCtx);

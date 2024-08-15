@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.service.query;
 
@@ -67,11 +61,11 @@ public class ParseHelper {
     public static final String SFU = "SFU";
     public static final String SFB = "SFB";
     public static final String SFD = "SFD";
-    public static final String SFT = "SFT";  // 所在团队
+    public static final String SFT = "SFT"; // 所在团队
 
-    public static final String YTA = "YTA";  // 昨天
-    public static final String TDA = "TDA";  // 今天
-    public static final String TTA = "TTA";  // 明天
+    public static final String YTA = "YTA"; // 昨天
+    public static final String TDA = "TDA"; // 今天
+    public static final String TTA = "TTA"; // 明天
     // 位运算
     public static final String BAND = "BAND";
     public static final String NBAND = "NBAND";
@@ -81,26 +75,26 @@ public class ParseHelper {
      * 创建索引时使用 `PARSER ngram`
      * https://dev.mysql.com/doc/refman/5.7/en/fulltext-search.html
      */
-    public static final String FT = "FT";    // 全文索引（暂未用）
+    public static final String FT = "FT"; // 全文索引（暂未用）
 
-    public static final String PUW = "PUW";  // 本周-
-    public static final String CUW = "CUW";  // 本周
-    public static final String NUW = "NUW";  // 本周+
-    public static final String PUM = "PUM";  // 本月-
-    public static final String CUM = "CUM";  // 本月
-    public static final String NUM = "NUM";  // 本月+
-    public static final String PUQ = "PUQ";  // 本季度-
-    public static final String CUQ = "CUQ";  // 本季度
-    public static final String NUQ = "NUQ";  // 本季度+
-    public static final String PUY = "PUY";  // 本年-
-    public static final String CUY = "CUY";  // 本年
-    public static final String NUY = "NUY";  // 本年+
-    public static final String DDD = "DDD";  // 指定天+-
-    public static final String HHH = "HHH";  // 指定时+-
-    public static final String EVW = "EVW";  // 每周几
-    public static final String EVM = "EVM";  // 每月几
+    public static final String PUW = "PUW"; // 本周-
+    public static final String CUW = "CUW"; // 本周
+    public static final String NUW = "NUW"; // 本周+
+    public static final String PUM = "PUM"; // 本月-
+    public static final String CUM = "CUM"; // 本月
+    public static final String NUM = "NUM"; // 本月+
+    public static final String PUQ = "PUQ"; // 本季度-
+    public static final String CUQ = "CUQ"; // 本季度
+    public static final String NUQ = "NUQ"; // 本季度+
+    public static final String PUY = "PUY"; // 本年-
+    public static final String CUY = "CUY"; // 本年
+    public static final String NUY = "NUY"; // 本年+
+    public static final String DDD = "DDD"; // 指定天+-
+    public static final String HHH = "HHH"; // 指定时+-
+    public static final String EVW = "EVW"; // 每周几
+    public static final String EVM = "EVM"; // 每月几
 
-    public static final String REP = "REP";  // 重复的
+    public static final String REP = "REP"; // 重复的
 
     // 日期时间
 
@@ -141,29 +135,29 @@ public class ParseHelper {
         } else if (BW.equalsIgnoreCase(token)) {
             return "between";
         } else if (BFD.equalsIgnoreCase(token)) {
-            return "<=";  // "$before_day(%d)";
+            return "<="; // "$before_day(%d)";
         } else if (BFM.equalsIgnoreCase(token)) {
-            return "<=";  // "$before_month(%d)";
+            return "<="; // "$before_month(%d)";
         } else if (BFY.equalsIgnoreCase(token)) {
-            return "<=";  // "$before_year(%d)";
+            return "<="; // "$before_year(%d)";
         } else if (AFD.equalsIgnoreCase(token)) {
-            return ">=";  // "$after_day(%d)";
+            return ">="; // "$after_day(%d)";
         } else if (AFM.equalsIgnoreCase(token)) {
-            return ">=";  // "$after_month(%d)";
+            return ">="; // "$after_month(%d)";
         } else if (AFY.equalsIgnoreCase(token)) {
-            return ">=";  // "$after_year(%d)";
+            return ">="; // "$after_year(%d)";
         } else if (RED.equalsIgnoreCase(token)) {
-            return ">";   // "$recent_day(%d)";
+            return ">"; // "$recent_day(%d)";
         } else if (REM.equalsIgnoreCase(token)) {
-            return ">";   // "$recent_month(%d)";
+            return ">"; // "$recent_month(%d)";
         } else if (REY.equalsIgnoreCase(token)) {
-            return ">";   // "$recent_year(%d)";
-        }  else if (FUD.equalsIgnoreCase(token)) {
-            return ">=";   // "$future_day(%d)";
+            return ">"; // "$recent_year(%d)";
+        } else if (FUD.equalsIgnoreCase(token)) {
+            return ">="; // "$future_day(%d)";
         } else if (FUM.equalsIgnoreCase(token)) {
-            return ">=";   // "$future_month(%d)";
+            return ">="; // "$future_month(%d)";
         } else if (FUY.equalsIgnoreCase(token)) {
-            return ">=";   // "$future_year(%d)";
+            return ">="; // "$future_year(%d)";
         } else if (SFU.equalsIgnoreCase(token)) {
             return "=";
         } else if (SFB.equalsIgnoreCase(token)) {
@@ -182,10 +176,12 @@ public class ParseHelper {
             return "!&";
         } else if (FT.equalsIgnoreCase(token)) {
             return "match";
-        } else if (
-                CUW.equalsIgnoreCase(token) || CUM.equalsIgnoreCase(token) || CUQ.equalsIgnoreCase(token) || CUY.equalsIgnoreCase(token) ||
-                PUW.equalsIgnoreCase(token) || PUM.equalsIgnoreCase(token) || PUQ.equalsIgnoreCase(token) || PUY.equalsIgnoreCase(token) ||
-                NUW.equalsIgnoreCase(token) || NUM.equalsIgnoreCase(token) || NUQ.equalsIgnoreCase(token) || NUY.equalsIgnoreCase(token)) {
+        } else if (CUW.equalsIgnoreCase(token) || CUM.equalsIgnoreCase(token) || CUQ.equalsIgnoreCase(token)
+                || CUY.equalsIgnoreCase(token) ||
+                PUW.equalsIgnoreCase(token) || PUM.equalsIgnoreCase(token) || PUQ.equalsIgnoreCase(token)
+                || PUY.equalsIgnoreCase(token) ||
+                NUW.equalsIgnoreCase(token) || NUM.equalsIgnoreCase(token) || NUQ.equalsIgnoreCase(token)
+                || NUY.equalsIgnoreCase(token)) {
             return "between";
         } else if (DDD.equalsIgnoreCase(token) || HHH.equalsIgnoreCase(token)
                 || EVW.equalsIgnoreCase(token) || EVM.equalsIgnoreCase(token)) {
@@ -216,15 +212,20 @@ public class ParseHelper {
             }
 
             String can = useQuickField(nameField, fieldPath);
-            if (can == null) return null;
-            else if (can.startsWith("&")) return can;
-            else return QueryCompiler.NAME_FIELD_PREFIX + can;
+            if (can == null)
+                return null;
+            else if (can.startsWith("&"))
+                return can;
+            else
+                return QueryCompiler.NAME_FIELD_PREFIX + can;
 
         } else if (dt == DisplayType.PICKLIST
                 || dt == DisplayType.CLASSIFICATION) {
             String can = StringUtils.defaultIfEmpty(fieldPath, field.getName());
-            if (can.startsWith("&")) return can;
-            else return QueryCompiler.NAME_FIELD_PREFIX + can;
+            if (can.startsWith("&"))
+                return can;
+            else
+                return QueryCompiler.NAME_FIELD_PREFIX + can;
 
         } else if (dt == DisplayType.TEXT
                 || dt == DisplayType.EMAIL
@@ -263,7 +264,8 @@ public class ParseHelper {
                 Field validField = MetadataHelper.getLastJoinField(entity, field);
                 if (validField != null) {
                     String can = useQuickField(validField, field);
-                    if (can != null) usesFields.add(can);
+                    if (can != null)
+                        usesFields.add(can);
 
                 } else {
                     log.warn("No field found in `quickFields` : " + field + " in " + entity.getName());
@@ -311,7 +313,8 @@ public class ParseHelper {
      * @return
      */
     public static boolean validAdvFilter(JSONObject advFilter) {
-        if (advFilter == null || advFilter.isEmpty()) return false;
+        if (advFilter == null || advFilter.isEmpty())
+            return false;
 
         JSONArray items = advFilter.getJSONArray("items");
         return items != null && !items.isEmpty();

@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.metadata.impl;
 
@@ -49,7 +43,7 @@ public class MetaEntityService extends InternalPersistService implements AdminGu
 
         // 删除实体的相关配置
         // Field: belongEntity
-        String[] confEntities = new String[]{
+        String[] confEntities = new String[] {
                 "MetaField", "PickList", "LayoutConfig", "FilterConfig", "ShareAccess", "ChartConfig",
                 "Attachment", "AutoFillinConfig", "RobotTriggerConfig", "RobotApprovalConfig",
                 "DataReportConfig", "TransformConfig", "ExtformConfig",

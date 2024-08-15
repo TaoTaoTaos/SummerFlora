@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.web.admin;
 
@@ -86,7 +80,8 @@ public class ApisManagerController extends BaseController {
         int pageNo = getIntParameter(request, "pn", 1);
         int pageSize = 40;
 
-        String sql = "select remoteIp,requestTime,responseTime,requestUrl,requestBody,responseBody,requestId from RebuildApiRequest" +
+        String sql = "select remoteIp,requestTime,responseTime,requestUrl,requestBody,responseBody,requestId from RebuildApiRequest"
+                +
                 " where appId = ? and requestTime > ? and (1=1) order by requestTime desc";
         if (StringUtils.isNotBlank(q)) {
             q = CommonsUtils.escapeSql(q);
@@ -94,7 +89,8 @@ public class ApisManagerController extends BaseController {
             if (CommandArgs.getBoolean(CommandArgs._UseDbFullText)) {
                 sql = sql.replace("(1=1)", String.format("(requestBody match '%s' or responseBody match '%s')", q, q));
             } else {
-                sql = sql.replace("(1=1)", String.format("(requestBody like '%%%s%%' or responseBody like '%%%s%%')", q, q));
+                sql = sql.replace("(1=1)",
+                        String.format("(requestBody like '%%%s%%' or responseBody like '%%%s%%')", q, q));
             }
         }
 
@@ -115,7 +111,7 @@ public class ApisManagerController extends BaseController {
             } catch (JSONException ignored) {
                 o[5] = resp.substring(37);
             }
-            o[6] = resp.substring(0, 36);  // request-id
+            o[6] = resp.substring(0, 36); // request-id
         }
 
         return RespBody.ok(array);

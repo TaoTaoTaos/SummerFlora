@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.configuration.general;
 
@@ -32,7 +26,8 @@ public class FormsManager extends BaseLayoutManager {
 
     public static final FormsManager instance = new FormsManager();
 
-    protected FormsManager() {}
+    protected FormsManager() {
+    }
 
     // 表单布局适用于
     public static int APPLY_ONNEW = 1;
@@ -64,7 +59,8 @@ public class FormsManager extends BaseLayoutManager {
         if (recordOrLayoutId != null && recordOrLayoutId.getEntityCode() == EntityHelper.LayoutConfig) {
             for (Object[] o : alls) {
                 if (recordOrLayoutId.equals(o[0])) {
-                    use = findConfigBean(alls, (ID) o[0]);;
+                    use = findConfigBean(alls, (ID) o[0]);
+                    ;
                     break;
                 }
             }
@@ -169,7 +165,8 @@ public class FormsManager extends BaseLayoutManager {
     @Override
     protected ConfigBean findConfigBean(Object[][] uses, ID cfgid) {
         ConfigBean cb = super.findConfigBean(uses, cfgid);
-        if (cb == null) return null;
+        if (cb == null)
+            return null;
 
         // 补充信息
         for (Object[] c : uses) {
@@ -194,6 +191,7 @@ public class FormsManager extends BaseLayoutManager {
     static class ShareToAttr {
 
         private final JSONObject attrs;
+
         protected ShareToAttr(ConfigBean cb) {
             Object s = cb.getObject("shareTo");
             if (s instanceof JSON) {

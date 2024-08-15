@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.service.general.transform;
 
@@ -49,12 +43,14 @@ public class RecordTransfomer37 extends RecordTransfomer {
             throw new ConfigurationException("INVALID CONFIG OF TRANSFORM");
         }
         // 兼容
-        if (fieldsMapping.get("_") == null) return super.transform(sourceRecordId, specMainId);
+        if (fieldsMapping.get("_") == null)
+            return super.transform(sourceRecordId, specMainId);
 
         // ND:明细
         JSONArray fieldsMappingDetails = transConfig.getJSONArray("fieldsMappingDetails");
         // 兼容
-        if (fieldsMappingDetails == null) return super.transform(sourceRecordId, specMainId);
+        if (fieldsMappingDetails == null)
+            return super.transform(sourceRecordId, specMainId);
 
         // v3.5 此配置未开放
         // 在之前的版本中，虽然文档写明非空字段无值会转换失败，但是从来没有做过非空检查
@@ -65,14 +61,16 @@ public class RecordTransfomer37 extends RecordTransfomer {
         for (Object o : fieldsMappingDetails) {
             JSONObject fmd = (JSONObject) o;
             Entity[] fmdEntity = checkEntity(fmd);
-            if (fmdEntity == null) continue;
+            if (fmdEntity == null)
+                continue;
 
             Entity dTargetEntity = fmdEntity[0];
             Entity dSourceEntity = fmdEntity[1];
 
             String querySourceSql = buildDetailsSourceSql(dSourceEntity, sourceRecordId);
             String filter = appendFilter(fmd);
-            if (filter != null) querySourceSql = querySourceSql.replace("(1=1)", filter);
+            if (filter != null)
+                querySourceSql = querySourceSql.replace("(1=1)", filter);
 
             Object[][] dArray = Application.createQueryNoFilter(querySourceSql).array();
             for (Object[] d : dArray) {
@@ -93,13 +91,15 @@ public class RecordTransfomer37 extends RecordTransfomer {
 
         // v3.5 需要先回填
         // 因为可能以回填字段作为条件进行转换一次判断
-        boolean fillbackFix = fillback(sourceRecordId, EntityHelper.newUnsavedId(targetRecord.getEntity().getEntityCode()));
+        boolean fillbackFix = fillback(sourceRecordId,
+                EntityHelper.newUnsavedId(targetRecord.getEntity().getEntityCode()));
 
         // 保存
         ID theNewId = saveRecord(targetRecord, detailsList.isEmpty() ? null : detailsList);
 
         // 回填修正
-        if (fillbackFix) fillback(sourceRecordId, theNewId);
+        if (fillbackFix)
+            fillback(sourceRecordId, theNewId);
 
         return theNewId;
     }

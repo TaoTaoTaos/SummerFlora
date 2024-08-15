@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.web.admin.setup;
 
@@ -83,7 +77,7 @@ public class InstallController extends BaseController implements InstallState {
                     dmd.getDatabaseProductName() + " " + dmd.getDatabaseProductVersion());
 
             // 查询表
-            try (ResultSet rs = dmd.getTables(conn.getCatalog(), conn.getSchema(), null, new String[]{"TABLE"})) {
+            try (ResultSet rs = dmd.getTables(conn.getCatalog(), conn.getSchema(), null, new String[] { "TABLE" })) {
                 if (rs.next()) {
                     String rbTable = rs.getString("TABLE_NAME");
                     if (rbTable != null) {

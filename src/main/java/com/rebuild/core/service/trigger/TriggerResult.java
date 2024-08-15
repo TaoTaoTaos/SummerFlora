@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.service.trigger;
 
@@ -55,10 +49,14 @@ public class TriggerResult implements JSONAware {
     @Override
     public String toJSONString() {
         JSONObject res = JSONUtils.toJSONObject("level", level);
-        if (message != null) res.put("message", message);
-        if (affected != null) res.put("affected", affected);
-        if (chain != null) res.put("chain", chain.toString());
-        if (breakNext) res.put("break", true);
+        if (message != null)
+            res.put("message", message);
+        if (affected != null)
+            res.put("affected", affected);
+        if (chain != null)
+            res.put("chain", chain.toString());
+        if (breakNext)
+            res.put("break", true);
         return res.toJSONString();
     }
 

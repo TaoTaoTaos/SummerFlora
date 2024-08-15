@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.privileges.bizz;
 
@@ -44,7 +38,7 @@ public class CombinedRole extends Role {
     /**
      * 权限深度
      */
-    private static final String[] PERMISSION_DEPTHS = new String[]{
+    private static final String[] PERMISSION_DEPTHS = new String[] {
             String.valueOf(BizzDepthEntry.PRIVATE.getMask()),
             String.valueOf(BizzDepthEntry.LOCAL.getMask()),
             String.valueOf(BizzDepthEntry.DEEPDOWN.getMask()),
@@ -105,7 +99,8 @@ public class CombinedRole extends Role {
      */
     public Set<ID> getRoleAppends() {
         Set<ID> set = new HashSet<>();
-        for (Role r : roleAppends) set.add((ID) r.getIdentity());
+        for (Role r : roleAppends)
+            set.add((ID) r.getIdentity());
         return Collections.unmodifiableSet(set);
     }
 
@@ -126,7 +121,8 @@ public class CombinedRole extends Role {
 
         if (log.isDebugEnabled()) {
             for (Privileges p : getAllPrivileges()) {
-                if (p instanceof ZeroPrivileges) continue;
+                if (p instanceof ZeroPrivileges)
+                    continue;
                 System.out.println();
                 System.out.println("Combined Privileges : " + p.getIdentity());
                 System.out.println("M " + roleMain.getPrivileges(p.getIdentity()));
@@ -141,8 +137,10 @@ public class CombinedRole extends Role {
     }
 
     private Privileges mergePrivileges(Privileges a, Privileges b) {
-        if (b == null || b == Privileges.NONE) return a;
-        if (b == Privileges.ROOT) return b;
+        if (b == null || b == Privileges.NONE)
+            return a;
+        if (b == Privileges.ROOT)
+            return b;
 
         // 扩展权限
 
@@ -178,13 +176,16 @@ public class CombinedRole extends Role {
         for (Permission action : CustomEntityPrivileges.PERMISSION_DEFS) {
             JSONObject aCustom = ((CustomEntityPrivileges) a).getCustomFilter(action);
             JSONObject bCustom = ((CustomEntityPrivileges) b).getCustomFilter(action);
-            if (aCustom == null && bCustom == null) continue;
+            if (aCustom == null && bCustom == null)
+                continue;
 
             int gt = isGreaterThan(action.getMask(), aDefMap, bDefMap);
             if (gt == 1) {
-                if (aCustom != null) customFilters.put(action.getName(), aCustom);
+                if (aCustom != null)
+                    customFilters.put(action.getName(), aCustom);
             } else if (gt == 2) {
-                if (bCustom != null) customFilters.put(action.getName(), bCustom);
+                if (bCustom != null)
+                    customFilters.put(action.getName(), bCustom);
             }
             // gt == 0 无自定义权限
         }
@@ -203,24 +204,30 @@ public class CombinedRole extends Role {
     }
 
     private String getDefinition(Privileges priv) {
-        if (priv instanceof ZeroPrivileges) return ((ZeroPrivileges) priv).getDefinition();
-        if (priv instanceof EntityPrivileges) return ((EntityPrivileges) priv).getDefinition();
+        if (priv instanceof ZeroPrivileges)
+            return ((ZeroPrivileges) priv).getDefinition();
+        if (priv instanceof EntityPrivileges)
+            return ((EntityPrivileges) priv).getDefinition();
         throw new PrivilegesException("Unknow privileges class : " + priv);
     }
 
     private int mergeMaskValue(Integer a, Integer b) {
-        if (a == null || a == 0) return b == null ? 0 : b;
-        if (b == null || b == 0) return a;
+        if (a == null || a == 0)
+            return b == null ? 0 : b;
+        if (b == null || b == 0)
+            return a;
 
         Set<Integer> masks = new HashSet<>();
 
         for (Permission action : CustomEntityPrivileges.PERMISSION_DEFS) {
             int mask = action.getMask();
-            if ((a & mask) != 0) masks.add(mask);
+            if ((a & mask) != 0)
+                masks.add(mask);
         }
         for (Permission action : CustomEntityPrivileges.PERMISSION_DEFS) {
             int mask = action.getMask();
-            if ((b & mask) != 0) masks.add(mask);
+            if ((b & mask) != 0)
+                masks.add(mask);
         }
 
         int maskValue = 0;
@@ -234,27 +241,39 @@ public class CombinedRole extends Role {
     private int isGreaterThan(int mask, Map<String, Integer> aDefMap, Map<String, Integer> bDefMap) {
         int a4 = aDefMap.get(PERMISSION_DEPTHS[3]);
         int b4 = bDefMap.get(PERMISSION_DEPTHS[3]);
-        if ((a4 & mask) != 0 && (b4 & mask) != 0) return 0;
-        if ((a4 & mask) != 0) return 1;
-        if ((b4 & mask) != 0) return 2;
+        if ((a4 & mask) != 0 && (b4 & mask) != 0)
+            return 0;
+        if ((a4 & mask) != 0)
+            return 1;
+        if ((b4 & mask) != 0)
+            return 2;
 
         int a3 = aDefMap.get(PERMISSION_DEPTHS[2]);
         int b3 = bDefMap.get(PERMISSION_DEPTHS[2]);
-        if ((a3 & mask) != 0 && (b3 & mask) != 0) return 0;
-        if ((a3 & mask) != 0) return 1;
-        if ((b3 & mask) != 0) return 2;
+        if ((a3 & mask) != 0 && (b3 & mask) != 0)
+            return 0;
+        if ((a3 & mask) != 0)
+            return 1;
+        if ((b3 & mask) != 0)
+            return 2;
 
         int a2 = aDefMap.get(PERMISSION_DEPTHS[1]);
         int b2 = bDefMap.get(PERMISSION_DEPTHS[1]);
-        if ((a2 & mask) != 0 && (b2 & mask) != 0) return 0;
-        if ((a2 & mask) != 0) return 1;
-        if ((b2 & mask) != 0) return 2;
+        if ((a2 & mask) != 0 && (b2 & mask) != 0)
+            return 0;
+        if ((a2 & mask) != 0)
+            return 1;
+        if ((b2 & mask) != 0)
+            return 2;
 
         int a1 = aDefMap.get(PERMISSION_DEPTHS[0]);
         int b1 = bDefMap.get(PERMISSION_DEPTHS[0]);
-        if ((a1 & mask) != 0 && (b1 & mask) != 0) return 0;
-        if ((a1 & mask) != 0) return 1;
-        if ((b1 & mask) != 0) return 2;
+        if ((a1 & mask) != 0 && (b1 & mask) != 0)
+            return 0;
+        if ((a1 & mask) != 0)
+            return 1;
+        if ((b1 & mask) != 0)
+            return 2;
 
         return 0;
     }

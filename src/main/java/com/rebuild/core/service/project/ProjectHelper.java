@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.service.project;
 
@@ -52,7 +46,8 @@ public class ProjectHelper {
      */
     public static boolean isManageable(ID taskOrCommentOrTag, ID user) {
         // 管理员
-        if (UserHelper.isAdmin(user)) return true;
+        if (UserHelper.isAdmin(user))
+            return true;
 
         // 项目配置信息
         ConfigBean pcfg;
@@ -62,11 +57,13 @@ public class ProjectHelper {
         } else {
             pcfg = ProjectManager.instance.getProjectByX(convert2Task(taskOrCommentOrTag), null);
         }
-        
+
         // 负责人
-        if (user.equals(pcfg.getID("principal"))) return true;
+        if (user.equals(pcfg.getID("principal")))
+            return true;
         // 非成员
-        if (!pcfg.get("members", Set.class).contains(user)) return false;
+        if (!pcfg.get("members", Set.class).contains(user))
+            return false;
 
         // 创建人
         Object[] createdBy = Application.getQueryFactory().uniqueNoFilter(taskOrCommentOrTag, "createdBy");

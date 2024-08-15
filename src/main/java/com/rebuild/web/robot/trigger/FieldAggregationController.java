@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.web.robot.trigger;
 
@@ -51,7 +45,8 @@ public class FieldAggregationController extends BaseController {
         // 1. 我引用了谁
 
         for (Field refFrom : MetadataSorter.sortFields(sourceEntity, DisplayType.REFERENCE)) {
-            if (MetadataHelper.isApprovalField(refFrom.getName())) continue;
+            if (MetadataHelper.isApprovalField(refFrom.getName()))
+                continue;
 
             Entity refEntity = refFrom.getReferenceEntity();
             String entityLabel = String.format("%s (%s)",
@@ -78,7 +73,7 @@ public class FieldAggregationController extends BaseController {
 
     @RequestMapping("field-aggregation-fields")
     public JSON getTargetFields(@EntityParam(name = "source") Entity sourceEntity,
-                                HttpServletRequest request) {
+            HttpServletRequest request) {
         String target = getParameter(request, "target");
         Entity targetEntity = StringUtils.isBlank(target) ? null : MetadataHelper.getEntity(target);
 
@@ -107,12 +102,14 @@ public class FieldAggregationController extends BaseController {
                     DisplayType.N2NREFERENCE, DisplayType.NTEXT, DisplayType.FILE)) {
 
                 EasyField easyField = EasyMetaFactory.valueOf(field);
-                if (easyField.isBuiltin()) continue;
+                if (easyField.isBuiltin())
+                    continue;
 
                 JSONObject item = (JSONObject) easyField.toJSON();
                 if (easyField.getDisplayType() == DisplayType.ID) {
                     item.put("ref", new String[] {
-                            targetEntity.getName(), EasyMetaFactory.getDisplayType(targetEntity.getNameField()).name() });
+                            targetEntity.getName(),
+                            EasyMetaFactory.getDisplayType(targetEntity.getNameField()).name() });
                 }
 
                 targetFields.add(item);

@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.web.commons;
 
@@ -68,7 +62,7 @@ public class FileDownloader extends BaseController {
         }
 
         final boolean temp = getBoolParameter(request, "temp");
-        final boolean local = temp || getBoolParameter(request, "local");  // 强制本地
+        final boolean local = temp || getBoolParameter(request, "local"); // 强制本地
 
         String imageView2 = request.getQueryString();
         if (imageView2 != null && imageView2.contains("imageView2/")) {
@@ -102,9 +96,10 @@ public class FileDownloader extends BaseController {
             // 粗略图
             else {
                 filepath = checkSafeFilePath(filepath);
-                File img = temp ? RebuildConfiguration.getFileOfTemp(filepath) : RebuildConfiguration.getFileOfData(filepath);
+                File img = temp ? RebuildConfiguration.getFileOfTemp(filepath)
+                        : RebuildConfiguration.getFileOfData(filepath);
                 if (!img.exists()) {
-                    response.setHeader("Content-Disposition", StringUtils.EMPTY);  // Clean download
+                    response.setHeader("Content-Disposition", StringUtils.EMPTY); // Clean download
                     response.sendError(HttpStatus.NOT_FOUND.value());
                     return;
                 }
@@ -128,7 +123,7 @@ public class FileDownloader extends BaseController {
         }
     }
 
-    @GetMapping(value = {"download/**", "access/**"})
+    @GetMapping(value = { "download/**", "access/**" })
     public void download(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String filepath = request.getRequestURI();
 
@@ -159,7 +154,8 @@ public class FileDownloader extends BaseController {
 
         if (QiniuCloud.instance().available() && !temp) {
             String privateUrl = QiniuCloud.instance().makeUrl(filepath);
-            if (!inline) privateUrl += "&attname=" + CodecUtils.urlEncode(attname);
+            if (!inline)
+                privateUrl += "&attname=" + CodecUtils.urlEncode(attname);
             response.sendRedirect(privateUrl);
         } else {
 
@@ -176,11 +172,11 @@ public class FileDownloader extends BaseController {
     public void readRawText(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String filepath = getParameterNotNull(request, "url");
         final String charset = getParameter(request, "charset", AppUtils.UTF8);
-        final int cut = getIntParameter(request, "cut");  // MB
+        final int cut = getIntParameter(request, "cut"); // MB
 
         if (CommonsUtils.isExternalUrl(filepath)) {
             // v3.7 禁外部地址
-//            String text = OkHttpUtils.get(filepath, null, charset);
+            // String text = OkHttpUtils.get(filepath, null, charset);
             String text = "ERROR:URL_NOT_SUPPORTED";
             ServletUtils.setContentType(response, ServletUtils.CT_PLAIN);
             ServletUtils.write(response, text);
@@ -279,7 +275,8 @@ public class FileDownloader extends BaseController {
         return filepath;
     }
 
-    private static boolean writeLocalFile(String filepath, boolean temp, HttpServletResponse response) throws IOException {
+    private static boolean writeLocalFile(String filepath, boolean temp, HttpServletResponse response)
+            throws IOException {
         filepath = checkSafeFilePath(filepath);
         File file = temp ? RebuildConfiguration.getFileOfTemp(filepath) : RebuildConfiguration.getFileOfData(filepath);
         return writeLocalFile(file, response);
@@ -295,7 +292,7 @@ public class FileDownloader extends BaseController {
      */
     public static boolean writeLocalFile(File file, HttpServletResponse response) throws IOException {
         if (file == null || !file.exists()) {
-            response.setHeader("Content-Disposition", StringUtils.EMPTY);  // Clean download
+            response.setHeader("Content-Disposition", StringUtils.EMPTY); // Clean download
             response.sendError(HttpStatus.NOT_FOUND.value());
             return false;
         }
@@ -335,7 +332,8 @@ public class FileDownloader extends BaseController {
      * @param attname
      * @param inline
      */
-    public static void setDownloadHeaders(HttpServletRequest request, HttpServletResponse response, String attname, boolean inline) {
+    public static void setDownloadHeaders(HttpServletRequest request, HttpServletResponse response, String attname,
+            boolean inline) {
         // 特殊字符处理
         attname = attname.replace(" ", "-");
         attname = attname.replace("%", "-");
@@ -371,10 +369,13 @@ public class FileDownloader extends BaseController {
      * @param forceInline
      * @throws IOException
      */
-    public static void downloadTempFile(HttpServletResponse resp, File file, String attname, boolean forceInline) throws IOException {
+    public static void downloadTempFile(HttpServletResponse resp, File file, String attname, boolean forceInline)
+            throws IOException {
         String url = String.format("/filex/download/%s?temp=yes", CodecUtils.urlEncode(file.getName()));
-        if (forceInline) url += "&inline=yes";
-        if (attname != null) url += "&attname=" + CodecUtils.urlEncode(attname);
+        if (forceInline)
+            url += "&inline=yes";
+        if (attname != null)
+            url += "&attname=" + CodecUtils.urlEncode(attname);
         resp.sendRedirect(AppUtils.getContextPath(url));
     }
 }

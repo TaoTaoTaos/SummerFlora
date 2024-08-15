@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.utils;
 
@@ -69,7 +63,8 @@ public class AppUtils {
      * @see RebuildConfiguration#getHomeUrl(String)
      */
     public static String getContextPath(String path) {
-        if (!path.startsWith("/")) path = "/" + path;
+        if (!path.startsWith("/"))
+            path = "/" + path;
         return BootApplication.getContextPath() + path;
     }
 
@@ -92,7 +87,8 @@ public class AppUtils {
      */
     public static ID getRequestUser(HttpServletRequest request, boolean refreshToken) {
         Object user = request.getSession().getAttribute(WebUtils.CURRENT_USER);
-        if (user == null) user = getRequestUserViaToken(request, refreshToken);
+        if (user == null)
+            user = getRequestUserViaToken(request, refreshToken);
         return user == null ? null : (ID) user;
     }
 
@@ -106,7 +102,8 @@ public class AppUtils {
     protected static ID getRequestUserViaToken(HttpServletRequest request, boolean refreshToken) {
         String authToken = request.getHeader(HF_AUTHTOKEN);
         return authToken == null
-                ? null : AuthTokenManager.verifyToken(authToken, Boolean.FALSE, refreshToken);
+                ? null
+                : AuthTokenManager.verifyToken(authToken, Boolean.FALSE, refreshToken);
     }
 
     /**
@@ -125,11 +122,14 @@ public class AppUtils {
         // in URL
         String locale = request.getParameter("locale");
         // in Session
-        if (locale == null) locale = (String) ServletUtils.getSessionAttribute(request, SK_LOCALE);
+        if (locale == null)
+            locale = (String) ServletUtils.getSessionAttribute(request, SK_LOCALE);
         // in Header
-        if (locale == null) locale = request.getHeader(HF_LOCALE);
+        if (locale == null)
+            locale = request.getHeader(HF_LOCALE);
         // in System
-        if (StringUtils.isBlank(locale)) locale = RebuildConfiguration.get(ConfigurationItem.DefaultLanguage);
+        if (StringUtils.isBlank(locale))
+            locale = RebuildConfiguration.get(ConfigurationItem.DefaultLanguage);
         return locale;
     }
 

@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.service.general;
 
@@ -53,7 +47,8 @@ public class SeriesReindexTask extends HeavyTask<Integer> {
 
         setTotal(array.length);
         for (Object[] o : array) {
-            if (this.isInterruptState()) break;
+            if (this.isInterruptState())
+                break;
 
             try {
                 String series = SeriesGeneratorFactory.generate(

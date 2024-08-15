@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.utils;
 
@@ -48,7 +42,7 @@ public class LocationUtils {
         ip = ip.split(",")[0];
 
         if (PRIVATE_IP.matcher(ip).find()) {
-            return JSONUtils.toJSONObject(new String[] { "ip", "country"}, new String[] { ip, "R" });
+            return JSONUtils.toJSONObject(new String[] { "ip", "country" }, new String[] { ip, "R" });
         }
 
         final String ckey = "IPLocation31" + ip;
@@ -56,7 +50,8 @@ public class LocationUtils {
         JSONObject result;
         if (useCache && Application.isReady()) {
             result = (JSONObject) Application.getCommonsCache().getx(ckey);
-            if (result != null) return result;
+            if (result != null)
+                return result;
         }
 
         result = new JSONObject();

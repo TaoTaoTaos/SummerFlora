@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.web;
 
@@ -129,7 +123,8 @@ public abstract class BaseController extends Controller {
      */
     protected Integer getIntParameter(HttpServletRequest request, String name, Integer defaultValue) {
         String v = request.getParameter(name);
-        if (StringUtils.isBlank(v)) return defaultValue;
+        if (StringUtils.isBlank(v))
+            return defaultValue;
 
         try {
             return Integer.parseInt(v);
@@ -177,7 +172,8 @@ public abstract class BaseController extends Controller {
      */
     protected ID getIdParameterNotNull(HttpServletRequest request, String name) {
         String v = request.getParameter(name);
-        if (ID.isId(v)) return ID.valueOf(v);
+        if (ID.isId(v))
+            return ID.valueOf(v);
         throw new InvalidParameterException(Language.L("无效请求参数 (%s=%s)", name, v));
     }
 
@@ -188,12 +184,15 @@ public abstract class BaseController extends Controller {
      */
     protected ID[] getIdArrayParameter(HttpServletRequest request, String name) {
         String v = request.getParameter(name);
-        if (v == null) return ID.EMPTY_ID_ARRAY;
+        if (v == null)
+            return ID.EMPTY_ID_ARRAY;
 
         List<ID> idsList = new ArrayList<>();
         for (String id : v.split("[,;|]")) {
-            if (ID.isId(id)) idsList.add(ID.valueOf(id));
-            else log.warn("Bad id string : {}", id);
+            if (ID.isId(id))
+                idsList.add(ID.valueOf(id));
+            else
+                log.warn("Bad id string : {}", id);
         }
         return idsList.toArray(new ID[0]);
     }

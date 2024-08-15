@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.web.configuration;
 
@@ -124,12 +118,13 @@ public class NavSettings extends BaseController implements ShareTo {
     @PostMapping("nav-settings/topnav")
     public RespBody setsTopNav(HttpServletRequest request) {
         final ID user = getRequestUser(request);
-        if (!UserHelper.isAdmin(user)) return RespBody.error();
+        if (!UserHelper.isAdmin(user))
+            return RespBody.error();
 
         JSONArray sets = (JSONArray) ServletUtils.getRequestJson(request);
         // v34 修改名称
 
-        for (Iterator<Object> iter = sets.iterator(); iter.hasNext(); ) {
+        for (Iterator<Object> iter = sets.iterator(); iter.hasNext();) {
             JSONArray item = (JSONArray) iter.next();
             String newName = item.getString(2);
             if (StringUtils.isNotBlank(newName)) {
@@ -151,14 +146,16 @@ public class NavSettings extends BaseController implements ShareTo {
     @PostMapping("nav-settings/nav-copyto")
     public RespBody navCopyTo(@RequestBody JSONObject post, HttpServletRequest request) {
         final ID user = getRequestUser(request);
-        if (!UserHelper.isAdmin(user)) return RespBody.error();
+        if (!UserHelper.isAdmin(user))
+            return RespBody.error();
 
-        final ID from  = ID.valueOf(post.getString("from"));
+        final ID from = ID.valueOf(post.getString("from"));
         final JSON config = NavManager.instance.getLayoutById(from).getJSON("config");
 
         for (Object s : post.getJSONArray("copyTo")) {
             ID to = ID.isId(s) ? ID.valueOf(s.toString()) : null;
-            if (to == null || from.equals(to)) continue;
+            if (to == null || from.equals(to))
+                continue;
 
             Record record = EntityHelper.forUpdate(to, user);
             record.setString("config", config.toJSONString());

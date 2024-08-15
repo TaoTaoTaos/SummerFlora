@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.service.feeds;
 
@@ -74,13 +68,15 @@ public abstract class BaseFeedsService extends ObservableService {
      */
     protected void awareMention(Record record, boolean isNew) {
         String content = record.getString("content");
-        if (content == null || record.getID("feedsId") == null) return;
+        if (content == null || record.getID("feedsId") == null)
+            return;
 
         // 已存在的
         Set<ID> existsAtUsers = isNew ? Collections.emptySet() : this.awareMentionDelete(record.getPrimary(), true);
 
         Set<ID> atUsers = this.awareMentionCreate(record);
-        if (atUsers.isEmpty()) return;
+        if (atUsers.isEmpty())
+            return;
 
         // 发送通知
         final String msgContent = Language.L("@%s 在动态中提到了你", record.getEditor()) + " \n> " + content;
@@ -93,12 +89,14 @@ public abstract class BaseFeedsService extends ObservableService {
                 && !existsAtUsers.contains(UserService.ALLUSERS)) {
             atUsers.clear();
             for (User u : Application.getUserStore().getAllUsers()) {
-                if (u.isActive()) atUsers.add(u.getId());
+                if (u.isActive())
+                    atUsers.add(u.getId());
             }
         }
 
         for (ID to : atUsers) {
-            if (existsAtUsers.contains(to)) continue;
+            if (existsAtUsers.contains(to))
+                continue;
             Application.getNotifications().send(
                     MessageBuilder.createMessage(to, msgContent, Message.TYPE_FEEDS, related));
         }
@@ -175,7 +173,8 @@ public abstract class BaseFeedsService extends ObservableService {
      */
     private Record converContent4Mentions(Record record) {
         String content = record.getString("content");
-        if (StringUtils.isBlank(content)) return record;
+        if (StringUtils.isBlank(content))
+            return record;
 
         Map<String, ID> map = FeedsHelper.findMentionsMap(content);
         for (Map.Entry<String, ID> e : map.entrySet()) {

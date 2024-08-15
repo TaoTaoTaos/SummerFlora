@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.rbstore;
 
@@ -80,10 +74,12 @@ public class MetaschemaImporter extends HeavyTask<String> {
      */
     public String verfiy() {
         String hasError = verfiyEntity(data);
-        if (hasError != null) return hasError;
+        if (hasError != null)
+            return hasError;
 
         JSONObject detailData = data.getJSONObject("detail");
-        if (detailData == null) detailData = data.getJSONObject("slave");
+        if (detailData == null)
+            detailData = data.getJSONObject("slave");
 
         if (detailData != null) {
             hasError = verfiyEntity(detailData);
@@ -96,7 +92,7 @@ public class MetaschemaImporter extends HeavyTask<String> {
     private String verfiyEntity(JSONObject entity) {
         String entityName = entity.getString("entity");
         if (MetadataHelper.containsEntity(entityName)) {
-            return Language.L("实体名称已存在 : %s",entityName);
+            return Language.L("实体名称已存在 : %s", entityName);
         }
 
         for (Object o : entity.getJSONArray("fields")) {
@@ -134,7 +130,8 @@ public class MetaschemaImporter extends HeavyTask<String> {
         setCompleted(45);
 
         JSONObject detailData = data.getJSONObject("detail");
-        if (detailData == null) detailData = data.getJSONObject("slave");
+        if (detailData == null)
+            detailData = data.getJSONObject("slave");
 
         if (detailData != null) {
             try {
@@ -149,7 +146,8 @@ public class MetaschemaImporter extends HeavyTask<String> {
         }
 
         final ID threadUser = UserContextHolder.getUser(Boolean.TRUE);
-        if (threadUser == null) UserContextHolder.setUser(getUser());
+        if (threadUser == null)
+            UserContextHolder.setUser(getUser());
 
         // 字段选项
         try {
@@ -180,7 +178,8 @@ public class MetaschemaImporter extends HeavyTask<String> {
 
         setCompleted(100);
 
-        if (threadUser == null) UserContextHolder.clearUser();
+        if (threadUser == null)
+            UserContextHolder.clearUser();
 
         return entityName;
     }
@@ -363,8 +362,10 @@ public class MetaschemaImporter extends HeavyTask<String> {
             }
 
             // v2.10: Color, Id
-            if (item.size() > 3) option.put("color", item.getString(3));
-            if (item.size() > 4) option.put(KEEP_ID, item.getString(4));
+            if (item.size() > 3)
+                option.put("color", item.getString(3));
+            if (item.size() > 4)
+                option.put(KEEP_ID, item.getString(4));
 
             shown.add(option);
         }

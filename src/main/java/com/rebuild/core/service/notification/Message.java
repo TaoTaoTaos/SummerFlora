@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.service.notification;
 
@@ -63,19 +57,27 @@ public class Message {
 
     /**
      * 获取通知标题
+     * 
      * @return
      */
     public String getTitle4Type() {
-        if (this.type == TYPE_ASSIGN) return Language.L("记录分配通知");
-        else if (this.type == TYPE_SAHRE) return Language.L("记录共享通知");
-        else if (this.type == TYPE_APPROVAL) return Language.L("记录审批通知");
-        else if (this.type == TYPE_FEEDS) return Language.L("动态通知");
-        else if (this.type == TYPE_PROJECT) return Language.L("项目任务通知");
-        else return Language.L("新通知");
+        if (this.type == TYPE_ASSIGN)
+            return Language.L("记录分配通知");
+        else if (this.type == TYPE_SAHRE)
+            return Language.L("记录共享通知");
+        else if (this.type == TYPE_APPROVAL)
+            return Language.L("记录审批通知");
+        else if (this.type == TYPE_FEEDS)
+            return Language.L("动态通知");
+        else if (this.type == TYPE_PROJECT)
+            return Language.L("项目任务通知");
+        else
+            return Language.L("新通知");
     }
 
     /**
      * 无格式内容
+     * 
      * @return
      */
     public String getPlainMessage() {

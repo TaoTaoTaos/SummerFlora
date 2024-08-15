@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.service.dashboard.charts.builtin;
 
@@ -31,7 +25,7 @@ public interface BuiltinChart {
      */
     default JSONObject getChartConfig() {
         // 此处 entity=User 并无意义，只是便于权限控制
-        return JSONUtils.toJSONObject(new String[]{"entity", "type"}, new String[]{"User", getChartType()});
+        return JSONUtils.toJSONObject(new String[] { "entity", "type" }, new String[] { "User", getChartType() });
     }
 
     /**

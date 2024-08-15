@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.service.datareport;
 
@@ -49,7 +43,8 @@ public class EasyExcelGeneratorTest extends TestSupport {
         record = Application.getEntityService(SalesOrder999.getEntityCode()).create(record);
 
         // 主记录+明细记录
-        File file = ((EasyExcelGenerator) new EasyExcelGenerator(template, record.getPrimary()).setUser(UserService.ADMIN_USER))
+        File file = ((EasyExcelGenerator) new EasyExcelGenerator(template, record.getPrimary())
+                .setUser(UserService.ADMIN_USER))
                 .generate();
         System.out.println("Report : " + file);
     }
@@ -57,7 +52,7 @@ public class EasyExcelGeneratorTest extends TestSupport {
     @Test
     void testImage() throws FileNotFoundException {
         ID record = addRecordOfTestAllFields(UserService.ADMIN_USER);
-//        record = ID.valueOf("");
+        // record = ID.valueOf("");
         File template = ResourceUtils.getFile("classpath:report-template-v3.xlsx");
 
         File file = ((EasyExcelGenerator) new EasyExcelGenerator(template, record).setUser(UserService.ADMIN_USER))

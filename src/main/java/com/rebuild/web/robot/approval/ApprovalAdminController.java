@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.web.robot.approval;
 
@@ -114,7 +108,8 @@ public class ApprovalAdminController extends BaseController {
         Record record = EntityHelper.forNew(EntityHelper.RobotApprovalConfig, user);
         record.setString("belongEntity", (String) copy[0]);
         record.setString("flowDefinition", (String) copy[1]);
-        if (flowDefinition != null) record.setString("flowDefinition", flowDefinition.toString());
+        if (flowDefinition != null)
+            record.setString("flowDefinition", flowDefinition.toString());
         record.setString("name", approvalName);
         record = Application.getBean(RobotApprovalConfigService.class).create(record);
 
@@ -149,14 +144,14 @@ public class ApprovalAdminController extends BaseController {
             if (isRefUserOrDeptField(field, fieldsNames, true)) {
                 fields.add(new String[] {
                         ApprovalHelper.APPROVAL_SUBMITOR + field.getName(),
-                        textSubmitor + EasyMetaFactory.getLabel(field)} );
+                        textSubmitor + EasyMetaFactory.getLabel(field) });
             }
         }
         for (Field field : deptRefFields) {
             if (isRefUserOrDeptField(field, fieldsNames, true)) {
                 fields.add(new String[] {
                         ApprovalHelper.APPROVAL_SUBMITOR + "deptId." + field.getName(),
-                        textSubmitor + textDept + EasyMetaFactory.getLabel(field)} );
+                        textSubmitor + textDept + EasyMetaFactory.getLabel(field) });
             }
         }
 
@@ -165,14 +160,14 @@ public class ApprovalAdminController extends BaseController {
             if (isRefUserOrDeptField(field, fieldsNames, true)) {
                 fields.add(new String[] {
                         ApprovalHelper.APPROVAL_APPROVER + field.getName(),
-                        textApprover + EasyMetaFactory.getLabel(field)} );
+                        textApprover + EasyMetaFactory.getLabel(field) });
             }
         }
         for (Field field : deptRefFields) {
             if (isRefUserOrDeptField(field, fieldsNames, true)) {
                 fields.add(new String[] {
                         ApprovalHelper.APPROVAL_APPROVER + "deptId." + field.getName(),
-                        textApprover + textDept + EasyMetaFactory.getLabel(field)} );
+                        textApprover + textDept + EasyMetaFactory.getLabel(field) });
             }
         }
 
@@ -180,32 +175,38 @@ public class ApprovalAdminController extends BaseController {
         Field[] refFields = MetadataSorter.sortFields(entity, DisplayType.REFERENCE, DisplayType.N2NREFERENCE);
         for (Field field : refFields) {
             if (isRefUserOrDeptField(field, fieldsNames, false)) {
-                fields.add(new String[] { field.getName(), EasyMetaFactory.getLabel(field)} );
+                fields.add(new String[] { field.getName(), EasyMetaFactory.getLabel(field) });
             }
         }
         // 引用实体字段
         for (Field field : refFields) {
-            if (field.getType() != FieldType.REFERENCE) continue;
-            if (MetadataHelper.isCommonsField(field)) continue;
+            if (field.getType() != FieldType.REFERENCE)
+                continue;
+            if (MetadataHelper.isCommonsField(field))
+                continue;
 
             String parentName = field.getName() + ".";
             String parentLabel = EasyMetaFactory.getLabel(field) + ".";
 
-            Field[] refFields2 = MetadataSorter.sortFields(field.getReferenceEntity(), DisplayType.REFERENCE, DisplayType.N2NREFERENCE);
+            Field[] refFields2 = MetadataSorter.sortFields(field.getReferenceEntity(), DisplayType.REFERENCE,
+                    DisplayType.N2NREFERENCE);
             for (Field field2 : refFields2) {
                 if (isRefUserOrDeptField(field2, fieldsNames, false)) {
-                    fields.add(new String[] { parentName + field2.getName(), parentLabel + EasyMetaFactory.getLabel(field2)} );
+                    fields.add(new String[] { parentName + field2.getName(),
+                            parentLabel + EasyMetaFactory.getLabel(field2) });
                 }
             }
         }
 
         return JSONUtils.toJSONObjectArray(
-                new String[] {  "id", "text" }, fields.toArray(new String[0][]));
+                new String[] { "id", "text" }, fields.toArray(new String[0][]));
     }
 
     private boolean isRefUserOrDeptField(Field field, Set<String> filterNames, boolean excludeCommon) {
-        if (excludeCommon && MetadataHelper.isCommonsField(field)) return false;
-        if (filterNames.contains(field.getName())) return false;
+        if (excludeCommon && MetadataHelper.isCommonsField(field))
+            return false;
+        if (filterNames.contains(field.getName()))
+            return false;
 
         int ec = field.getReferenceEntity().getEntityCode();
         return ec == EntityHelper.User || ec == EntityHelper.Department;
@@ -238,7 +239,8 @@ public class ApprovalAdminController extends BaseController {
                         fieldText = textDept + fieldText;
                     }
                     fieldText = (idOrField.startsWith(ApprovalHelper.APPROVAL_SUBMITOR)
-                            ? textSubmitor : textApprover)  + fieldText;
+                            ? textSubmitor
+                            : textApprover) + fieldText;
 
                     shows.add(new String[] { idOrField, fieldText });
                 }
@@ -250,7 +252,7 @@ public class ApprovalAdminController extends BaseController {
         }
 
         return JSONUtils.toJSONObjectArray(
-                new String[] {  "id", "text" }, shows.toArray(new String[0][]));
+                new String[] { "id", "text" }, shows.toArray(new String[0][]));
     }
 
     @RequestMapping("approval/use-stats")
@@ -282,7 +284,7 @@ public class ApprovalAdminController extends BaseController {
         urgeUsers.add(new String[] { ApprovalHelper.APPROVAL_SUBMITOR, Language.L("提交人") });
 
         Object res = JSONUtils.toJSONObject(
-                new String[] { "dateFields", "urgeUsers" }, new Object[] { dateFields, urgeUsers } );
+                new String[] { "dateFields", "urgeUsers" }, new Object[] { dateFields, urgeUsers });
         return RespBody.ok(res);
     }
 }

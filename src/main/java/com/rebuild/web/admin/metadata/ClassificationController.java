@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.web.admin.metadata;
 
@@ -49,7 +43,7 @@ public class ClassificationController extends BaseController {
     public ModelAndView page(@PathVariable ID id, HttpServletResponse resp) throws IOException {
         Object[] data = Application.getQueryFactory().uniqueNoFilter(id, "name", "openLevel");
         if (data == null) {
-            resp.sendError(404,  Language.L("分类数据不存在"));
+            resp.sendError(404, Language.L("分类数据不存在"));
             return null;
         }
 
@@ -79,8 +73,8 @@ public class ClassificationController extends BaseController {
 
     @RequestMapping("classification/save-data-item")
     public JSONAware saveDataItem(@IdParam(name = "item_id", required = false) ID itemId,
-                                  @IdParam(name = "data_id", required = false) ID dataId,
-                                  HttpServletRequest request) {
+            @IdParam(name = "data_id", required = false) ID dataId,
+            HttpServletRequest request) {
         final ID user = getRequestUser(request);
 
         Record item;
@@ -92,7 +86,8 @@ public class ClassificationController extends BaseController {
 
             item = EntityHelper.forNew(EntityHelper.ClassificationData, user);
             item.setID("dataId", dataId);
-            if (parent != null) item.setID("parent", parent);
+            if (parent != null)
+                item.setID("parent", parent);
             item.setInt("level", level);
 
         } else {
@@ -100,12 +95,13 @@ public class ClassificationController extends BaseController {
         }
 
         String hide = getParameter(request, "hide");
-        String hide2 = getParameter(request, "hide2");  // 禁用
+        String hide2 = getParameter(request, "hide2"); // 禁用
         if (hide2 != null) {
             hide = hide2;
         } else {
             String name = getParameter(request, "name");
-            if (StringUtils.isNotBlank(name)) item.setString("name", name);
+            if (StringUtils.isNotBlank(name))
+                item.setString("name", name);
             String code = getParameter(request, "code");
             item.setString("code", StringUtils.defaultString(code, StringUtils.EMPTY));
         }
@@ -124,7 +120,7 @@ public class ClassificationController extends BaseController {
 
     @RequestMapping("classification/load-data-items")
     public RespBody loadDataItems(@IdParam(name = "data_id", required = false) ID dataId,
-                                  @IdParam(name = "parent", required = false) ID parentId) {
+            @IdParam(name = "parent", required = false) ID parentId) {
         Object[][] child;
         if (parentId != null) {
             child = Application.createQuery(

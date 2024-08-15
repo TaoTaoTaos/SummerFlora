@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.configuration.general;
 
@@ -30,7 +24,8 @@ public class PickListManager implements ConfigManager {
 
     public static final PickListManager instance = new PickListManager();
 
-    protected PickListManager() { }
+    protected PickListManager() {
+    }
 
     /**
      * @param field
@@ -109,7 +104,8 @@ public class PickListManager implements ConfigManager {
      */
     public String getColor(ID itemId) {
         Serializable s = getItem(itemId);
-        if (s == null) return null;
+        if (s == null)
+            return null;
 
         String color = (String) ((Object[]) s)[1];
         return StringUtils.defaultIfBlank(color, null);
@@ -126,8 +122,10 @@ public class PickListManager implements ConfigManager {
                 "select text,color from PickList where itemId = ?")
                 .setParameter(1, itemId)
                 .unique();
-        if (o != null) cached = o;
-        if (cached == null) cached = DELETED_ITEM;  // 已删除
+        if (o != null)
+            cached = o;
+        if (cached == null)
+            cached = DELETED_ITEM; // 已删除
 
         Application.getCommonsCache().putx(ckey, cached);
         return cached.equals(DELETED_ITEM) ? null : cached;
@@ -169,7 +167,8 @@ public class PickListManager implements ConfigManager {
             Application.getCommonsCache().evict("PickListITEM-" + idOrField);
         } else if (idOrField instanceof Field) {
             Field field = (Field) idOrField;
-            Application.getCommonsCache().evict(String.format("PickList-%s.%s", field.getOwnEntity().getName(), field.getName()));
+            Application.getCommonsCache()
+                    .evict(String.format("PickList-%s.%s", field.getOwnEntity().getName(), field.getName()));
         }
     }
 }

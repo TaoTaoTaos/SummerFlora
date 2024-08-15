@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.api.user;
 
@@ -122,7 +116,8 @@ public class AuthTokenManager {
     public static ID verifyToken(String token, boolean verifyAfterDestroy, boolean verifyAfterRefresh) {
         Assert.notNull(token, "[token] cannot be null");
         String desc = Application.getCommonsCache().get(TOKEN_PREFIX + token);
-        if (desc == null) return null;
+        if (desc == null)
+            return null;
 
         String[] descs = desc.split(",");
         if (TYPE_ONCE_TOKEN.equals(descs[0])) {
@@ -154,7 +149,8 @@ public class AuthTokenManager {
     public static ID refreshAccessToken(String token) {
         Assert.notNull(token, "[token] cannot be null");
         String desc = Application.getCommonsCache().get(TOKEN_PREFIX + token);
-        if (desc == null) return null;
+        if (desc == null)
+            return null;
 
         String[] descs = desc.split(",");
         Assert.isTrue(TYPE_ACCESS_TOKEN.equals(descs[0]), "Cannot refresh none access token");

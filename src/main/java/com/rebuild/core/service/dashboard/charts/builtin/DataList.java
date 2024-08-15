@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.service.dashboard.charts.builtin;
 
@@ -58,11 +52,13 @@ public class DataList extends ChartData implements BuiltinChart {
     public JSON build() {
         Map<String, Object> params = getExtraParams();
         final JSONObject extconfig = (JSONObject) params.get("extconfig");
-        if (extconfig == null) return JSONUtils.toJSONObject("error", "UNSET");
+        if (extconfig == null)
+            return JSONUtils.toJSONObject("error", "UNSET");
 
         final Entity entity = MetadataHelper.getEntity(extconfig.getString("entity"));
         final JSONArray fields = extconfig.getJSONArray("fields");
-        if (fields == null || fields.isEmpty()) return JSONUtils.toJSONObject("error", "UNSET");
+        if (fields == null || fields.isEmpty())
+            return JSONUtils.toJSONObject("error", "UNSET");
 
         List<Object> fieldsRich = new ArrayList<>();
         for (Object o : fields) {
@@ -75,7 +71,8 @@ public class DataList extends ChartData implements BuiltinChart {
             EasyField lastFieldEasy = EasyMetaFactory.valueOf(lastField);
             JSONObject rich = JSONUtils.toJSONObject(
                     new String[] { "field", "type", "label" },
-                    new Object[] { fieldName, lastFieldEasy.getDisplayType(), EasyMetaFactory.getLabel(entity, fieldName) });
+                    new Object[] { fieldName, lastFieldEasy.getDisplayType(),
+                            EasyMetaFactory.getLabel(entity, fieldName) });
             fieldsRich.add(rich);
         }
 

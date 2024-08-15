@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.service.approval;
 
@@ -26,7 +20,8 @@ public class ApprovalStatus {
 
     final private ID recordId;
 
-    protected ApprovalStatus(ID approvalId, String approvalName, Integer currentState, String currentStepNode, ID recordId) {
+    protected ApprovalStatus(ID approvalId, String approvalName, Integer currentState, String currentStepNode,
+            ID recordId) {
         this.approvalId = approvalId;
         this.approvalName = approvalName;
         this.currentState = currentState;
@@ -44,7 +39,8 @@ public class ApprovalStatus {
 
     public ApprovalState getCurrentState() {
         return currentState == null
-                ? ApprovalState.DRAFT : (ApprovalState) ApprovalState.valueOf(currentState);
+                ? ApprovalState.DRAFT
+                : (ApprovalState) ApprovalState.valueOf(currentState);
     }
 
     public String getCurrentStepNode() {

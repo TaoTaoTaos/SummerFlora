@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.service.trigger.impl;
 
@@ -32,7 +26,8 @@ public class AutoShareTest extends TestSupport {
         UserContextHolder.setUser(UserService.ADMIN_USER);
 
         // 添加配置
-        Application.getSqlExecutor().execute("delete from robot_trigger_config where BELONG_ENTITY = '" + TestAllFields + "'");
+        Application.getSqlExecutor()
+                .execute("delete from robot_trigger_config where BELONG_ENTITY = '" + TestAllFields + "'");
 
         Record triggerConfig = EntityHelper.forNew(EntityHelper.RobotTriggerConfig, UserService.SYSTEM_USER);
         triggerConfig.setString("belongEntity", TestAllFields);

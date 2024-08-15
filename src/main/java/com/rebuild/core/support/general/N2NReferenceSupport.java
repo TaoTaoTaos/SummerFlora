@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.support.general;
 
@@ -45,13 +39,14 @@ public class N2NReferenceSupport {
             log.warn("Bad id for found n2n-value : {} > {}", recordId, field);
             return new ID[] { recordId };
         }
-        
+
         Object[][] array = Application.getPersistManagerFactory().createQuery(
                 "select referenceId from NreferenceItem where belongField = ? and recordId = ? order by seq")
                 .setParameter(1, field.getName())
                 .setParameter(2, recordId)
                 .array();
-        if (array.length == 0) return ID.EMPTY_ID_ARRAY;
+        if (array.length == 0)
+            return ID.EMPTY_ID_ARRAY;
 
         ID[] ids = new ID[array.length];
         for (int i = 0; i < array.length; i++) {
@@ -64,7 +59,7 @@ public class N2NReferenceSupport {
      * 获取引用项
      *
      * @param fieldPath
-     * @param recordId 主键
+     * @param recordId  主键
      * @return
      */
     public static ID[] items(String fieldPath, ID recordId) {
@@ -84,7 +79,8 @@ public class N2NReferenceSupport {
         String[] paths = fieldPath.split("\\.");
         for (int i = 0; i < paths.length - 1; i++) {
             String field = paths[i];
-            String sql = String.format("select %s from %s where %s = ?", field, father.getName(), father.getPrimaryField().getName());
+            String sql = String.format("select %s from %s where %s = ?", field, father.getName(),
+                    father.getPrimaryField().getName());
             Object[] o = Application.getPersistManagerFactory().createQuery(sql)
                     .setParameter(1, fatherRecordId)
                     .unique();
@@ -113,7 +109,8 @@ public class N2NReferenceSupport {
                 .array();
 
         Set<ID> set = new HashSet<>();
-        for (Object[] o : array) set.add((ID) o[0]);
+        for (Object[] o : array)
+            set.add((ID) o[0]);
         return set;
     }
 
@@ -138,13 +135,15 @@ public class N2NReferenceSupport {
         if (firstField.getType() == FieldType.REFERENCE_LIST) {
             Object[] o = Application.getQueryFactory().uniqueNoFilter(recordId, firstField.getName(), primaryName);
             ID[] n2nValue = (ID[]) o[0];
-            if (NullValue.isNull(n2nValue) || n2nValue.length == 0) return new Object[0];
+            if (NullValue.isNull(n2nValue) || n2nValue.length == 0)
+                return new Object[0];
 
             List<Object> nvList = new ArrayList<>();
             String path2 = fieldPath.substring(fieldPath.indexOf(".") + 1);
             for (ID id2 : n2nValue) {
                 Object[] o2 = Application.getQueryFactory().uniqueNoFilter(id2, path2);
-                if (o2 != null) nvList.add(o2[0]);
+                if (o2 != null)
+                    nvList.add(o2[0]);
             }
 
             return nvList.toArray(new Object[0]);
@@ -157,13 +156,14 @@ public class N2NReferenceSupport {
             if (fields.length > 2 && secondField.getType() == FieldType.REFERENCE_LIST) {
                 Object[] o = Application.getQueryFactory().uniqueNoFilter(recordId, firstField.getName());
                 ID firstValue = (ID) o[0];
-                if (firstValue == null) return new Object[0];
+                if (firstValue == null)
+                    return new Object[0];
 
                 // use N2N.F
                 String path2 = fieldPath.substring(fieldPath.indexOf(".") + 1);
                 return getN2NValueByMixPath(path2, firstValue);
             }
-            
+
             Object[] o = Application.getQueryFactory().uniqueNoFilter(recordId, fieldPath, primaryName);
             return (Object[]) o[0];
         }
@@ -181,12 +181,14 @@ public class N2NReferenceSupport {
      */
     public static boolean isN2NMixPath(String fieldPath, Entity entity) {
         String[] fields = fieldPath.split("\\.");
-        if (fields.length < 2) return false;
-        
+        if (fields.length < 2)
+            return false;
+
         try {
             // N2N.F
             Field firstField = entity.getField(fields[0]);
-            if (firstField.getType() == FieldType.REFERENCE_LIST) return true;
+            if (firstField.getType() == FieldType.REFERENCE_LIST)
+                return true;
 
             // F.N2N
             Field secondField = firstField.getReferenceEntity().getField(fields[1]);

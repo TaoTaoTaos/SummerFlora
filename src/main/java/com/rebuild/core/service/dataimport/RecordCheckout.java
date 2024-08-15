@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.service.dataimport;
 
@@ -74,7 +68,8 @@ public class RecordCheckout {
     public Record checkout(Record record, Cell[] row) {
         for (Map.Entry<Field, Integer> e : this.fieldsMapping.entrySet()) {
             int cellIndex = e.getValue();
-            if (cellIndex >= row.length) continue;
+            if (cellIndex >= row.length)
+                continue;
 
             Cell cellValue = row[cellIndex];
             if (cellValue == Cell.NULL || cellValue.isEmpty()) {
@@ -147,7 +142,8 @@ public class RecordCheckout {
         }
 
         String text = cell.asString();
-        if (text != null) text = text.trim();
+        if (text != null)
+            text = text.trim();
 
         // 格式验证
         if (verifyFormat) {
@@ -214,14 +210,16 @@ public class RecordCheckout {
         // 支持ID
         ID vla2id = MetadataHelper.checkSpecEntityId(val, refEntity.getEntityCode());
         if (vla2id != null) {
-            if (QueryHelper.exists(vla2id)) return vla2id;
+            if (QueryHelper.exists(vla2id))
+                return vla2id;
 
             log.warn("Reference ID `{}` not exists", vla2id);
             return null;
         }
 
         Object val2Text = checkoutFieldValue(refEntity.getNameField(), cell, false);
-        if (val2Text == null) return null;
+        if (val2Text == null)
+            return null;
 
         Query query;
         // 用户特殊处理
@@ -242,7 +240,8 @@ public class RecordCheckout {
             }
 
             StringBuilder sql = new StringBuilder(
-                    String.format("select %s from %s where ", refEntity.getPrimaryField().getName(), refEntity.getName()));
+                    String.format("select %s from %s where ", refEntity.getPrimaryField().getName(),
+                            refEntity.getName()));
             for (String qf : queryFields) {
                 sql.append(
                         String.format("%s = '%s' or ", qf, CommonsUtils.escapeSql(val2Text)));
@@ -262,14 +261,16 @@ public class RecordCheckout {
         Set<ID> ids = new LinkedHashSet<>();
         for (String s : val.split(MVAL_SPLIT)) {
             ID id = checkoutReferenceValue(field, new Cell(s, cell.getRowNo(), cell.getColumnNo()));
-            if (id != null) ids.add(id);
+            if (id != null)
+                ids.add(id);
         }
         return ids.toArray(new ID[0]);
     }
 
     protected Date checkoutDateValue(Cell cell) {
         Date date = cell.asDate();
-        if (date != null) return date;
+        if (date != null)
+            return date;
         return CommonsUtils.parseDate(cell.asString());
     }
 
@@ -292,7 +293,8 @@ public class RecordCheckout {
     protected String checkoutFileOrImage(Cell cell) {
         List<String> urls = new ArrayList<>();
         for (String s : cell.asString().split(MVAL_SPLIT)) {
-            if (EasyUrl.isUrl(s) || s.startsWith("rb/")) urls.add(s);
+            if (EasyUrl.isUrl(s) || s.startsWith("rb/"))
+                urls.add(s);
         }
         return urls.isEmpty() ? null : JSON.toJSON(urls).toString();
     }
@@ -300,7 +302,8 @@ public class RecordCheckout {
     protected String[] checkoutTagValue(Cell cell) {
         Set<String> mVal = new HashSet<>();
         for (String s : cell.asString().split(MVAL_SPLIT)) {
-            if (StringUtils.isNotBlank(s)) mVal.add(s.trim());
+            if (StringUtils.isNotBlank(s))
+                mVal.add(s.trim());
         }
         return mVal.toArray(new String[0]);
     }

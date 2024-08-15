@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.metadata;
 
@@ -156,7 +150,7 @@ public class MetadataHelper {
      *
      * @param sourceEntity
      * @param referenceEntity
-     * @param includeN2N 包括多引用
+     * @param includeN2N      包括多引用
      * @return
      */
     public static Field[] getReferenceToFields(Entity sourceEntity, Entity referenceEntity, boolean includeN2N) {
@@ -242,11 +236,15 @@ public class MetadataHelper {
      * @see EntityHelper
      */
     public static boolean isCommonsField(String fieldName) {
-        if (isSystemField(fieldName) || isApprovalField(fieldName)) return true;
+        if (isSystemField(fieldName) || isApprovalField(fieldName))
+            return true;
 
-        return EntityHelper.OwningUser.equalsIgnoreCase(fieldName) || EntityHelper.OwningDept.equalsIgnoreCase(fieldName)
-                || EntityHelper.CreatedOn.equalsIgnoreCase(fieldName) || EntityHelper.CreatedBy.equalsIgnoreCase(fieldName)
-                || EntityHelper.ModifiedOn.equalsIgnoreCase(fieldName) || EntityHelper.ModifiedBy.equalsIgnoreCase(fieldName);
+        return EntityHelper.OwningUser.equalsIgnoreCase(fieldName)
+                || EntityHelper.OwningDept.equalsIgnoreCase(fieldName)
+                || EntityHelper.CreatedOn.equalsIgnoreCase(fieldName)
+                || EntityHelper.CreatedBy.equalsIgnoreCase(fieldName)
+                || EntityHelper.ModifiedOn.equalsIgnoreCase(fieldName)
+                || EntityHelper.ModifiedBy.equalsIgnoreCase(fieldName);
     }
 
     /**
@@ -297,7 +295,8 @@ public class MetadataHelper {
      * @see com.rebuild.core.metadata.easymeta.EasyEntity#isPlainEntity()
      */
     public static boolean isBusinessEntity(Entity entity) {
-        if (entity.getMainEntity() != null) entity = entity.getMainEntity();
+        if (entity.getMainEntity() != null)
+            entity = entity.getMainEntity();
         return hasPrivilegesField(entity) || EasyMetaFactory.valueOf(entity).isPlainEntity();
     }
 
@@ -332,10 +331,12 @@ public class MetadataHelper {
         Assert.isTrue(main != null, "None detail-entity");
 
         String mainForeign = main.getName() + "Id";
-        if (detailEntity.containsField(mainForeign)) return detailEntity.getField(mainForeign);
+        if (detailEntity.containsField(mainForeign))
+            return detailEntity.getField(mainForeign);
 
         for (Field field : detailEntity.getFields()) {
-            if (field.getType() != FieldType.REFERENCE) continue;
+            if (field.getType() != FieldType.REFERENCE)
+                continue;
 
             // 不可建的那个才是，因为明细字段也可能引用主实体
             if (main.equals(field.getReferenceEntity()) && !field.isCreatable()) {
@@ -369,7 +370,8 @@ public class MetadataHelper {
 
         if (fieldPath.charAt(0) == QueryCompiler.NAME_FIELD_PREFIX) {
             ps[0] = ps[0].substring(1);
-            if (!entity.containsField(ps[0])) return null;
+            if (!entity.containsField(ps[0]))
+                return null;
         }
 
         Field lastField = null;
@@ -381,7 +383,7 @@ public class MetadataHelper {
                     father = lastField.getReferenceEntity();
                 } else if (compatibleN2N && lastField.getType() == FieldType.REFERENCE_LIST) {
                     father = lastField.getReferenceEntity();
-                }  else {
+                } else {
                     father = null;
                 }
             } else {
@@ -399,7 +401,8 @@ public class MetadataHelper {
      * @return
      */
     public static boolean checkAndWarnField(Entity entity, String fieldName) {
-        if (entity.containsField(fieldName)) return true;
+        if (entity.containsField(fieldName))
+            return true;
         log.warn("Unknown field `{}` in `{}`", fieldName, entity.getName());
         CommonsUtils.printStackTrace();
         return false;
@@ -413,7 +416,8 @@ public class MetadataHelper {
      * @return
      */
     public static boolean checkAndWarnField(String entityName, String fieldName) {
-        if (!containsEntity(entityName)) return false;
+        if (!containsEntity(entityName))
+            return false;
         return checkAndWarnField(getEntity(entityName), fieldName);
     }
 
@@ -439,7 +443,8 @@ public class MetadataHelper {
      * @return
      */
     public static ID checkSpecEntityId(String idtext, int entityCode) {
-        if (!ID.isId(idtext)) return null;
+        if (!ID.isId(idtext))
+            return null;
         ID id = ID.valueOf(idtext);
         return id.getEntityCode() == entityCode ? id : null;
     }

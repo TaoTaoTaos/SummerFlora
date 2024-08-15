@@ -10,10 +10,10 @@
     </parent>
     <groupId>com.rebuild</groupId>
     <artifactId>rebuild</artifactId>
-    <version>3.7.6</version>
-    <name>rebuild</name>
-    <description>Building your business-systems freely!</description>
-    <url>https://getrebuild.com/</url>
+    <version>1.0</version>
+    <name>summerflora</name>
+    <description>summerflora system</description>
+    <url>https://1.com/</url>
     <!-- UNCOMMENT USE TOMCAT -->
     <!-- <packaging>war</packaging> -->
 

@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.service;
 
@@ -65,8 +59,10 @@ public class BaseService extends InternalPersistService {
         Callable2<Integer, Record> call2 = processTag(record, Boolean.TRUE);
 
         record = super.create(record);
-        if (call1 != null) call1.call(record);
-        if (call2 != null) call2.call(record);
+        if (call1 != null)
+            call1.call(record);
+        if (call2 != null)
+            call2.call(record);
         return record;
     }
 
@@ -78,8 +74,10 @@ public class BaseService extends InternalPersistService {
         Callable2<Integer, Record> call2 = processTag(record, Boolean.FALSE);
 
         record = super.update(record);
-        if (call1 != null) call1.call(record);
-        if (call2 != null) call2.call(record);
+        if (call1 != null)
+            call1.call(record);
+        if (call2 != null)
+            call2.call(record);
         return record;
     }
 
@@ -90,14 +88,18 @@ public class BaseService extends InternalPersistService {
      */
     private void setQuickCodeValue(Record record) {
         // 已设置则不再设置
-        if (record.hasValue(EntityHelper.QuickCode)) return;
+        if (record.hasValue(EntityHelper.QuickCode))
+            return;
         // 无助记码字段
-        if (!record.getEntity().containsField(EntityHelper.QuickCode)) return;
+        if (!record.getEntity().containsField(EntityHelper.QuickCode))
+            return;
 
         String quickCode = QuickCodeReindexTask.generateQuickCode(record);
         if (quickCode != null) {
-            if (StringUtils.isBlank(quickCode)) record.setNull(EntityHelper.QuickCode);
-            else record.setString(EntityHelper.QuickCode, quickCode);
+            if (StringUtils.isBlank(quickCode))
+                record.setNull(EntityHelper.QuickCode);
+            else
+                record.setString(EntityHelper.QuickCode, quickCode);
         }
     }
 
@@ -108,17 +110,21 @@ public class BaseService extends InternalPersistService {
      */
     private void fixedDecimalScale(Record record) {
         final Entity entity = record.getEntity();
-        if (!MetadataHelper.isBusinessEntity(entity)) return;
+        if (!MetadataHelper.isBusinessEntity(entity))
+            return;
 
         for (String field : record.getAvailableFields()) {
-            if (!record.hasValue(field, false)) continue;
+            if (!record.hasValue(field, false))
+                continue;
 
             EasyField decimalField = EasyMetaFactory.valueOf(entity.getField(field));
-            if (decimalField.getDisplayType() != DisplayType.DECIMAL) continue;
+            if (decimalField.getDisplayType() != DisplayType.DECIMAL)
+                continue;
 
             Object oldValue = record.getObjectValue(field);
             BigDecimal fixed = EasyDecimal.fixedDecimalScale(oldValue, decimalField);
-            if (oldValue.equals(fixed)) continue;
+            if (oldValue.equals(fixed))
+                continue;
 
             log.debug("Force decimal scale : {}={} < {}", decimalField.getRawMeta(), field, oldValue);
             record.setDecimal(field, fixed);
@@ -136,7 +142,8 @@ public class BaseService extends InternalPersistService {
     private Callable2<Integer, Record> processN2NReference(final Record record, boolean isNew) {
         final Entity entity = record.getEntity();
         final Field[] n2nFields = MetadataSorter.sortFields(entity, DisplayType.N2NREFERENCE);
-        if (n2nFields.length == 0) return null;
+        if (n2nFields.length == 0)
+            return null;
 
         final Record n2nRecord = EntityHelper.forNew(EntityHelper.NreferenceItem, UserService.SYSTEM_USER);
         n2nRecord.setString("belongEntity", entity.getName());
@@ -150,7 +157,8 @@ public class BaseService extends InternalPersistService {
             ID[] newValue;
             if (isNew) {
                 Object maybeNull = record.getObjectValue(n2nField.getName());
-                if (maybeNull == null) continue;
+                if (maybeNull == null)
+                    continue;
 
                 newValue = NullValue.is(maybeNull) ? ID.EMPTY_ID_ARRAY : (ID[]) maybeNull;
                 if (newValue.length == 0) {
@@ -179,8 +187,10 @@ public class BaseService extends InternalPersistService {
             holdN2NValues.put(n2nField.getName(), newValue);
 
             // 仅保留第一个用于标识是否为空
-            if (newValue.length == 0) record.setNull(n2nField.getName());
-            else record.setIDArray(n2nField.getName(), new ID[] { newValue[0] });
+            if (newValue.length == 0)
+                record.setNull(n2nField.getName());
+            else
+                record.setIDArray(n2nField.getName(), new ID[] { newValue[0] });
 
             // 哪个字段
             n2nRecord.setString("belongField", n2nField.getName());
@@ -209,7 +219,7 @@ public class BaseService extends InternalPersistService {
                 Set<ID> afterRefs = new LinkedHashSet<>();
                 CollectionUtils.addAll(afterRefs, newValue);
 
-                for (Iterator<ID> iter = afterRefs.iterator(); iter.hasNext(); ) {
+                for (Iterator<ID> iter = afterRefs.iterator(); iter.hasNext();) {
                     ID a = iter.next();
                     if (beforeRefs.containsKey(a)) {
                         beforeRefs.remove(a);
@@ -232,7 +242,8 @@ public class BaseService extends InternalPersistService {
             }
         }
 
-        if (addItems.isEmpty() && delItems.isEmpty()) return null;
+        if (addItems.isEmpty() && delItems.isEmpty())
+            return null;
 
         // 新建
         if (isNew) {
@@ -281,7 +292,8 @@ public class BaseService extends InternalPersistService {
     private Callable2<Integer, Record> processTag(final Record record, boolean isNew) {
         final Entity entity = record.getEntity();
         final Field[] tagFields = MetadataSorter.sortFields(entity, DisplayType.TAG);
-        if (tagFields.length == 0) return null;
+        if (tagFields.length == 0)
+            return null;
 
         final Record tagRecord = EntityHelper.forNew(EntityHelper.TagItem, UserService.SYSTEM_USER);
         tagRecord.setString("belongEntity", entity.getName());
@@ -295,7 +307,8 @@ public class BaseService extends InternalPersistService {
             String[] newValue;
             if (isNew) {
                 Object maybeNull = record.getObjectValue(tagField.getName());
-                if (maybeNull == null) continue;
+                if (maybeNull == null)
+                    continue;
 
                 newValue = cleanNameArray(maybeNull);
                 if (newValue.length == 0) {
@@ -323,8 +336,10 @@ public class BaseService extends InternalPersistService {
             holdTagValues.put(tagField.getName(), newValue);
 
             // 仅保留第一个用于标识是否为空
-            if (newValue.length == 0) record.setNull(tagField.getName());
-            else record.setString(tagField.getName(), newValue[0]);
+            if (newValue.length == 0)
+                record.setNull(tagField.getName());
+            else
+                record.setString(tagField.getName(), newValue[0]);
 
             // 哪个字段
             tagRecord.setString("belongField", tagField.getName());
@@ -353,7 +368,7 @@ public class BaseService extends InternalPersistService {
                 Set<String> afterTags = new LinkedHashSet<>();
                 CollectionUtils.addAll(afterTags, newValue);
 
-                for (Iterator<String> iter = afterTags.iterator(); iter.hasNext(); ) {
+                for (Iterator<String> iter = afterTags.iterator(); iter.hasNext();) {
                     String a = iter.next();
                     if (beforeTags.containsKey(a)) {
                         beforeTags.remove(a);
@@ -376,7 +391,8 @@ public class BaseService extends InternalPersistService {
             }
         }
 
-        if (addItems.isEmpty() && delItems.isEmpty()) return null;
+        if (addItems.isEmpty() && delItems.isEmpty())
+            return null;
 
         // 新建
         if (isNew) {
@@ -415,12 +431,15 @@ public class BaseService extends InternalPersistService {
     }
 
     private String[] cleanNameArray(Object raw) {
-        if (NullValue.isNull(raw)) return ArrayUtils.EMPTY_STRING_ARRAY;
-        if (raw instanceof String[]) return (String[]) raw;
+        if (NullValue.isNull(raw))
+            return ArrayUtils.EMPTY_STRING_ARRAY;
+        if (raw instanceof String[])
+            return (String[]) raw;
 
         List<String> list = new ArrayList<>();
         for (String s : ((String) raw).split(EasyTag.VALUE_SPLIT_RE)) {
-            if (StringUtils.isNotBlank(s)) list.add(s.trim());
+            if (StringUtils.isNotBlank(s))
+                list.add(s.trim());
         }
         return list.toArray(new String[0]);
     }

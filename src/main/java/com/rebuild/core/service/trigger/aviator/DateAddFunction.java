@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.service.trigger.aviator;
 
@@ -55,11 +49,15 @@ public class DateAddFunction extends AbstractFunction {
             $number = $number.substring(0, $number.length() - 1);
         }
 
-        int du4cal = Calendar.DATE;  // default
-        if (AviatorDate.DU_MINUTE.equalsIgnoreCase($du)) du4cal = Calendar.MINUTE;
-        else if (AviatorDate.DU_HOUR.equalsIgnoreCase($du)) du4cal = Calendar.HOUR_OF_DAY;
-        else if (AviatorDate.DU_MONTH.equalsIgnoreCase($du)) du4cal = Calendar.MONTH;
-        else if (AviatorDate.DU_YEAR.equalsIgnoreCase($du)) du4cal = Calendar.YEAR;
+        int du4cal = Calendar.DATE; // default
+        if (AviatorDate.DU_MINUTE.equalsIgnoreCase($du))
+            du4cal = Calendar.MINUTE;
+        else if (AviatorDate.DU_HOUR.equalsIgnoreCase($du))
+            du4cal = Calendar.HOUR_OF_DAY;
+        else if (AviatorDate.DU_MONTH.equalsIgnoreCase($du))
+            du4cal = Calendar.MONTH;
+        else if (AviatorDate.DU_YEAR.equalsIgnoreCase($du))
+            du4cal = Calendar.YEAR;
 
         Date newDate = dateAdd($date, ObjectUtils.toInt($number), du4cal);
         return new AviatorDate(newDate);

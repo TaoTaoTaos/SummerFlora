@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.service.general.recyclebin;
 
@@ -63,7 +57,8 @@ public class RecycleBean implements Serializable {
         JSONObject s = (JSONObject) queryed.serialize();
 
         Entity detailEntity = entity.getDetailEntity();
-        if (detailEntity == null) return s;
+        if (detailEntity == null)
+            return s;
 
         // v36 多明细
         JSONArray detailList = new JSONArray();
@@ -72,7 +67,8 @@ public class RecycleBean implements Serializable {
                     .append(MetadataHelper.getDetailToMainField(de).getName())
                     .append(" = ?")
                     .toString();
-            List<Record> detailQueryed = Application.createQueryNoFilter(detailSql).setParameter(1, this.recordId).list();
+            List<Record> detailQueryed = Application.createQueryNoFilter(detailSql).setParameter(1, this.recordId)
+                    .list();
             for (Record r : detailQueryed) {
                 JSONObject item = (JSONObject) r.serialize();
                 item.put(RestoreRecordCreator.META_FIELD, de.getName());

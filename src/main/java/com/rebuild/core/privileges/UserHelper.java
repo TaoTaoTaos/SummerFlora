@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.privileges;
 
@@ -191,7 +185,7 @@ public class UserHelper {
         if (ms == null || ms.isEmpty()) {
             return new Member[0];
         }
-        //noinspection SuspiciousToArrayCall
+        // noinspection SuspiciousToArrayCall
         return ms.toArray(new Member[0]);
     }
 
@@ -213,7 +207,8 @@ public class UserHelper {
      * @see #parseUsers(Collection, ID, boolean)
      */
     public static Set<ID> parseUsers(JSONArray userDefs, ID record, boolean filterDisabled) {
-        if (userDefs == null) return Collections.emptySet();
+        if (userDefs == null)
+            return Collections.emptySet();
 
         Set<String> users = new HashSet<>();
         for (Object u : userDefs) {
@@ -251,8 +246,10 @@ public class UserHelper {
             } else if (entity != null && MetadataHelper.getLastJoinField(entity, def) != null) {
                 useFields.add(def);
             } else {
-                if (FlowNode.USER_OWNS.equals(def));  // No warn
-                else log.warn("Invalid field or id : {}", def);
+                if (FlowNode.USER_OWNS.equals(def))
+                    ; // No warn
+                else
+                    log.warn("Invalid field or id : {}", def);
             }
         }
 
@@ -263,7 +260,8 @@ public class UserHelper {
             if (bizzValue != null) {
                 for (String field : bizzValue.getAvailableFields()) {
                     Object value = bizzValue.getObjectValue(field);
-                    if (value == null) continue;
+                    if (value == null)
+                        continue;
 
                     if (value instanceof ID[]) {
                         CollectionUtils.addAll(bizzs, (ID[]) value);
@@ -281,7 +279,8 @@ public class UserHelper {
             } else {
                 Member[] ms = getMembers(bizz);
                 for (Member m : ms) {
-                    if (m.getIdentity().equals(UserService.SYSTEM_USER)) continue;
+                    if (m.getIdentity().equals(UserService.SYSTEM_USER))
+                        continue;
                     users.add((ID) m.getIdentity());
                 }
             }
@@ -289,9 +288,10 @@ public class UserHelper {
 
         // 过滤禁用用户
         if (filterDisabled) {
-            for (Iterator<ID> iter = users.iterator(); iter.hasNext(); ) {
+            for (Iterator<ID> iter = users.iterator(); iter.hasNext();) {
                 User u = Application.getUserStore().getUser(iter.next());
-                if (!u.isActive()) iter.remove();
+                if (!u.isActive())
+                    iter.remove();
             }
         }
 
@@ -307,7 +307,8 @@ public class UserHelper {
      * @see ImageMaker
      */
     public static File generateAvatar(String name, boolean forceMake) {
-        if (StringUtils.isBlank(name)) name = "RB";
+        if (StringUtils.isBlank(name))
+            name = "RB";
 
         File avatarFile = RebuildConfiguration.getFileOfData("avatar-" + name + "29.jpg");
         if (avatarFile.exists()) {
@@ -448,7 +449,8 @@ public class UserHelper {
                 .array();
 
         Set<ID> s = new HashSet<>();
-        for (Object[] o : array) s.add((ID) o[0]);
+        for (Object[] o : array)
+            s.add((ID) o[0]);
         return s;
     }
 
@@ -463,10 +465,12 @@ public class UserHelper {
         ID createdBy = otherUserOrAnyRecordId;
         if (otherUserOrAnyRecordId.getEntityCode() != EntityHelper.User) {
             createdBy = getCreatedBy(otherUserOrAnyRecordId);
-            if (createdBy == null) return false;
+            if (createdBy == null)
+                return false;
         }
 
-        if (createdBy.equals(user)) return true;
+        if (createdBy.equals(user))
+            return true;
 
         // 所有管理员被视为同一用户
         return isAdmin(createdBy) && isAdmin(user);

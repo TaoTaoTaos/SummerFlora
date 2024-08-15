@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.service.approval;
 
@@ -69,7 +63,8 @@ public class ApprovalHelper {
      */
     public static ApprovalStatus getApprovalStatus(ID recordId) throws NoRecordFoundException {
         Object[] o = Application.getQueryFactory().uniqueNoFilter(recordId,
-                EntityHelper.ApprovalId, EntityHelper.ApprovalId + ".name", EntityHelper.ApprovalState, EntityHelper.ApprovalStepNode);
+                EntityHelper.ApprovalId, EntityHelper.ApprovalId + ".name", EntityHelper.ApprovalState,
+                EntityHelper.ApprovalStepNode);
         if (o == null) {
             throw new NoRecordFoundException(recordId, true);
         }
@@ -141,7 +136,7 @@ public class ApprovalHelper {
      * @return
      */
     public static String buildApproveMsg(Object entityOrRecord) {
-        Entity be = entityOrRecord instanceof  ID
+        Entity be = entityOrRecord instanceof ID
                 ? MetadataHelper.getEntity(((ID) entityOrRecord).getEntityCode())
                 : (Entity) entityOrRecord;
         return Language.L("有一条 %s 记录请你审批", EasyMetaFactory.getLabel(be));
@@ -157,7 +152,8 @@ public class ApprovalHelper {
         FlowDefinition flowDefinition = RobotApprovalManager.instance.getFlowDefinition(approvalId);
         FlowParser flowParser = flowDefinition.createFlowParser();
         for (FlowNode node : flowParser.getAllNodes()) {
-            if (nodeName.equals(node.getNodeName())) return node.getNodeId();
+            if (nodeName.equals(node.getNodeName()))
+                return node.getNodeId();
         }
         return null;
     }
@@ -172,7 +168,8 @@ public class ApprovalHelper {
         FlowDefinition flowDefinition = RobotApprovalManager.instance.getFlowDefinition(approvalId);
         FlowParser flowParser = flowDefinition.createFlowParser();
         for (FlowNode node : flowParser.getAllNodes()) {
-            if (nodeId.equals(node.getNodeId())) return node.getNodeName();
+            if (nodeId.equals(node.getNodeId()))
+                return node.getNodeName();
         }
         return null;
     }
@@ -186,14 +183,17 @@ public class ApprovalHelper {
      * @return
      */
     public static TriggerAction[] getSpecTriggers(Entity entity, ActionType specType, TriggerWhen... when) {
-        if (when.length == 0) return new TriggerAction[0];
+        if (when.length == 0)
+            return new TriggerAction[0];
 
         TriggerAction[] triggers = RobotTriggerManager.instance.getActions(entity, when);
-        if (triggers.length == 0 || specType == null) return triggers;
+        if (triggers.length == 0 || specType == null)
+            return triggers;
 
         List<TriggerAction> specTriggers = new ArrayList<>();
         for (TriggerAction t : triggers) {
-            if (t.getType() == specType) specTriggers.add(t);
+            if (t.getType() == specType)
+                specTriggers.add(t);
         }
         return specTriggers.toArray(new TriggerAction[0]);
     }

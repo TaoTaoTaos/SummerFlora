@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.service.trigger;
 
@@ -61,6 +55,7 @@ public class ActionFactory {
     private static class NoRbv extends TriggerAction {
 
         private ActionType actionType;
+
         NoRbv(ActionType actionType) {
             super(null);
             this.actionType = actionType;
@@ -68,8 +63,10 @@ public class ActionFactory {
 
         @Override
         public ActionType getType() {
-            if (actionType == null) throw new UnsupportedOperationException();
-            else return actionType;
+            if (actionType == null)
+                throw new UnsupportedOperationException();
+            else
+                return actionType;
         }
 
         @Override

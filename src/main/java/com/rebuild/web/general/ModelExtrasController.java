@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.web.general;
 
@@ -73,7 +67,7 @@ public class ModelExtrasController extends BaseController {
     // 获取表单回填数据
     @GetMapping("fillin-value")
     public JSON getFillinValue(@EntityParam Entity entity, @IdParam(name = "source") ID sourceRecord,
-                               HttpServletRequest request) {
+            HttpServletRequest request) {
         String field = getParameterNotNull(request, "field");
         Field useField = entity.getField(field);
 
@@ -147,17 +141,17 @@ public class ModelExtrasController extends BaseController {
         if (recordMeta.length == 3) {
             User user = Application.getUserStore().getUser((ID) recordMeta[2]);
             String dept = user.getOwningDept() == null ? null : user.getOwningDept().getName();
-            owning = new String[]{user.getIdentity().toString(), user.getFullName(), dept};
+            owning = new String[] { user.getIdentity().toString(), user.getFullName(), dept };
 
             Object[][] shareTo = Application.createQueryNoFilter(
                     "select shareTo from ShareAccess where belongEntity = ? and recordId = ?")
                     .setParameter(1, entity.getName())
                     .setParameter(2, id)
-                    .setLimit(9)  // 最多显示9个
+                    .setLimit(9) // 最多显示9个
                     .array();
             sharingList = new ArrayList<>();
             for (Object[] st : shareTo) {
-                sharingList.add(new String[]{st[0].toString(), UserHelper.getName((ID) st[0])});
+                sharingList.add(new String[] { st[0].toString(), UserHelper.getName((ID) st[0]) });
             }
         }
 
@@ -176,15 +170,24 @@ public class ModelExtrasController extends BaseController {
 
         for (Object[] o : array) {
             int revType = (int) o[0];
-            if (revType == 1) o[0] = Language.L("新建");
-            else if (revType == 2) o[0] = Language.L("删除");
-            else if (revType == 4) o[0] = Language.L("更新");
-            else if (revType == 16) o[0] = Language.L("分配");
-            else if (revType == 32) o[0] = Language.L("共享");
-            else if (revType == 64) o[0] = Language.L("取消共享");
-            else if (revType == 991) o[0] = Language.L("审批通过");
-            else if (revType == 992) o[0] = Language.L("审批撤销");
-            else o[0] = Language.L("其他") + String.format(" (%d)", revType);
+            if (revType == 1)
+                o[0] = Language.L("新建");
+            else if (revType == 2)
+                o[0] = Language.L("删除");
+            else if (revType == 4)
+                o[0] = Language.L("更新");
+            else if (revType == 16)
+                o[0] = Language.L("分配");
+            else if (revType == 32)
+                o[0] = Language.L("共享");
+            else if (revType == 64)
+                o[0] = Language.L("取消共享");
+            else if (revType == 991)
+                o[0] = Language.L("审批通过");
+            else if (revType == 992)
+                o[0] = Language.L("审批撤销");
+            else
+                o[0] = Language.L("其他") + String.format(" (%d)", revType);
 
             o[1] = I18nUtils.formatDate((Date) o[1]);
             o[2] = new Object[] { o[2], UserHelper.getName((ID) o[2]) };
@@ -201,10 +204,12 @@ public class ModelExtrasController extends BaseController {
 
         JSONArray allowed = new JSONArray();
         for (String e : entity.split(",")) {
-            if (!MetadataHelper.containsEntity(e)) continue;
+            if (!MetadataHelper.containsEntity(e))
+                continue;
 
             EasyEntity easyEntity = EasyMetaFactory.valueOf(e);
-            if (!MetadataHelper.hasPrivilegesField(easyEntity.getRawMeta())) continue;
+            if (!MetadataHelper.hasPrivilegesField(easyEntity.getRawMeta()))
+                continue;
 
             if (Application.getPrivilegesManager()
                     .allow(user, easyEntity.getRawMeta().getEntityCode(), BizzPermission.CREATE)) {
@@ -217,7 +222,8 @@ public class ModelExtrasController extends BaseController {
     @PostMapping("eval-calc-formula")
     public RespBody evalCalcFormula(@EntityParam Entity entity, HttpServletRequest request) {
         String targetField = getParameterNotNull(request, "field");
-        if (!entity.containsField(targetField)) return RespBody.error();
+        if (!entity.containsField(targetField))
+            return RespBody.error();
 
         JSONObject post = (JSONObject) ServletUtils.getRequestJson(request);
         Map<String, Object> varsInFormula = new HashMap<>(post.getInnerMap());
@@ -252,13 +258,16 @@ public class ModelExtrasController extends BaseController {
             String fieldValue2 = fieldValue.toString();
             DisplayType dt = EasyMetaFactory.valueOf(entity.getField(field)).getDisplayType();
             if (dt == DisplayType.DATE || dt == DisplayType.DATETIME) {
-                fieldValue = CalendarUtils.parse(fieldValue2, CalendarUtils.UTC_DATETIME_FORMAT.substring(0, fieldValue2.length()));
+                fieldValue = CalendarUtils.parse(fieldValue2,
+                        CalendarUtils.UTC_DATETIME_FORMAT.substring(0, fieldValue2.length()));
             } else if (dt == DisplayType.NUMBER || dt == DisplayType.DECIMAL) {
                 fieldValue = EasyDecimal.clearFlaged(fieldValue2);
                 if (StringUtils.isNotBlank((String) fieldValue)) {
                     // v3.6.3 整数/小数强制使用 BigDecimal 高精度
-                    if (dt == DisplayType.NUMBER) fieldValue = BigDecimal.valueOf(ObjectUtils.toLong(fieldValue));
-                    else fieldValue = BigDecimal.valueOf(ObjectUtils.toDouble(fieldValue));
+                    if (dt == DisplayType.NUMBER)
+                        fieldValue = BigDecimal.valueOf(ObjectUtils.toLong(fieldValue));
+                    else
+                        fieldValue = BigDecimal.valueOf(ObjectUtils.toDouble(fieldValue));
                 } else {
                     fieldValue = null;
                 }
@@ -270,14 +279,16 @@ public class ModelExtrasController extends BaseController {
             }
             varsInFormula.put(field, fieldValue);
         }
-        if (!canCalc) return RespBody.ok();
+        if (!canCalc)
+            return RespBody.ok();
 
         formula = formula
                 .replace("{", "").replace("}", "")
                 .replace("×", "*").replace("÷", "/");
 
         Object evalVal = AviatorUtils.eval(formula, varsInFormula, true);
-        if (evalVal == null) return RespBody.ok();
+        if (evalVal == null)
+            return RespBody.ok();
 
         DisplayType dt = easyField.getDisplayType();
         if (dt == DisplayType.DATE || dt == DisplayType.DATETIME) {

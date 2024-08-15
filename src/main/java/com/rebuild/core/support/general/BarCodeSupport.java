@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.support.general;
 
@@ -58,7 +52,8 @@ public class BarCodeSupport {
      */
     public static String getBarCodeContent(Field field, ID record) {
         String barcodeFormat = EasyMetaFactory.valueOf(field).getExtraAttr("barcodeFormat");
-        if (StringUtils.isBlank(barcodeFormat)) return CONTENT_UNSET;
+        if (StringUtils.isBlank(barcodeFormat))
+            return CONTENT_UNSET;
         return ContentWithFieldVars.replaceWithRecord(barcodeFormat, record);
     }
 
@@ -108,7 +103,7 @@ public class BarCodeSupport {
      * CODE_128
      *
      * @param content
-     * @param width 通常无需指定，自适应
+     * @param width    通常无需指定，自适应
      * @param height
      * @param showText 显示底部文字
      * @return
@@ -149,17 +144,21 @@ public class BarCodeSupport {
         hints.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.M);
         hints.put(EncodeHintType.MARGIN, 1);
 
-        if (width > 1200) width = 1200;
-        if (height > 1200) height = 1200;
+        if (width > 1200)
+            width = 1200;
+        if (height > 1200)
+            height = 1200;
 
         try {
             if (format == BarcodeFormat.QR_CODE) {
                 width = height = Math.max(width, height);
-                if (width <= 0) width = height = 120;
+                if (width <= 0)
+                    width = height = 120;
 
             } else {
                 final int base = 64;
-                if (height < base) height = base;
+                if (height < base)
+                    height = base;
 
                 // 条形码宽度为自适应
                 if (width == 0 && height > base) {
@@ -201,7 +200,8 @@ public class BarCodeSupport {
         Graphics2D g2d = bi.createGraphics();
         g2d.addRenderingHints(new RenderingHints(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY));
         g2d.addRenderingHints(new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON));
-        g2d.addRenderingHints(new RenderingHints(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON));
+        g2d.addRenderingHints(
+                new RenderingHints(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON));
 
         g2d.drawImage(image, 0, 0, null);
 
@@ -229,7 +229,8 @@ public class BarCodeSupport {
         return bi;
     }
 
-    private static FontMetrics feetFontSizeToRegion(String text, Font font, Graphics2D g2d, int regionWidth, int regionHeight) {
+    private static FontMetrics feetFontSizeToRegion(String text, Font font, Graphics2D g2d, int regionWidth,
+            int regionHeight) {
         // Get the fonts metrics
         FontMetrics fm = g2d.getFontMetrics(font);
 

@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.service.dashboard.charts.builtin;
 
@@ -66,7 +60,7 @@ public class ApprovalList extends ChartData implements BuiltinChart {
                         baseWhere + " state = ? order by modifiedOn desc")
                 .setParameter(1, this.getUser())
                 .setParameter(2, viewState)
-                .setLimit(500)  // 最多显示
+                .setLimit(500) // 最多显示
                 .array();
 
         List<Object> rearray = new ArrayList<>();
@@ -89,7 +83,7 @@ public class ApprovalList extends ChartData implements BuiltinChart {
 
             Entity entity = MetadataHelper.getEntity(recordId.getEntityCode());
             ID s = ApprovalHelper.getSubmitter(recordId, (ID) o[3]);
-            rearray.add(new Object[]{
+            rearray.add(new Object[] {
                     s,
                     UserHelper.getName(s),
                     I18nUtils.formatDate((Date) o[1]),

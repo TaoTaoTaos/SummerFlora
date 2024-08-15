@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.service.trigger.impl;
 
@@ -51,16 +45,16 @@ import java.util.Set;
 @Slf4j
 public class SendNotification extends TriggerAction {
 
-    private static final int MTYPE_NOTIFICATION = 1;    // 通知
-    private static final int MTYPE_MAIL = 2;            // 邮件
-    private static final int MTYPE_SMS = 3;             // 短信
-    private static final int MTYPE_WXWORK = 4;          // 企微群
-    private static final int MTYPE_DINGTALK = 5;        // 钉钉群
-    private static final int UTYPE_USER = 1;            // 内部用户
-    private static final int UTYPE_ACCOUNT = 2;         // 外部人员
-    private static final int UTYPE_ACCOUNT20 = 20;      // 外部人员-输入
-    private static final int UTYPE_WXWORK = 4;          // 企微群
-    private static final int UTYPE_DINGTALK = 5;        // 钉钉群
+    private static final int MTYPE_NOTIFICATION = 1; // 通知
+    private static final int MTYPE_MAIL = 2; // 邮件
+    private static final int MTYPE_SMS = 3; // 短信
+    private static final int MTYPE_WXWORK = 4; // 企微群
+    private static final int MTYPE_DINGTALK = 5; // 钉钉群
+    private static final int UTYPE_USER = 1; // 内部用户
+    private static final int UTYPE_ACCOUNT = 2; // 外部人员
+    private static final int UTYPE_ACCOUNT20 = 20; // 外部人员-输入
+    private static final int UTYPE_WXWORK = 4; // 企微群
+    private static final int UTYPE_DINGTALK = 5; // 钉钉群
 
     public SendNotification(ActionContext context) {
         super(context);
@@ -96,11 +90,12 @@ public class SendNotification extends TriggerAction {
             s = sendToWxwork(operatingContext);
         } else if (userType == UTYPE_DINGTALK) {
             s = sendToDingtalk(operatingContext);
-        } else {  // UTYPE_USER
+        } else { // UTYPE_USER
             s = sendToUsers(operatingContext);
         }
 
-        if (s == null || s.isEmpty()) return TriggerResult.wran("No users");
+        if (s == null || s.isEmpty())
+            return TriggerResult.wran("No users");
         log.info("Sent notification to : {} with {}", s, actionContext.getConfigId());
 
         return TriggerResult.success(StringUtils.join(s, ","));
@@ -112,13 +107,15 @@ public class SendNotification extends TriggerAction {
 
         Set<ID> toUsers = UserHelper.parseUsers(
                 content.getJSONArray("sendTo"), actionContext.getSourceRecord(), Boolean.TRUE);
-        if (toUsers.isEmpty()) return null;
+        if (toUsers.isEmpty())
+            return null;
 
         String[] message = formatMessageContent(actionContext, operatingContext);
         Set<Object> send = new HashSet<>();
 
         for (ID user : toUsers) {
-            if (send.contains(user)) continue;
+            if (send.contains(user))
+                continue;
 
             if (msgType == MTYPE_MAIL) {
                 String emailAddr = Application.getUserStore().getUser(user).getEmail();
@@ -138,7 +135,8 @@ public class SendNotification extends TriggerAction {
             }
 
             if (msgType == MTYPE_NOTIFICATION) {
-                Message m = MessageBuilder.createMessage(user, message[0], Message.TYPE_DEFAULT, actionContext.getSourceRecord());
+                Message m = MessageBuilder.createMessage(user, message[0], Message.TYPE_DEFAULT,
+                        actionContext.getSourceRecord());
                 Application.getNotifications().send(m);
                 send.add(user);
             }
@@ -155,7 +153,8 @@ public class SendNotification extends TriggerAction {
             to = content.getString("sendTo").split("[，,;；]");
         } else {
             String[] validFields = getValidDefsFields(content.getJSONArray("sendTo"));
-            if (validFields == null) return null;
+            if (validFields == null)
+                return null;
 
             // v3.4 删除就尝试从快照中取
             if (operatingContext.getAction() == BizzPermission.DELETE) {
@@ -164,7 +163,8 @@ public class SendNotification extends TriggerAction {
                     List<String> toList = new ArrayList<>();
                     for (String s : validFields) {
                         Object v;
-                        if ((v = beforeRecord.getObjectValue(s)) != null) toList.add(v.toString());
+                        if ((v = beforeRecord.getObjectValue(s)) != null)
+                            toList.add(v.toString());
                     }
                     to = toList.toArray(new String[0]);
                 }
@@ -172,16 +172,19 @@ public class SendNotification extends TriggerAction {
                 to = Application.getQueryFactory().uniqueNoFilter(actionContext.getSourceRecord(), validFields);
             }
         }
-        if (to == null) return null;
+        if (to == null)
+            return null;
 
         String[] message = formatMessageContent(actionContext, operatingContext);
         Set<Object> send = new HashSet<>();
 
         for (Object item : to) {
-            if (item == null) continue;
+            if (item == null)
+                continue;
 
             String mobileOrEmail = item.toString().trim();
-            if (send.contains(mobileOrEmail)) continue;
+            if (send.contains(mobileOrEmail))
+                continue;
 
             if (msgType == MTYPE_SMS && RegexUtils.isCNMobile(mobileOrEmail)) {
                 SMSender.sendSMSAsync(mobileOrEmail, message[0]);
@@ -213,14 +216,17 @@ public class SendNotification extends TriggerAction {
 
     private File[] getMailAttach(final JSONObject content) {
         String[] attachFields = getValidDefsFields(content.getJSONArray("attach"));
-        if (attachFields == null) return null;
+        if (attachFields == null)
+            return null;
 
         Object[] o = Application.getQueryFactory().unique(actionContext.getSourceRecord(), attachFields);
-        if (o == null || o.length == 0) return null;
+        if (o == null || o.length == 0)
+            return null;
 
         List<File> files = new ArrayList<>();
         for (Object item : o) {
-            if (item == null || item instanceof ID) continue;
+            if (item == null || item instanceof ID)
+                continue;
 
             JSONArray paths = JSON.parseArray((String) item);
             for (Object path : paths) {
@@ -235,7 +241,8 @@ public class SendNotification extends TriggerAction {
     }
 
     private String[] getValidDefsFields(JSONArray defs) {
-        if (defs == null || defs.isEmpty()) return null;
+        if (defs == null || defs.isEmpty())
+            return null;
 
         List<String> validFields = new ArrayList<>();
         for (Object field : defs) {
@@ -260,7 +267,8 @@ public class SendNotification extends TriggerAction {
 
         String message = content.getString("content");
         String emailSubject = content.getString("title");
-        if (StringUtils.isBlank(emailSubject)) emailSubject = Language.L("你有一条新通知");
+        if (StringUtils.isBlank(emailSubject))
+            emailSubject = Language.L("你有一条新通知");
 
         if (operatingContext.getAction() == BizzPermission.DELETE) {
             message = ContentWithFieldVars.replaceWithRecord(message, operatingContext.getBeforeRecord());

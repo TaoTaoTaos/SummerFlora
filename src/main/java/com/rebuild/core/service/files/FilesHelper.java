@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.service.files;
 
@@ -66,7 +60,8 @@ public class FilesHelper {
 
         String ext = FilenameUtils.getExtension(filePath);
         if (StringUtils.isNotBlank(ext)) {
-            if (ext.length() > 10) ext = ext.substring(0, 10);
+            if (ext.length() > 10)
+                ext = ext.substring(0, 10);
             attach.setString("fileType", ext);
         }
 
@@ -95,8 +90,10 @@ public class FilesHelper {
     public static JSONArray getAccessableFolders(ID user, ID parent) {
         // NOTE 缓存加速
         String sql = "select folderId,name,scope,createdBy,parent,scope from AttachmentFolder where ";
-        if (parent == null) sql += "parent is null";
-        else sql += String.format("parent = '%s'", parent);
+        if (parent == null)
+            sql += "parent is null";
+        else
+            sql += String.format("parent = '%s'", parent);
 
         sql += " order by name";
         Object[][] array = Application.createQueryNoFilter(sql).array();
@@ -114,10 +111,11 @@ public class FilesHelper {
             }
 
             // 如果不可访问，子级目录即使公开也不可访问
-            if (!access) continue;
+            if (!access)
+                continue;
 
             o[2] = SCOPE_SELF.equals(o[2]);
-            o[3] = user.equals(o[3]) || UserHelper.isAdmin(user);  // v3.5.1 管理员可删除
+            o[3] = user.equals(o[3]) || UserHelper.isAdmin(user); // v3.5.1 管理员可删除
             o[5] = scopeSpecUsers;
             JSONObject folder = JSONUtils.toJSONObject(
                     new String[] { "id", "text", "private", "self", "parent", "specUsers" }, o);
@@ -150,7 +148,8 @@ public class FilesHelper {
             into.add(ID.valueOf(folder.getString("id")));
 
             JSONArray c = folder.getJSONArray("children");
-            if (c != null) intoAccessableFolders(c, into);
+            if (c != null)
+                intoAccessableFolders(c, into);
         }
     }
 
@@ -165,7 +164,8 @@ public class FilesHelper {
                 "select folderId,createdBy from AttachmentFolder where parent = ?")
                 .setParameter(1, parent)
                 .array();
-        if (array.length == 0) return Collections.emptySet();
+        if (array.length == 0)
+            return Collections.emptySet();
 
         Set<ID> set = new HashSet<>();
         for (Object[] o : array) {
@@ -195,7 +195,8 @@ public class FilesHelper {
      */
     public static boolean isFileAccessable(ID user, ID fileId) {
         Object[] o = Application.getQueryFactory().uniqueNoFilter(fileId, "folderId");
-        if (o == null) return true;
+        if (o == null)
+            return true;
         return getAccessableFolders(user).contains((ID) o[0]);
     }
 }

@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.web.admin.audit;
 
@@ -63,7 +57,8 @@ public class RevisionHistoryController extends EntityController {
     @GetMapping("revision-history/details-list")
     public JSON detailsList(@IdParam ID revisionId) {
         Object[] o = Application.getQueryFactory().uniqueNoFilter(revisionId, "recordId,belongEntity");
-        if (o == null) return JSONUtils.EMPTY_ARRAY;
+        if (o == null)
+            return JSONUtils.EMPTY_ARRAY;
 
         Object[][] array = Application.createQueryNoFilter(
                 "select revisionContent,revisionType,revisionOn,revisionBy.fullName from RevisionHistory where recordId = ? order by autoId desc")
@@ -89,7 +84,7 @@ public class RevisionHistoryController extends EntityController {
     // 补充字段名称
     private void paddingFieldsName(JSONArray contents, Entity entity) {
         final int entityCode = entity.getEntityCode();
-        for (Iterator<Object> iter = contents.iterator(); iter.hasNext(); ) {
+        for (Iterator<Object> iter = contents.iterator(); iter.hasNext();) {
             JSONObject item = (JSONObject) iter.next();
             String fieldName = item.getString("field");
 

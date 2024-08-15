@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.support;
 
@@ -37,6 +31,7 @@ public class KVStorage {
 
     /**
      * 取
+     * 
      * @param key 会自动加 `custom.` 前缀
      * @return
      */
@@ -46,6 +41,7 @@ public class KVStorage {
 
     /**
      * 存
+     * 
      * @param key
      * @param value
      */
@@ -55,6 +51,7 @@ public class KVStorage {
 
     /**
      * 存（异步）
+     * 
      * @param key
      * @param value
      * @param throttled 是否节流
@@ -71,6 +68,7 @@ public class KVStorage {
 
     /**
      * 删
+     * 
      * @param key
      */
     public static void removeCustomValue(String key) {
@@ -159,7 +157,7 @@ public class KVStorage {
     }
 
     // -- ASYNC 同步K/V值到数据库。注意如果系统异常停止可能导致同步数据丢失
-    
+
     private static final Object THROTTLED_QUEUE_LOCK = new Object();
     private static final Map<String, Object> THROTTLED_QUEUE = new ConcurrentHashMap<>();
     private static final Timer THROTTLED_TIMER = new Timer("KVStorage-Timer");
@@ -168,7 +166,8 @@ public class KVStorage {
         final TimerTask localTimerTask = new TimerTask() {
             @Override
             public void run() {
-                if (THROTTLED_QUEUE.isEmpty()) return;
+                if (THROTTLED_QUEUE.isEmpty())
+                    return;
 
                 synchronized (THROTTLED_QUEUE_LOCK) {
                     final Map<String, Object> queue = new HashMap<>(THROTTLED_QUEUE);

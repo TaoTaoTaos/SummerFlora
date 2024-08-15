@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.configuration.general;
 
@@ -51,7 +45,8 @@ public class DataListManager extends BaseLayoutManager {
 
     public static final DataListManager instance = new DataListManager();
 
-    private DataListManager() {}
+    private DataListManager() {
+    }
 
     /**
      * @param entity
@@ -88,7 +83,8 @@ public class DataListManager extends BaseLayoutManager {
         for (Object o : fields) {
             JSONObject item = (JSONObject) o;
             String label2 = (String) item.remove("label2");
-            if (StringUtils.isNotBlank(label2)) item.put("label", label2);
+            if (StringUtils.isNotBlank(label2))
+                item.put("label", label2);
         }
         return config;
     }
@@ -139,18 +135,22 @@ public class DataListManager extends BaseLayoutManager {
                     Field parentField = entityMeta.getField(fieldPath[0]);
                     if (!filterNoPriviFields) {
                         formatted = formatField(lastField, parentField);
-                    } else if (Application.getPrivilegesManager().allowRead(user, lastField.getOwnEntity().getEntityCode())) {
+                    } else if (Application.getPrivilegesManager().allowRead(user,
+                            lastField.getOwnEntity().getEntityCode())) {
                         formatted = formatField(lastField, parentField);
                     }
                 }
 
                 if (formatted != null) {
                     Object width = item.get("width");
-                    if (width != null) formatted.put("width", width);
+                    if (width != null)
+                        formatted.put("width", width);
                     Object label2 = item.get("label2");
-                    if (label2 != null) formatted.put("label2", label2);
+                    if (label2 != null)
+                        formatted.put("label2", label2);
                     Object sort = item.get("sort");
-                    if (sort != null) formatted.put("sort", sort);
+                    if (sort != null)
+                        formatted.put("sort", sort);
 
                     columnList.add(formatted);
                 }
@@ -158,8 +158,8 @@ public class DataListManager extends BaseLayoutManager {
         }
 
         return JSONUtils.toJSONObject(
-                new String[]{"entity", "nameField", "fields"},
-                new Object[]{entity, namedField.getName(), columnList});
+                new String[] { "entity", "nameField", "fields" },
+                new Object[] { entity, namedField.getName(), columnList });
     }
 
     /**
@@ -180,8 +180,9 @@ public class DataListManager extends BaseLayoutManager {
         String parentLabel = parent == null ? "" : (EasyMetaFactory.getLabel(parent) + ".");
         EasyField easyField = EasyMetaFactory.valueOf(field);
         return JSONUtils.toJSONObject(
-                new String[]{"field", "label", "type"},
-                new Object[]{parentField + easyField.getName(), parentLabel + easyField.getLabel(), easyField.getDisplayType(false)});
+                new String[] { "field", "label", "type" },
+                new Object[] { parentField + easyField.getName(), parentLabel + easyField.getLabel(),
+                        easyField.getDisplayType(false) });
     }
 
     /**
@@ -211,7 +212,8 @@ public class DataListManager extends BaseLayoutManager {
      */
     public ConfigBean getWidgetCharts(ID user, String entity) {
         ConfigBean e = getLayout(user, entity, TYPE_WCHARTS, null);
-        if (e == null) return null;
+        if (e == null)
+            return null;
 
         // 补充图表信息
         JSONArray charts = (JSONArray) e.getJSON("config");
@@ -229,7 +231,8 @@ public class DataListManager extends BaseLayoutManager {
      */
     public ConfigBean getListStats(ID user, String entity) {
         ConfigBean e = getLayout(user, entity, TYPE_LISTSTATS, null);
-        if (e == null) return null;
+        if (e == null)
+            return null;
         return e.clone();
     }
 
@@ -242,7 +245,8 @@ public class DataListManager extends BaseLayoutManager {
      */
     public ConfigBean getListFilterPane(ID user, String entity) {
         ConfigBean e = getLayout(user, entity, TYPE_LISTFILTERPANE, null);
-        if (e == null) return null;
+        if (e == null)
+            return null;
         return e.clone();
     }
 
@@ -264,7 +268,7 @@ public class DataListManager extends BaseLayoutManager {
             for (Object o : configJson.getJSONArray("items")) {
                 JSONObject item = (JSONObject) o;
                 String field = item.getString("field");
-                if (entityMeta.containsField(field) /* v3.7 || AdvFilterParser.VF_ACU.equals(field)*/) {
+                if (entityMeta.containsField(field) /* v3.7 || AdvFilterParser.VF_ACU.equals(field) */) {
                     paneFields.add(field);
                 }
             }
@@ -276,13 +280,15 @@ public class DataListManager extends BaseLayoutManager {
             quickFields.remove(EntityHelper.QuickCode);
 
             for (String s : quickFields) {
-                if (s.startsWith("&")) s = s.substring(1);
+                if (s.startsWith("&"))
+                    s = s.substring(1);
 
                 if (entityMeta.containsField(s)) {
                     paneFields.add(s);
                 } else {
                     // 不支持二级
-                    if (!s.contains(".")) log.warn("No field in filter pane : {}#{}", entity, s);
+                    if (!s.contains("."))
+                        log.warn("No field in filter pane : {}#{}", entity, s);
                 }
             }
         }
@@ -297,12 +303,13 @@ public class DataListManager extends BaseLayoutManager {
      * @return
      */
     public JSON getFieldsLayoutMode2(Entity entity) {
-        String showFields = EasyMetaFactory.valueOf(entity).getExtraAttr(EasyEntityConfigProps.ADVLIST_MODE2_SHOWFIELDS);
+        String showFields = EasyMetaFactory.valueOf(entity)
+                .getExtraAttr(EasyEntityConfigProps.ADVLIST_MODE2_SHOWFIELDS);
         JSONArray showFieldsConf;
         if (JSONUtils.wellFormat(showFields)) {
             showFieldsConf = JSON.parseArray(showFields);
         } else {
-            showFieldsConf = JSON.parseArray("[null,null,null,null,null,null]");  // fix:6
+            showFieldsConf = JSON.parseArray("[null,null,null,null,null,null]"); // fix:6
         }
 
         String imgeField0 = showFieldsConf.getString(0);
@@ -341,12 +348,13 @@ public class DataListManager extends BaseLayoutManager {
      * @return
      */
     public JSON getFieldsLayoutMode3(Entity entity) {
-        String showFields = EasyMetaFactory.valueOf(entity).getExtraAttr(EasyEntityConfigProps.ADVLIST_MODE3_SHOWFIELDS);
+        String showFields = EasyMetaFactory.valueOf(entity)
+                .getExtraAttr(EasyEntityConfigProps.ADVLIST_MODE3_SHOWFIELDS);
         JSONArray showFieldsConf;
         if (JSONUtils.wellFormat(showFields)) {
             showFieldsConf = JSON.parseArray(showFields);
         } else {
-            showFieldsConf = JSON.parseArray("[null, null, null, null, null]");  // fix:5
+            showFieldsConf = JSON.parseArray("[null, null, null, null, null]"); // fix:5
         }
 
         String imgField0 = showFieldsConf.getString(0);
@@ -369,7 +377,8 @@ public class DataListManager extends BaseLayoutManager {
         JSONArray fields = emptyConfig.getJSONArray("fields");
         fields.clear();
         for (Object name : showFields) {
-            if (name != null) fields.add(formatField(entity.getField((String) name)));
+            if (name != null)
+                fields.add(formatField(entity.getField((String) name)));
         }
         return emptyConfig;
     }

@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.service.trigger.impl;
 
@@ -116,9 +110,11 @@ public class FieldAggregation extends TriggerAction {
         List<String> tschain = TRIGGER_CHAIN.get();
         if (tschain == null) {
             tschain = new ArrayList<>();
-            if (CommonsUtils.DEVLOG) System.out.println("[dev] New trigger-chain : " + this);
+            if (CommonsUtils.DEVLOG)
+                System.out.println("[dev] New trigger-chain : " + this);
         } else {
-            String w = String.format("Occured trigger-chain : %s > %s (current)", StringUtils.join(tschain, " > "), chainName);
+            String w = String.format("Occured trigger-chain : %s > %s (current)", StringUtils.join(tschain, " > "),
+                    chainName);
 
             // 在整个触发链上只触发1次，避免循环调用
             // FIXME 20220804 某些场景是否允许2次，而非1次???
@@ -142,7 +138,8 @@ public class FieldAggregation extends TriggerAction {
         final String chainName = String.format("%s:%s:%s", actionContext.getConfigId(),
                 operatingContext.getFixedRecordId(), operatingContext.getAction().getName());
         final List<String> tschain = checkTriggerChain(chainName);
-        if (tschain == null) return TriggerResult.triggerOnce();
+        if (tschain == null)
+            return TriggerResult.triggerOnce();
 
         this.prepare(operatingContext);
 
@@ -175,10 +172,12 @@ public class FieldAggregation extends TriggerAction {
         for (Object o : items) {
             JSONObject item = (JSONObject) o;
             String targetField = item.getString("targetField");
-            if (!MetadataHelper.checkAndWarnField(targetEntity, targetField)) continue;
+            if (!MetadataHelper.checkAndWarnField(targetEntity, targetField))
+                continue;
 
             Object evalValue = new AggregationEvaluator(item, sourceEntity, filterSql).eval();
-            if (evalValue == null) continue;
+            if (evalValue == null)
+                continue;
 
             DisplayType dt = EasyMetaFactory.getDisplayType(targetEntity.getField(targetField));
             if (dt == DisplayType.NUMBER) {
@@ -188,8 +187,10 @@ public class FieldAggregation extends TriggerAction {
                 targetRecord.setDouble(targetField, ObjectUtils.toDouble(evalValue));
 
             } else if (dt == DisplayType.DATE || dt == DisplayType.DATETIME) {
-                if (evalValue instanceof Date) targetRecord.setDate(targetField, (Date) evalValue);
-                else targetRecord.setNull(targetField);
+                if (evalValue instanceof Date)
+                    targetRecord.setDate(targetField, (Date) evalValue);
+                else
+                    targetRecord.setNull(targetField);
 
             } else if (dt == DisplayType.NTEXT || dt == DisplayType.N2NREFERENCE || dt == DisplayType.FILE) {
                 Object[] oArray = (Object[]) evalValue;
@@ -213,8 +214,10 @@ public class FieldAggregation extends TriggerAction {
                     // 强制去重
                     Set<ID> idSet = new LinkedHashSet<>();
                     for (Object id : oArray) {
-                        if (id instanceof ID) idSet.add((ID) id);
-                        else idSet.add(ID.valueOf((String) id));  // 主键会保持文本
+                        if (id instanceof ID)
+                            idSet.add((ID) id);
+                        else
+                            idSet.add(ID.valueOf((String) id)); // 主键会保持文本
                     }
                     targetRecord.setIDArray(targetField, idSet.toArray(new ID[0]));
 
@@ -241,7 +244,8 @@ public class FieldAggregation extends TriggerAction {
         }
 
         final boolean forceUpdate = ((JSONObject) actionContext.getActionContent()).getBooleanValue("forceUpdate");
-        final boolean stopPropagation = ((JSONObject) actionContext.getActionContent()).getBooleanValue("stopPropagation");
+        final boolean stopPropagation = ((JSONObject) actionContext.getActionContent())
+                .getBooleanValue("stopPropagation");
 
         // 跳过权限
         PrivilegesGuardContextHolder.setSkipGuard(targetRecordId);
@@ -265,7 +269,8 @@ public class FieldAggregation extends TriggerAction {
 
         } finally {
             PrivilegesGuardContextHolder.getSkipGuardOnce();
-            if (forceUpdate) GeneralEntityServiceContextHolder.isAllowForceUpdateOnce();
+            if (forceUpdate)
+                GeneralEntityServiceContextHolder.isAllowForceUpdateOnce();
         }
 
         if (operatingContext.getAction() == BizzPermission.UPDATE && this.getClass() == FieldAggregation.class) {
@@ -281,7 +286,8 @@ public class FieldAggregation extends TriggerAction {
             Object[][] fillbacks = Application.createQueryNoFilter(sql).array();
 
             for (Object[] o : fillbacks) {
-                if (CommonsUtils.isSame(o[1], targetRecordId)) continue;
+                if (CommonsUtils.isSame(o[1], targetRecordId))
+                    continue;
 
                 // FIXME 回填仅更新，无业务规则
                 Record r = EntityHelper.forUpdate((ID) o[0], UserService.SYSTEM_USER, false);
@@ -295,10 +301,12 @@ public class FieldAggregation extends TriggerAction {
 
     @Override
     public void prepare(OperatingContext operatingContext) throws TriggerException {
-        if (sourceEntity != null) return;  // 已经初始化
+        if (sourceEntity != null)
+            return; // 已经初始化
 
         // FIELD.ENTITY
-        String[] targetFieldEntity = ((JSONObject) actionContext.getActionContent()).getString("targetEntity").split("\\.");
+        String[] targetFieldEntity = ((JSONObject) actionContext.getActionContent()).getString("targetEntity")
+                .split("\\.");
         sourceEntity = actionContext.getSourceEntity();
         targetEntity = MetadataHelper.getEntity(targetFieldEntity[1]);
 
@@ -326,14 +334,16 @@ public class FieldAggregation extends TriggerAction {
         if (o != null && targetRecordId == null
                 && operatingContext.getAction() == BizzPermission.UPDATE && this.getClass() == FieldAggregation.class) {
             ID beforeValue = operatingContext.getBeforeRecord() == null
-                    ? null : operatingContext.getBeforeRecord().getID(followSourceField);
+                    ? null
+                    : operatingContext.getBeforeRecord().getID(followSourceField);
             ID afterValue = operatingContext.getAfterRecord().getID(followSourceField);
             if (beforeValue != null && afterValue == null) {
                 targetRecordId = beforeValue;
             }
         }
 
-        if (targetRecordId == null) log.warn("Cannot found [targetRecordId]: {}", operatingContext);
+        if (targetRecordId == null)
+            log.warn("Cannot found [targetRecordId]: {}", operatingContext);
         this.followSourceWhere = String.format("%s = '%s'", followSourceField, targetRecordId);
     }
 
@@ -344,7 +354,8 @@ public class FieldAggregation extends TriggerAction {
      * @return
      */
     protected boolean isCurrentSame(Record record) {
-        if (!ignoreSame) return false;
+        if (!ignoreSame)
+            return false;
 
         Record c = QueryHelper.querySnap(record);
         return new RecordDifference(record).isSame(c, false);

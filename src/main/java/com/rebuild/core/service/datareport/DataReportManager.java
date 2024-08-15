@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.service.datareport;
 
@@ -39,7 +33,8 @@ public class DataReportManager implements ConfigManager {
 
     public static final DataReportManager instance = new DataReportManager();
 
-    private DataReportManager() {}
+    private DataReportManager() {
+    }
 
     public static final int TYPE_RECORD = 1;
     public static final int TYPE_LIST = 2;
@@ -50,14 +45,15 @@ public class DataReportManager implements ConfigManager {
      * 获取可用报表
      *
      * @param entity
-     * @param type 指定类型
+     * @param type     指定类型
      * @param recordId
      * @return
      */
     public JSONArray getReportTemplates(Entity entity, int type, ID recordId) {
         JSONArray alist = new JSONArray();
         for (ConfigBean e : getReportsRaw(entity)) {
-            if (e.getBoolean("disabled")) continue;
+            if (e.getBoolean("disabled"))
+                continue;
 
             boolean can;
             int aType = e.getInteger("type");
@@ -76,7 +72,8 @@ public class DataReportManager implements ConfigManager {
                 }
             }
 
-            if (can) alist.add(e.toJSON("id", "name", "outputType"));
+            if (can)
+                alist.add(e.toJSON("id", "name", "outputType"));
         }
         return alist;
     }
@@ -90,7 +87,8 @@ public class DataReportManager implements ConfigManager {
     public ConfigBean[] getReportsRaw(Entity entity) {
         final String cKey = "DataReportManager35-" + entity.getName();
         ConfigBean[] cached = (ConfigBean[]) Application.getCommonsCache().getx(cKey);
-        if (cached != null) return cached;
+        if (cached != null)
+            return cached;
 
         Object[][] array = Application.createQueryNoFilter(
                 "select configId,name,isDisabled,templateFile,templateType,extraDefinition,templateContent from DataReportConfig where belongEntity = ?")
@@ -105,7 +103,8 @@ public class DataReportManager implements ConfigManager {
             String useFilter = extra.getString("useFilter");
 
             int type = ObjectUtils.toInt(o[4], TYPE_RECORD);
-            if (type == TYPE_WORD && outputType.contains("excel")) outputType += ",word";
+            if (type == TYPE_WORD && outputType.contains("excel"))
+                outputType += ",word";
 
             ConfigBean cb = new ConfigBean()
                     .set("id", o[0])
@@ -209,12 +208,18 @@ public class DataReportManager implements ConfigManager {
                 }
 
                 // Suffix
-                if (fileName.endsWith(".pdf")) name += ".pdf";
-                else if (fileName.endsWith(".docx")) name += ".docx";
-                else if (fileName.endsWith(".doc")) name += ".doc";
-                else if (fileName.endsWith(".xlsx")) name += ".xlsx";
-                else if (fileName.endsWith(".xls")) name += ".xls";
-                else if (fileName.endsWith(".csv")) name += ".csv";
+                if (fileName.endsWith(".pdf"))
+                    name += ".pdf";
+                else if (fileName.endsWith(".docx"))
+                    name += ".docx";
+                else if (fileName.endsWith(".doc"))
+                    name += ".doc";
+                else if (fileName.endsWith(".xlsx"))
+                    name += ".xlsx";
+                else if (fileName.endsWith(".xls"))
+                    name += ".xls";
+                else if (fileName.endsWith(".csv"))
+                    name += ".csv";
                 break;
             }
         }

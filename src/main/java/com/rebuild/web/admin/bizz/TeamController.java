@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.web.admin.bizz;
 
@@ -79,9 +73,11 @@ public class TeamController extends EntityController {
 
         if (groupId.getEntityCode() == EntityHelper.Role) {
             for (User user : Application.getUserStore().getAllUsers()) {
-                if (user.getId().equals(UserService.SYSTEM_USER)) continue;
+                if (user.getId().equals(UserService.SYSTEM_USER))
+                    continue;
                 Role role = user.getOwningRole();
-                if (role == null) continue;
+                if (role == null)
+                    continue;
 
                 if (role.getIdentity().equals(groupId)) {
                     res.add(new Object[] {
@@ -117,7 +113,8 @@ public class TeamController extends EntityController {
 
         for (Principal p : group.getMembers()) {
             User user = (User) p;
-            if (user.getId().equals(UserService.SYSTEM_USER)) continue;
+            if (user.getId().equals(UserService.SYSTEM_USER))
+                continue;
 
             res.add(new Object[] {
                     user.getId(),

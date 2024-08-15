@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.web.admin.metadata;
 
@@ -72,7 +66,8 @@ public class MetaFieldController extends BaseController {
         for (Field field : MetadataSorter.sortFields(entity)) {
             EasyField easyMeta = EasyMetaFactory.valueOf(field);
             Map<String, Object> map = new HashMap<>();
-            if (easyMeta.getMetaId() != null) map.put("fieldId", easyMeta.getMetaId());
+            if (easyMeta.getMetaId() != null)
+                map.put("fieldId", easyMeta.getMetaId());
 
             map.put("fieldName", easyMeta.getName());
             map.put("fieldLabel", easyMeta.getLabel());
@@ -108,7 +103,7 @@ public class MetaFieldController extends BaseController {
 
     @GetMapping("{entity}/field/{field}")
     public ModelAndView pageEntityField(@PathVariable String entity, @PathVariable String field,
-                                        HttpServletRequest request) {
+            HttpServletRequest request) {
         ModelAndView mv = createModelAndView("/admin/metadata/field-edit");
         EasyEntity easyEntity = MetaEntityController.setEntityBase(mv, entity);
 
@@ -159,7 +154,8 @@ public class MetaFieldController extends BaseController {
         for (Map.Entry<String, Object> e : easyField.getExtraAttrs(true).entrySet()) {
             String name = e.getKey();
             // 排除私有
-            if (!name.startsWith("_")) extraAttrs.put(name, e.getValue());
+            if (!name.startsWith("_"))
+                extraAttrs.put(name, e.getValue());
         }
         mv.getModel().put("fieldExtConfig", extraAttrs);
 
@@ -257,11 +253,13 @@ public class MetaFieldController extends BaseController {
 
         List<JSONObject> co = new ArrayList<>();
         for (Field foo : entityFields) {
-            if (MetadataHelper.isCommonsField(foo)) continue;
+            if (MetadataHelper.isCommonsField(foo))
+                continue;
 
             Entity fooEntity = foo.getReferenceEntity();
             for (Field bar : referenceEntityFields) {
-                if (MetadataHelper.isCommonsField(bar)) continue;
+                if (MetadataHelper.isCommonsField(bar))
+                    continue;
 
                 if (fooEntity.equals(bar.getReferenceEntity())) {
                     // 当前实体字段$$$$引用实体字段
@@ -275,7 +273,7 @@ public class MetaFieldController extends BaseController {
                     }
 
                     co.add(JSONUtils.toJSONObject(
-                            new String[] { "name", "label" }, new String[] { name, label } ));
+                            new String[] { "name", "label" }, new String[] { name, label }));
                 }
             }
         }

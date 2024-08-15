@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.service.dashboard.charts;
 
@@ -42,22 +36,22 @@ public class FunnelChart extends ChartData {
             for (Numerical num : nums) {
                 Object[] dataRaw = createQuery(buildSql(num, true)).unique();
                 JSONObject d = JSONUtils.toJSONObject(
-                        new String[]{"name", "value"},
-                        new Object[]{num.getLabel(), wrapAxisValue(num, dataRaw[0])});
+                        new String[] { "name", "value" },
+                        new Object[] { num.getLabel(), wrapAxisValue(num, dataRaw[0]) });
                 dataArray.add(d);
                 dataFlags.add(getNumericalFlag(num));
             }
         }
         // 1DIM + 1NUM
         else if (nums.length == 1 && dims.length >= 1) {
-            Dimension dim1 = dims[0];  // 多余的不要
+            Dimension dim1 = dims[0]; // 多余的不要
             Numerical num1 = nums[0];
             Object[][] dataRaw = createQuery(buildSql(dim1, num1, true)).array();
             final String valueFlag = getNumericalFlag(num1);
             for (Object[] o : dataRaw) {
                 JSONObject d = JSONUtils.toJSONObject(
-                        new String[]{"name", "value"},
-                        new Object[]{o[0] = wrapAxisValue(dim1, o[0]), wrapAxisValue(num1, o[1])});
+                        new String[] { "name", "value" },
+                        new Object[] { o[0] = wrapAxisValue(dim1, o[0]), wrapAxisValue(num1, o[1]) });
                 dataArray.add(d);
                 dataFlags.add(valueFlag);
             }
@@ -76,7 +70,8 @@ public class FunnelChart extends ChartData {
         }
 
         JSONObject renderOption = config.getJSONObject("option");
-        if (renderOption == null) renderOption = new JSONObject();
+        if (renderOption == null)
+            renderOption = new JSONObject();
         renderOption.put("dataFlags", dataFlags);
 
         // 转化率
@@ -96,8 +91,8 @@ public class FunnelChart extends ChartData {
         }
 
         JSONObject ret = JSONUtils.toJSONObject(
-                new String[]{"data", "_renderOption"},
-                new Object[]{dataArray, renderOption});
+                new String[] { "data", "_renderOption" },
+                new Object[] { dataArray, renderOption });
         if (nums.length >= 1 && dims.length >= 1) {
             ret.put("xLabel", nums[0].getLabel());
         }

@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.service.dashboard.charts;
 
@@ -41,7 +35,8 @@ public class LineChart extends ChartData {
     @Override
     public JSON build() {
         JSONObject renderOption = config.getJSONObject("option");
-        if (renderOption == null) renderOption = new JSONObject();
+        if (renderOption == null)
+            renderOption = new JSONObject();
 
         Dimension[] dims = getDimensions();
         Numerical[] nums = getNumericals();
@@ -52,7 +47,8 @@ public class LineChart extends ChartData {
         final FormatCalc dim1Calc = dim1.getFormatCalc();
         boolean dateContinuous = renderOption.getBooleanValue("dateContinuous")
                 && (dim1Type == FieldType.DATE || dim1Type == FieldType.TIMESTAMP)
-                && (dim1Calc == FormatCalc.Y || dim1Calc == FormatCalc.Q || dim1Calc == FormatCalc.M || dim1Calc == FormatCalc.W || dim1Calc == FormatCalc.D);
+                && (dim1Calc == FormatCalc.Y || dim1Calc == FormatCalc.Q || dim1Calc == FormatCalc.M
+                        || dim1Calc == FormatCalc.W || dim1Calc == FormatCalc.D);
 
         List<String> dimAxis = new ArrayList<>();
         JSONArray yyyAxis = new JSONArray();
@@ -73,7 +69,8 @@ public class LineChart extends ChartData {
             for (Object[] o : dataRaw) {
                 // xAxis
                 Object dim1ValueKey = o[0] == null ? ChartsHelper.VALUE_NONE : o[0];
-                if (!dim1Set.contains(dim1ValueKey)) dim1Set.add(dim1ValueKey);
+                if (!dim1Set.contains(dim1ValueKey))
+                    dim1Set.add(dim1ValueKey);
 
                 // yAxis
                 Object dim2ValueKey = o[1] == null ? ChartsHelper.VALUE_NONE : o[1];
@@ -157,8 +154,8 @@ public class LineChart extends ChartData {
         renderOption.put("dataFlags", dataFlags);
 
         return JSONUtils.toJSONObject(
-                new String[]{"xAxis", "yyyAxis", "_renderOption"},
-                new Object[]{JSON.toJSON(dimAxis), JSON.toJSON(yyyAxis), renderOption});
+                new String[] { "xAxis", "yyyAxis", "_renderOption" },
+                new Object[] { JSON.toJSON(dimAxis), JSON.toJSON(yyyAxis), renderOption });
     }
 
     private Object[][] putFullDates2Data(Object[][] dataRaw, Dimension date1, int numStartIndex) {
@@ -166,7 +163,8 @@ public class LineChart extends ChartData {
         Date max = null;
         for (Object[] o : dataRaw) {
             String date2str = o[0] == null ? null : o[0].toString();
-            if (StringUtils.isBlank(date2str)) continue;
+            if (StringUtils.isBlank(date2str))
+                continue;
 
             Date date = null;
 
@@ -192,16 +190,21 @@ public class LineChart extends ChartData {
                 date = CalendarUtils.parse(date2str, format);
             }
 
-            if (max == null || date.getTime() > max.getTime()) max = date;
-            if (min == null || date.getTime() < min.getTime()) min = date;
+            if (max == null || date.getTime() > max.getTime())
+                max = date;
+            if (min == null || date.getTime() < min.getTime())
+                min = date;
         }
 
-        if (min == null) return dataRaw;
+        if (min == null)
+            return dataRaw;
 
         final List<Object> emptyRow = new ArrayList<>();
         emptyRow.add(null);
-        if (numStartIndex == 2) emptyRow.add(dataRaw[0][1]);  // dim2
-        for (int i = numStartIndex; i < 9; i++) emptyRow.add(0);
+        if (numStartIndex == 2)
+            emptyRow.add(dataRaw[0][1]); // dim2
+        for (int i = numStartIndex; i < 9; i++)
+            emptyRow.add(0);
 
         List<String> fullDates = getFullDates(min, max, date1.getFormatCalc(), date1.getFormatSort());
         List<Object[]> dataRawFd = new ArrayList<>();
@@ -249,7 +252,8 @@ public class LineChart extends ChartData {
         fullDates.add(max);
 
         // 降序
-        if (sort == FormatSort.DESC) Collections.reverse(fullDates);
+        if (sort == FormatSort.DESC)
+            Collections.reverse(fullDates);
 
         List<String> fullDates2 = new ArrayList<>();
         for (Date date : fullDates) {
@@ -260,10 +264,14 @@ public class LineChart extends ChartData {
 
                 if (calc == FormatCalc.Q) {
                     int m = cal.get(Calendar.MONTH) + 1;
-                    if (m <= 3) date2unit += " Q1";
-                    else if (m <= 6) date2unit += " Q2";
-                    else if (m <= 9) date2unit += " Q3";
-                    else date2unit += " Q4";
+                    if (m <= 3)
+                        date2unit += " Q1";
+                    else if (m <= 6)
+                        date2unit += " Q2";
+                    else if (m <= 9)
+                        date2unit += " Q3";
+                    else
+                        date2unit += " Q4";
                 } else if (calc == FormatCalc.W) {
                     int m = cal.get(Calendar.WEEK_OF_YEAR);
                     date2unit += " W" + (m < 10 ? "0" : "") + m;
@@ -275,7 +283,8 @@ public class LineChart extends ChartData {
                 date2unit = CalendarUtils.getDateFormat("yyyy-MM-dd").format(date);
             }
 
-            if (!fullDates2.contains(date2unit)) fullDates2.add(date2unit);
+            if (!fullDates2.contains(date2unit))
+                fullDates2.add(date2unit);
         }
         return fullDates2;
     }

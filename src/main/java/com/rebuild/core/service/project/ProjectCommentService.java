@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.service.project;
 
@@ -56,7 +50,8 @@ public class ProjectCommentService extends BaseTaskService {
     @Override
     public int delete(ID commentId) {
         final ID user = getCurrentUser();
-        if (!ProjectHelper.isManageable(commentId, user)) throw new OperationDeniedException();
+        if (!ProjectHelper.isManageable(commentId, user))
+            throw new OperationDeniedException();
 
         return super.delete(commentId);
     }
@@ -69,11 +64,13 @@ public class ProjectCommentService extends BaseTaskService {
      * @return
      */
     private int checkAtUserAndNotification(Record record, String content) {
-        if (StringUtils.isBlank(content)) return 0;
+        if (StringUtils.isBlank(content))
+            return 0;
 
         final String msgContent = Language.L("@%s 在任务中提到了你", record.getEditor()) + " \n> " + content;
         ID related = record.getID("taskId");
-        if (related == null) related = (ID) QueryHelper.queryFieldValue(record.getPrimary(), "taskId");
+        if (related == null)
+            related = (ID) QueryHelper.queryFieldValue(record.getPrimary(), "taskId");
 
         ID[] atUsers = FeedsHelper.findMentions(content);
         int send = 0;
@@ -84,7 +81,8 @@ public class ProjectCommentService extends BaseTaskService {
                     .setParameter(1, to)
                     .setParameter(2, record.getPrimary())
                     .unique();
-            if (sent != null) continue;
+            if (sent != null)
+                continue;
 
             Application.getNotifications().send(
                     MessageBuilder.createMessage(to, msgContent, Message.TYPE_PROJECT, related));

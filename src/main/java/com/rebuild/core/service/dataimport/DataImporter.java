@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.service.dataimport;
 
@@ -73,19 +67,23 @@ public class DataImporter extends HeavyTask<Integer> {
         if (isViaAdmin) {
             isAllowCreate = true;
         } else if (rule.getToEntity().getMainEntity() == null) {
-            isAllowCreate = Application.getPrivilegesManager().allowCreate(getUser(), rule.getToEntity().getEntityCode());
+            isAllowCreate = Application.getPrivilegesManager().allowCreate(getUser(),
+                    rule.getToEntity().getEntityCode());
         } else {
-            isAllowCreate = Application.getPrivilegesManager().allowUpdate(getUser(), rule.getToEntity().getMainEntity().getEntityCode());
+            isAllowCreate = Application.getPrivilegesManager().allowUpdate(getUser(),
+                    rule.getToEntity().getMainEntity().getEntityCode());
         }
 
         GeneralEntityServiceContextHolder.setSkipSeriesValue();
         final EntityService ies = Application.getEntityService(rule.getToEntity().getEntityCode());
 
         for (final Cell[] row : rows) {
-            if (isInterruptState()) break;
+            if (isInterruptState())
+                break;
 
             final Cell firstCell = row == null || row.length == 0 ? null : row[0];
-            if (firstCell == null || firstCell.getRowNo() == 0) continue;
+            if (firstCell == null || firstCell.getRowNo() == 0)
+                continue;
 
             try {
                 Record record = checkoutRecord(row, defaultOwning);
@@ -131,7 +129,8 @@ public class DataImporter extends HeavyTask<Integer> {
 
                 if (ex instanceof JdbcException) {
                     String know = KnownExceptionConverter.convert2ErrorMsg(ex);
-                    if (know != null) error = know;
+                    if (know != null)
+                        error = know;
                 }
                 traceLogs.add(new Object[] { firstCell.getRowNo(), "ERROR", error });
 
@@ -139,7 +138,8 @@ public class DataImporter extends HeavyTask<Integer> {
 
                 // 可能有级联触发器
                 Object ts = FieldAggregation.cleanTriggerChain();
-                if (ts != null) log.info("Clean current-loop : {}", ts);
+                if (ts != null)
+                    log.info("Clean current-loop : {}", ts);
 
                 this.addCompleted();
             }
@@ -184,9 +184,10 @@ public class DataImporter extends HeavyTask<Integer> {
             if (repeat != null && rule.getRepeatOpt() == ImportRule.REPEAT_OPT_UPDATE) {
                 // 更新
                 checkout = EntityHelper.forUpdate(repeat, defaultOwning);
-                for (Iterator<String> iter = recordHub.getAvailableFieldIterator(); iter.hasNext(); ) {
+                for (Iterator<String> iter = recordHub.getAvailableFieldIterator(); iter.hasNext();) {
                     String field = iter.next();
-                    if (MetadataHelper.isCommonsField(field)) continue;
+                    if (MetadataHelper.isCommonsField(field))
+                        continue;
 
                     checkout.setObjectValue(field, recordHub.getObjectValue(field));
                 }
@@ -218,7 +219,8 @@ public class DataImporter extends HeavyTask<Integer> {
         }
 
         log.info("Checking repeated : {}", wheres);
-        if (wheres.isEmpty()) return null;
+        if (wheres.isEmpty())
+            return null;
 
         Entity entity = data.getEntity();
         StringBuilder sql = new StringBuilder(String.format("select %s from %s where (1=1)",

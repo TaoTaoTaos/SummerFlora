@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.service.dataimport;
 
@@ -91,7 +85,8 @@ public class DataFileParser {
 
         // GBK/UTF-8
         String enc = getFileCharsetName(this.sourceFile);
-        if (!"GBK".equals(enc)) enc = this.encoding;
+        if (!"GBK".equals(enc))
+            enc = this.encoding;
 
         try (CSVReader csvReader = new CSVReader(this.sourceFile, enc)) {
             while (csvReader.hasNext()) {
@@ -106,18 +101,19 @@ public class DataFileParser {
 
     // 获知文件编码
     private String getFileCharsetName(File file) {
-        String name = "GBK";  // GB2312/ANSI
+        String name = "GBK"; // GB2312/ANSI
         try (InputStream is = Files.newInputStream(file.toPath())) {
             byte[] head = new byte[3];
             int r = is.read(head);
-            if (r == -1) return name;
+            if (r == -1)
+                return name;
 
-            if (head[0] == -1 && head[1] == -2) {  // 0xFFFE
+            if (head[0] == -1 && head[1] == -2) { // 0xFFFE
                 name = "UTF-16";
-            } else if (head[0] == -2 && head[1] == -1) {  // 0xFEFF
-                name = "Unicode";  // UCS2-Big-Endian/UCS2-Little-Endian
+            } else if (head[0] == -2 && head[1] == -1) { // 0xFEFF
+                name = "Unicode"; // UCS2-Big-Endian/UCS2-Little-Endian
             } else if (head[0] == -27 && head[1] == -101 && head[2] == -98) {
-                name = "UTF-8";  // UTF-8
+                name = "UTF-8"; // UTF-8
             } else if (head[0] == -17 && head[1] == -69 && head[2] == -65) {
                 name = "UTF-8"; // UTF-8-BOM
             }

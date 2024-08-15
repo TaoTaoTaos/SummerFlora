@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.metadata.easymeta;
 
@@ -46,11 +40,11 @@ public class EasyReference extends EasyField implements MixValue {
         if (is2Text) {
             return FieldValueHelper.getLabelNotry((ID) value);
         }
-        
+
         if (targetType == DisplayType.ANYREFERENCE) {
-            return value;  // ID
+            return value; // ID
         } else if (targetType == DisplayType.N2NREFERENCE) {
-            return new ID[] {(ID) value};
+            return new ID[] { (ID) value };
         }
 
         // ID
@@ -60,12 +54,15 @@ public class EasyReference extends EasyField implements MixValue {
     @Override
     public Object exprDefaultValue() {
         String valueExpr = (String) getRawMeta().getDefaultValue();
-        if (StringUtils.isBlank(valueExpr)) return null;
+        if (StringUtils.isBlank(valueExpr))
+            return null;
 
         if (valueExpr.contains(VAR_CURRENT)) {
             Object id = exprCurrent();
-            if (id instanceof ID[]) return ((ID[]) id)[0];
-            else return id;
+            if (id instanceof ID[])
+                return ((ID[]) id)[0];
+            else
+                return id;
         } else {
             return ID.isId(valueExpr) ? ID.valueOf(valueExpr) : null;
         }
@@ -77,10 +74,12 @@ public class EasyReference extends EasyField implements MixValue {
      */
     protected Object exprCurrent() {
         final ID currentUser = UserContextHolder.getUser(true);
-        if (currentUser == null) return null;
+        if (currentUser == null)
+            return null;
 
         int refCode = getRawMeta().getReferenceEntity().getEntityCode();
-        if (refCode == EntityHelper.User) return currentUser;
+        if (refCode == EntityHelper.User)
+            return currentUser;
 
         User user = Application.getUserStore().getUser(currentUser);
         if (refCode == EntityHelper.Department) {

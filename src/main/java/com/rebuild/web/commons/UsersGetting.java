@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.web.commons;
 
@@ -78,30 +72,34 @@ public class UsersGetting extends BaseController {
                 && StringUtils.isBlank(query)
                 && Application.getPrivilegesManager().allow(getRequestUser(request), ZeroEntry.AllowAtAllUsers)) {
             found.add(JSONUtils.toJSONObject(
-                    new String[]{"id", "text"}, new Object[]{UserService.ALLUSERS, Language.L("所有人")}));
+                    new String[] { "id", "text" }, new Object[] { UserService.ALLUSERS, Language.L("所有人") }));
         }
 
         for (Member m : members) {
-            if (m.isDisabled()) continue;
+            if (m.isDisabled())
+                continue;
 
             String name = m.getName();
 
             final User ifUser = m instanceof User ? (User) m : null;
             if (ifUser != null) {
-                if (!ifUser.isActive()) continue;
+                if (!ifUser.isActive())
+                    continue;
                 name = ifUser.getFullName();
             }
 
             if (StringUtils.isBlank(query)
                     || StringUtils.containsIgnoreCase(name, query)
                     || (ifUser != null && StringUtils.containsIgnoreCase(ifUser.getName(), query))
-                    || (ifUser != null && ifUser.getEmail() != null && StringUtils.containsIgnoreCase(ifUser.getEmail(), query))) {
+                    || (ifUser != null && ifUser.getEmail() != null
+                            && StringUtils.containsIgnoreCase(ifUser.getEmail(), query))) {
 
                 found.add(JSONUtils.toJSONObject(
-                        new String[]{"id", "text"}, new Object[]{m.getIdentity(), name}));
+                        new String[] { "id", "text" }, new Object[] { m.getIdentity(), name }));
 
                 // 最多显示40个
-                if (found.size() >= 40) break;
+                if (found.size() >= 40)
+                    break;
             }
         }
 
@@ -134,6 +132,6 @@ public class UsersGetting extends BaseController {
         }
 
         return JSONUtils.toJSONObjectArray(
-                new String[] {  "id", "text" }, shows.toArray(new String[0][]));
+                new String[] { "id", "text" }, shows.toArray(new String[0][]));
     }
 }

@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.service.dashboard.charts.builtin;
 
@@ -53,7 +47,7 @@ public class FeedsSchedule extends ChartData implements BuiltinChart {
                 "select feedsId,scheduleTime,content,contentMore from Feeds" +
                         " where createdBy = ? and type = 4 and scheduleTime > ? order by scheduleTime")
                 .setParameter(1, getUser())
-                .setParameter(2, CalendarUtils.addDay(-30))  // 忽略30天前的
+                .setParameter(2, CalendarUtils.addDay(-30)) // 忽略30天前的
                 .setLimit(200)
                 .array();
 
@@ -70,8 +64,8 @@ public class FeedsSchedule extends ChartData implements BuiltinChart {
             content = MessageBuilder.formatMessage(content);
 
             JSONObject item = JSONUtils.toJSONObject(
-                    new String[]{"id", "scheduleTime", "content"},
-                    new Object[]{o[0], scheduleTime, content});
+                    new String[] { "id", "scheduleTime", "content" },
+                    new Object[] { o[0], scheduleTime, content });
             list.add(item);
         }
 

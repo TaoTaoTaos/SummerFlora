@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.privileges;
 
@@ -37,7 +31,8 @@ public class UserFilters {
      * @see ZeroEntry#EnableBizzPart
      */
     public static boolean isEnableBizzPart(ID user) {
-        if (UserHelper.isAdmin(user)) return false;
+        if (UserHelper.isAdmin(user))
+            return false;
         return Application.getPrivilegesManager().allow(user, ZeroEntry.EnableBizzPart);
     }
 
@@ -49,35 +44,43 @@ public class UserFilters {
      * @return
      */
     public static boolean allowAccessBizz(ID user, ID bizzId) {
-        if (user.equals(bizzId) || UserHelper.isAdmin(user)) return true;
-        if (bizzId.getEntityCode() == EntityHelper.Role) return false;
+        if (user.equals(bizzId) || UserHelper.isAdmin(user))
+            return true;
+        if (bizzId.getEntityCode() == EntityHelper.Role)
+            return false;
 
         if (isEnableBizzPart(user)) {
             final User ub = Application.getUserStore().getUser(user);
 
             // 本部门及子部门的用户
             if (bizzId.getEntityCode() == EntityHelper.User) {
-                if (user.equals(bizzId)) return true;
-                if (ub.getOwningDept() == null) return false;
+                if (user.equals(bizzId))
+                    return true;
+                if (ub.getOwningDept() == null)
+                    return false;
 
                 // 可访问部门就是可访问部门下的用户
                 Department dept = UserHelper.getDepartment(bizzId);
-                if (dept == null) return false;
+                if (dept == null)
+                    return false;
                 bizzId = (ID) dept.getIdentity();
             }
 
             // 本部门及子部门
             if (bizzId.getEntityCode() == EntityHelper.Department) {
                 Department dept = ub.getOwningDept();
-                if (dept == null) return false;
-                if (bizzId.equals(dept.getIdentity())) return true;
+                if (dept == null)
+                    return false;
+                if (bizzId.equals(dept.getIdentity()))
+                    return true;
                 return UserHelper.getAllChildren(dept).contains(bizzId);
             }
 
             // 所在团队
             if (bizzId.getEntityCode() == EntityHelper.Team) {
                 for (Team m : ub.getOwningTeams()) {
-                    if (bizzId.equals(m.getIdentity())) return true;
+                    if (bizzId.equals(m.getIdentity()))
+                        return true;
                 }
                 return false;
             }
@@ -93,12 +96,14 @@ public class UserFilters {
      * @param currentUser
      * @return
      */
-    @SuppressWarnings({"ConstantValue", "SuspiciousMethodCalls"})
+    @SuppressWarnings({ "ConstantValue", "SuspiciousMethodCalls" })
     public static Member[] filterMembers32(Member[] members, ID currentUser) {
-        if (members == null || members.length == 0) return members;
-        if (!isEnableBizzPart(currentUser)) return members;
+        if (members == null || members.length == 0)
+            return members;
+        if (!isEnableBizzPart(currentUser))
+            return members;
 
-        final String depth = "D";  // support: L,D,G
+        final String depth = "D"; // support: L,D,G
 
         final User user = Application.getUserStore().getUser(currentUser);
         final Department dept = user.getOwningDept();
@@ -108,7 +113,8 @@ public class UserFilters {
         for (Member m : members) {
             if (m instanceof User) {
                 // 本部门
-                if (dept.isMember(m.getIdentity())) filteredMembers.add(m);
+                if (dept.isMember(m.getIdentity()))
+                    filteredMembers.add(m);
                 // 下级部门
                 if ("D".equals(depth)) {
                     for (ID child : deptChildren) {
@@ -120,13 +126,16 @@ public class UserFilters {
 
             } else if (m instanceof Department) {
                 // 本部门
-                if (dept.equals(m)) filteredMembers.add(m);
+                if (dept.equals(m))
+                    filteredMembers.add(m);
                 // 下级部门
-                if ("D".equals(depth) && deptChildren.contains(m.getIdentity())) filteredMembers.add(m);
+                if ("D".equals(depth) && deptChildren.contains(m.getIdentity()))
+                    filteredMembers.add(m);
 
             } else if (m instanceof Team) {
                 // 团队成员
-                if (((Team) m).isMember(user.getId())) filteredMembers.add(m);
+                if (((Team) m).isMember(user.getId()))
+                    filteredMembers.add(m);
             }
         }
 
@@ -141,14 +150,16 @@ public class UserFilters {
      * @return
      */
     public static String getEnableBizzPartFilter(int bizzEntityCode, ID user) {
-        if (!isEnableBizzPart(user)) return null;
+        if (!isEnableBizzPart(user))
+            return null;
 
         final User ub = Application.getUserStore().getUser(user);
         Set<ID> in = new HashSet<>();
         String where;
 
         if (bizzEntityCode == EntityHelper.Team) {
-            for (Member m : ub.getOwningTeams()) in.add((ID) m.getIdentity());
+            for (Member m : ub.getOwningTeams())
+                in.add((ID) m.getIdentity());
 
             if (in.isEmpty()) {
                 where = "1=2";
@@ -157,7 +168,8 @@ public class UserFilters {
             }
 
         } else {
-            if (bizzEntityCode == EntityHelper.Role) return "1=2";
+            if (bizzEntityCode == EntityHelper.Role)
+                return "1=2";
 
             in.add((ID) ub.getOwningDept().getIdentity());
             in.addAll(UserHelper.getAllChildren(ub.getOwningDept()));

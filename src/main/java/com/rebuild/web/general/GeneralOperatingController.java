@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.web.general;
 
@@ -150,7 +144,8 @@ public class GeneralOperatingController extends BaseController {
             return new RespBody(DefinedException.CODE_RECORDS_REPEATED, Language.L("存在重复记录"),
                     buildRepeatedData(know.getRepeatedRecords()));
 
-        } catch (AccessDeniedException | DataSpecificationException | UnexpectedRollbackException | JdbcException known) {
+        } catch (AccessDeniedException | DataSpecificationException | UnexpectedRollbackException
+                | JdbcException known) {
             if (known instanceof DataValidateException && ((DataValidateException) known).isWeakMode()) {
                 log.warn(">>>>> {}", known.getLocalizedMessage());
                 return RespBody.error(known.getLocalizedMessage(), DefinedException.CODE_WEAK_VALIDATE);
@@ -182,7 +177,8 @@ public class GeneralOperatingController extends BaseController {
             String singleFieldName = null;
             for (String field : record.getAvailableFields()) {
                 Field fieldMeta = record.getEntity().getField(field);
-                if (MetadataHelper.isCommonsField(fieldMeta)) continue;
+                if (MetadataHelper.isCommonsField(fieldMeta))
+                    continue;
 
                 Object newValue = FormsBuilder.instance.wrapFieldValue(
                         record, EasyMetaFactory.valueOf(fieldMeta), user);
@@ -324,7 +320,7 @@ public class GeneralOperatingController extends BaseController {
     @PostMapping("record-unshare")
     public JSONAware unshare(@IdParam(name = "record") ID recordId, HttpServletRequest request) {
         final ID user = getRequestUser(request);
-        final ID[] accessIds = parseIdList(request);  // ShareAccess IDs
+        final ID[] accessIds = parseIdList(request); // ShareAccess IDs
         if (accessIds.length == 0) {
             return RespBody.errorl("没有要取消共享的记录");
         }
@@ -430,12 +426,14 @@ public class GeneralOperatingController extends BaseController {
 
     /**
      * 解析操作 ID 列表
+     * 
      * @param request
      * @return
      */
     private ID[] parseIdList(HttpServletRequest request) {
         ID[] idList = getIdArrayParameter(request, "id");
-        if (idList.length == 0) return idList;
+        if (idList.length == 0)
+            return idList;
 
         int mustSameEntityCode = idList[0].getEntityCode();
         for (ID id : idList) {
@@ -448,6 +446,7 @@ public class GeneralOperatingController extends BaseController {
 
     /**
      * 解析用户列表
+     * 
      * @param request
      * @return
      */
@@ -459,23 +458,28 @@ public class GeneralOperatingController extends BaseController {
 
     /**
      * 级联操作实体
+     * 
      * @param request
      * @return
      */
     private String[] parseCascades(HttpServletRequest request) {
         String cascades = getParameter(request, "cascades");
-        if (StringUtils.isBlank(cascades)) return ArrayUtils.EMPTY_STRING_ARRAY;
+        if (StringUtils.isBlank(cascades))
+            return ArrayUtils.EMPTY_STRING_ARRAY;
 
         List<String> casList = new ArrayList<>();
         for (String c : cascades.split(",")) {
-            if (MetadataHelper.containsEntity(c)) casList.add(c);
-            else log.warn("Unknown entity in cascades : {}", c);
+            if (MetadataHelper.containsEntity(c))
+                casList.add(c);
+            else
+                log.warn("Unknown entity in cascades : {}", c);
         }
         return casList.toArray(new String[0]);
     }
 
     /**
      * 转成二维数组（首行为字段名，首列为ID）
+     * 
      * @param records
      * @return
      */
@@ -486,9 +490,10 @@ public class GeneralOperatingController extends BaseController {
         List<String> fields = new ArrayList<>();
         fields.add(entity.getPrimaryField().getName());
         for (Record r : records) {
-            for (Iterator<String> iter = r.getAvailableFieldIterator(); iter.hasNext(); ) {
+            for (Iterator<String> iter = r.getAvailableFieldIterator(); iter.hasNext();) {
                 String field = iter.next();
-                if (!fields.contains(field)) fields.add(field);
+                if (!fields.contains(field))
+                    fields.add(field);
             }
         }
 
@@ -514,6 +519,7 @@ public class GeneralOperatingController extends BaseController {
 
     /**
      * 异常处理
+     * 
      * @param knownEx
      * @param op
      * @return
@@ -531,7 +537,8 @@ public class GeneralOperatingController extends BaseController {
 
         if (knownEx instanceof JdbcException) {
             String knownMsg = KnownExceptionConverter.convert2ErrorMsg(knownEx);
-            if (knownMsg != null) return RespBody.error(knownMsg);
+            if (knownMsg != null)
+                return RespBody.error(knownMsg);
 
             log.error(op, knownEx);
             return RespBody.error(knownEx.getLocalizedMessage());

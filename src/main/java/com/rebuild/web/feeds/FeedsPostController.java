@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.web.feeds;
 
@@ -40,7 +34,7 @@ import java.util.LinkedList;
 @RequestMapping("/feeds/post/")
 public class FeedsPostController extends BaseController {
 
-    @PostMapping({"publish", "comment"})
+    @PostMapping({ "publish", "comment" })
     public JSON publish(HttpServletRequest request) {
         final ID user = getRequestUser(request);
         JSON formJson = ServletUtils.getRequestJson(request);
@@ -110,7 +104,8 @@ public class FeedsPostController extends BaseController {
         if (ids.contains(feedsId)) {
             ids.remove(feedsId);
         } else {
-            if (ids.size() >= 3) ids.removeLast();
+            if (ids.size() >= 3)
+                ids.removeLast();
             ids.addFirst(feedsId);
         }
 
@@ -124,7 +119,8 @@ public class FeedsPostController extends BaseController {
 
         LinkedList<ID> ids = new LinkedList<>();
         for (String s : userTop.split(",")) {
-            if (ID.isId(s)) ids.add(ID.valueOf(s));
+            if (ID.isId(s))
+                ids.add(ID.valueOf(s));
         }
         return ids;
     }

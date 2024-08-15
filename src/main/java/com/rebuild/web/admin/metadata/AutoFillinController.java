@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.web.admin.metadata;
 
@@ -53,7 +47,7 @@ public class AutoFillinController extends BaseController {
 
     @RequestMapping("auto-fillin-save")
     public void sets(@PathVariable String entity,
-                     HttpServletRequest request, HttpServletResponse response) {
+            HttpServletRequest request, HttpServletResponse response) {
         ID user = getRequestUser(request);
         JSONObject data = (JSONObject) ServletUtils.getRequestJson(request);
         final String field = data.getString("field");
@@ -94,7 +88,7 @@ public class AutoFillinController extends BaseController {
 
     @RequestMapping("auto-fillin-list")
     public void gets(@PathVariable String entity,
-                     HttpServletRequest request, HttpServletResponse response) {
+            HttpServletRequest request, HttpServletResponse response) {
         String belongField = getParameterNotNull(request, "field");
         Field field = MetadataHelper.getField(entity, belongField);
         Entity sourceEntity = field.getReferenceEntity();
@@ -115,11 +109,12 @@ public class AutoFillinController extends BaseController {
             String targetFieldLabel = EasyMetaFactory.getLabel(targetEntity, targetField);
 
             JSON rule = JSONUtils.toJSONObject(
-                    new String[]{ "id", "sourceField", "sourceFieldLabel", "targetField", "targetFieldLabel", "extConfig" },
-                    new Object[]{ o[0],
+                    new String[] { "id", "sourceField", "sourceFieldLabel", "targetField", "targetFieldLabel",
+                            "extConfig" },
+                    new Object[] { o[0],
                             sourceField, sourceFieldLabel,
                             targetField, targetFieldLabel,
-                            JSON.parse((String) o[3])});
+                            JSON.parse((String) o[3]) });
             rules.add(rule);
         }
         writeSuccess(response, rules);

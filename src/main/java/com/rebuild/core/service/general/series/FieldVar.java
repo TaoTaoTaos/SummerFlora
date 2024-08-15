@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.service.general.series;
 
@@ -43,7 +37,7 @@ public class FieldVar extends SeriesVar {
         }
 
         String fieldPath = getSymbols();
-        fieldPath = fieldPath.substring(1);  // Remove `@`
+        fieldPath = fieldPath.substring(1); // Remove `@`
 
         if (MetadataHelper.getLastJoinField(record.getEntity(), fieldPath) == null) {
             log.warn("Invalid field : {} in {}", fieldPath, record.getEntity().getName());
@@ -53,7 +47,8 @@ public class FieldVar extends SeriesVar {
         String[] fields = fieldPath.split("\\.");
 
         Object val = record.getObjectValue(fields[0]);
-        if (NullValue.isNull(val)) return wrapValue(null);
+        if (NullValue.isNull(val))
+            return wrapValue(null);
 
         if (fields.length == 1) {
             val = FieldValueHelper.wrapFieldValue(val, record.getEntity().getField(fields[0]), true);
@@ -66,7 +61,9 @@ public class FieldVar extends SeriesVar {
     }
 
     private String wrapValue(Object val) {
-        if (val == null) return StringUtils.EMPTY;
-        else return CommonsUtils.maxstr(val.toString(), 20);
+        if (val == null)
+            return StringUtils.EMPTY;
+        else
+            return CommonsUtils.maxstr(val.toString(), 20);
     }
 }

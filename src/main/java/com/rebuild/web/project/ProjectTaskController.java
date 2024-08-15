@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.web.project;
 
@@ -68,7 +62,7 @@ public class ProjectTaskController extends BaseController {
 
     @GetMapping("task/{taskId}")
     public ModelAndView pageTask(@PathVariable String taskId,
-                                 HttpServletRequest request, HttpServletResponse response) throws IOException {
+            HttpServletRequest request, HttpServletResponse response) throws IOException {
         final ID taskId2 = ID.isId(taskId) ? ID.valueOf(taskId) : null;
         if (taskId2 == null) {
             response.sendError(404);
@@ -129,7 +123,8 @@ public class ProjectTaskController extends BaseController {
             String countSql = "select count(taskId) from ProjectTask where " + queryWhere;
             Object[] count2 = Application.createQueryNoFilter(countSql).unique();
             count = ObjectUtils.toInt(count2[0]);
-            if (count == 0) return NO_TASKS;
+            if (count == 0)
+                return NO_TASKS;
         }
 
         String sort = buildQuerySort(request);
@@ -140,7 +135,8 @@ public class ProjectTaskController extends BaseController {
         queryWhere += " order by " + sort;
 
         ConfigBean project = ProjectManager.instance.getProject(projectId, user);
-        JSONArray alist = queryCardDatas(project, user, queryWhere, new int[] { pageSize, pageNo * pageSize - pageSize });
+        JSONArray alist = queryCardDatas(project, user, queryWhere,
+                new int[] { pageSize, pageNo * pageSize - pageSize });
 
         return JSONUtils.toJSONObject(
                 new String[] { "count", "tasks" },
@@ -149,9 +145,12 @@ public class ProjectTaskController extends BaseController {
 
     private String buildQuerySort(HttpServletRequest request) {
         String sort = getParameter(request, "sort");
-        if ("deadline".equalsIgnoreCase(sort)) sort = "deadline desc";
-        else if ("modifiedOn".equalsIgnoreCase(sort)) sort = "modifiedOn desc";
-        else sort = "seq asc";
+        if ("deadline".equalsIgnoreCase(sort))
+            sort = "deadline desc";
+        else if ("modifiedOn".equalsIgnoreCase(sort))
+            sort = "modifiedOn desc";
+        else
+            sort = "seq asc";
         return sort;
     }
 
@@ -185,8 +184,9 @@ public class ProjectTaskController extends BaseController {
             }
         } else if (planKey.startsWith(ProjectController.GROUP_MODIFIED)) {
             if ("1".equals(planValue)) {
-                return baseSql + MessageFormat.format("modifiedOn >= ''{0} 00:00:00'' and modifiedOn <= ''{0} 23:59:59''",
-                        today.split(" ")[0]);
+                return baseSql
+                        + MessageFormat.format("modifiedOn >= ''{0} 00:00:00'' and modifiedOn <= ''{0} 23:59:59''",
+                                today.split(" ")[0]);
             } else if ("2".equals(planValue)) {
                 return baseSql + String.format("modifiedOn >= '%s' and modifiedOn < '%s 00:00:00'",
                         dtf.format(CalendarUtils.addDay(-7)), today.split(" ")[0]);
@@ -230,19 +230,28 @@ public class ProjectTaskController extends BaseController {
         }
 
         String queryFields = FMT_FIELDS11 + ",";
-        if (fields2show.contains("createdBy")) queryFields += "createdBy,";
-        else queryFields += "taskId,";
-        if (fields2show.contains("modifiedOn")) queryFields += "modifiedOn,";
-        else queryFields += "taskId,";
-        if (fields2show.contains("description")) queryFields += "description,";
-        else queryFields += "taskId,";
-        if (fields2show.contains("attachments")) queryFields += "attachments,";
-        else queryFields += "taskId,";
+        if (fields2show.contains("createdBy"))
+            queryFields += "createdBy,";
+        else
+            queryFields += "taskId,";
+        if (fields2show.contains("modifiedOn"))
+            queryFields += "modifiedOn,";
+        else
+            queryFields += "taskId,";
+        if (fields2show.contains("description"))
+            queryFields += "description,";
+        else
+            queryFields += "taskId,";
+        if (fields2show.contains("attachments"))
+            queryFields += "attachments,";
+        else
+            queryFields += "taskId,";
 
         queryFields = queryFields.substring(0, queryFields.length() - 1);
         String querySql = String.format("select %s from ProjectTask where %s", queryFields, queryWhere);
         Query query = Application.createQueryNoFilter(querySql);
-        if (limits != null) query.setLimit(limits[0], limits[1]);
+        if (limits != null)
+            query.setLimit(limits[0], limits[1]);
 
         Object[][] tasks = query.array();
 
@@ -279,10 +288,12 @@ public class ProjectTaskController extends BaseController {
         final ID user = getRequestUser(request);
 
         Object[] task = Application.createQueryNoFilter(
-                String.format("select %s,description,attachments,relatedRecord from ProjectTask where taskId = ?", FMT_FIELDS11))
+                String.format("select %s,description,attachments,relatedRecord from ProjectTask where taskId = ?",
+                        FMT_FIELDS11))
                 .setParameter(1, taskId)
                 .unique();
-        if (task == null) throw new NoRecordFoundException(taskId, Boolean.TRUE);
+        if (task == null)
+            throw new NoRecordFoundException(taskId, Boolean.TRUE);
 
         JSONObject details = formatTask(task, user, true, false);
 
@@ -301,8 +312,8 @@ public class ProjectTaskController extends BaseController {
         return details;
     }
 
-    private static final String FMT_FIELDS11 =
-            "projectId,projectPlanId,taskNumber,taskId,taskName,createdOn,deadline,executor,status,seq,priority,endTime";
+    private static final String FMT_FIELDS11 = "projectId,projectPlanId,taskNumber,taskId,taskName,createdOn,deadline,executor,status,seq,priority,endTime";
+
     /**
      * @param o
      * @param user
@@ -312,18 +323,21 @@ public class ProjectTaskController extends BaseController {
      * @throws ConfigurationException 如果指定用户无权限
      * @see #FMT_FIELDS11
      */
-    private JSONObject formatTask(Object[] o, ID user, boolean needTags, boolean needPlanName) throws ConfigurationException {
+    private JSONObject formatTask(Object[] o, ID user, boolean needTags, boolean needPlanName)
+            throws ConfigurationException {
         final ConfigBean project = ProjectManager.instance.getProject((ID) o[0], user);
 
         String taskNumber = String.format("%s-%s", project.getString("projectCode"), o[2]);
         String createdOn = I18nUtils.formatDate((Date) o[5]);
         String deadline = I18nUtils.formatDate((Date) o[6]);
         String endTime = I18nUtils.formatDate((Date) o[11]);
-        Object[] executor = o[7] == null ? null : new Object[]{o[7], UserHelper.getName((ID) o[7])};
+        Object[] executor = o[7] == null ? null : new Object[] { o[7], UserHelper.getName((ID) o[7]) };
 
         JSONObject data = JSONUtils.toJSONObject(
-                new String[] { "id", "taskNumber", "taskName", "createdOn", "deadline", "executor", "status", "seq", "priority", "endTime", "projectId", "projectStatus" },
-                new Object[] { o[3], taskNumber, o[4], createdOn, deadline, executor, o[8], o[9], o[10], endTime, o[0], project.getInteger("status") });
+                new String[] { "id", "taskNumber", "taskName", "createdOn", "deadline", "executor", "status", "seq",
+                        "priority", "endTime", "projectId", "projectStatus" },
+                new Object[] { o[3], taskNumber, o[4], createdOn, deadline, executor, o[8], o[9], o[10], endTime, o[0],
+                        project.getInteger("status") });
 
         // 标签
         if (needTags) {
@@ -332,7 +346,7 @@ public class ProjectTaskController extends BaseController {
 
         if (user != null) {
             // 项目信息
-            ConfigBean plan =  ProjectManager.instance.getPlanOfProject((ID) o[1], (ID) o[0]);
+            ConfigBean plan = ProjectManager.instance.getPlanOfProject((ID) o[1], (ID) o[0]);
             data.put("planName", String.format("%s (%s)",
                     project.getString("projectName"), plan.getString("planName")));
             data.put("planFlow", plan.getInteger("flowStatus"));
@@ -341,7 +355,8 @@ public class ProjectTaskController extends BaseController {
             data.put("isManageable", ProjectHelper.isManageable((ID) o[3], user));
 
             // v3.7
-            if (needPlanName) data.put("planName", plan.getString("planName"));
+            if (needPlanName)
+                data.put("planName", plan.getString("planName"));
         }
         return data;
     }
@@ -356,8 +371,10 @@ public class ProjectTaskController extends BaseController {
         JSONArray alist = new JSONArray();
 
         for (ConfigBean p : ps) {
-            if (p.getInteger("status") == ProjectManager.STATUS_ARCHIVED) continue;  // 已归档
-            if (!p.get("members", Set.class).contains(user)) continue;  // 非成员
+            if (p.getInteger("status") == ProjectManager.STATUS_ARCHIVED)
+                continue; // 已归档
+            if (!p.get("members", Set.class).contains(user))
+                continue; // 非成员
 
             JSONObject item = (JSONObject) p.toJSON("id", "projectName");
 
@@ -377,8 +394,8 @@ public class ProjectTaskController extends BaseController {
 
     @RequestMapping("tasks/related-list")
     public JSON relatedTaskList(@IdParam(name = "related", required = false) ID relatedId,
-                                @IdParam(name = "task", required = false) ID taskId,
-                                HttpServletRequest request) {
+            @IdParam(name = "task", required = false) ID taskId,
+            HttpServletRequest request) {
         Assert.isTrue(relatedId != null || taskId != null, Language.L("无效请求参数"));
 
         final ID user = getRequestUser(request);

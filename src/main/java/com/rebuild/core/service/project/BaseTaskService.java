@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.service.project;
 
@@ -38,7 +32,8 @@ public abstract class BaseTaskService extends ObservableService {
      * @return
      */
     protected boolean checkModifications(ID user, ID taskOrProject) {
-        if (user == null) user = getCurrentUser();
+        if (user == null)
+            user = getCurrentUser();
         Assert.notNull(taskOrProject, "taskOrProject");
 
         ConfigBean c = taskOrProject.getEntityCode() == EntityHelper.ProjectTask

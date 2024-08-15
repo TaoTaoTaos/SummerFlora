@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.service.feeds;
 
@@ -68,7 +62,7 @@ public class FeedsHelper {
      * 指定用户是否点赞
      *
      * @param feedsOrComment
-     * @param user 指定用户
+     * @param user           指定用户
      * @return
      */
     public static boolean isMyLike(ID feedsOrComment, ID user) {
@@ -101,7 +95,8 @@ public class FeedsHelper {
     public static Map<String, ID> findMentionsMap(String content) {
         Map<String, ID> found = new HashMap<>();
         for (String ats : content.split("@")) {
-            if (StringUtils.isBlank(ats)) continue;
+            if (StringUtils.isBlank(ats))
+                continue;
             String[] atsList = ats.split("\\s");
 
             String fullName = atsList[0];
@@ -143,7 +138,7 @@ public class FeedsHelper {
             return false;
         }
         if (o[1].equals(user) || o[0].equals(FeedsScope.ALL.name())) {
-            return true;  // 自己 & 公开
+            return true; // 自己 & 公开
         }
 
         // 团队
@@ -168,7 +163,7 @@ public class FeedsHelper {
      * 格式化动态内容
      *
      * @param content
-     * @param xss 是否处理 XSS
+     * @param xss     是否处理 XSS
      * @return
      */
     public static String formatContent(String content, boolean xss) {
@@ -179,7 +174,8 @@ public class FeedsHelper {
             urls.add(url);
         }
 
-        if (xss) content = CommonsUtils.escapeHtml(content);
+        if (xss)
+            content = CommonsUtils.escapeHtml(content);
 
         if (!urls.isEmpty()) {
             // 排序: 长 -> 短

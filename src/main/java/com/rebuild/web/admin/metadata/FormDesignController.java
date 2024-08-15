@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.web.admin.metadata;
 
@@ -61,7 +55,7 @@ public class FormDesignController extends BaseController {
         return mv;
     }
 
-    @PostMapping({"form-update"})
+    @PostMapping({ "form-update" })
     public RespBody sets(@PathVariable String entity, HttpServletRequest request) {
         final ID user = getRequestUser(request);
         JSON formJson = ServletUtils.getRequestJson(request);
@@ -74,7 +68,8 @@ public class FormDesignController extends BaseController {
         for (Object o : config) {
             JSONObject item = (JSONObject) o;
             String fieldName = item.getString("field");
-            if (!entityMeta.containsField(fieldName)) continue;
+            if (!entityMeta.containsField(fieldName))
+                continue;
 
             String newLabel = item.getString("__newLabel");
             Boolean newNullable = item.getBoolean("__newNullable");
@@ -82,7 +77,8 @@ public class FormDesignController extends BaseController {
             item.remove("__newNullable");
 
             EasyField fieldEasy = EasyMetaFactory.valueOf(entityMeta.getField(fieldName));
-            if (fieldEasy.getMetaId() == null) continue;
+            if (fieldEasy.getMetaId() == null)
+                continue;
 
             Record fieldRecord = EntityHelper.forUpdate(fieldEasy.getMetaId(), user, Boolean.FALSE);
             if (StringUtils.isNotBlank(newLabel) && !newLabel.equals(fieldEasy.getLabel())) {
@@ -92,7 +88,8 @@ public class FormDesignController extends BaseController {
                 fieldRecord.setBoolean("nullable", newNullable);
             }
 
-            if (!fieldRecord.isEmpty()) willUpdates.add(fieldRecord);
+            if (!fieldRecord.isEmpty())
+                willUpdates.add(fieldRecord);
         }
 
         ((JSONObject) formJson).put("config", config);

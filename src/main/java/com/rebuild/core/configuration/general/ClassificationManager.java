@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.configuration.general;
 
@@ -72,10 +66,12 @@ public class ClassificationManager implements ConfigManager {
                 "select name,fullName,code from ClassificationData where itemId = ?")
                 .setParameter(1, itemId)
                 .unique();
-        if (o != null) ditem = new Item((String) o[0], (String) o[1], (String) o[2]);
+        if (o != null)
+            ditem = new Item((String) o[0], (String) o[1], (String) o[2]);
 
         // 可能已删除
-        if (ditem == null) ditem = new Item(DELETED_ITEM, null, null);
+        if (ditem == null)
+            ditem = new Item(DELETED_ITEM, null, null);
 
         Application.getCommonsCache().putx(ckey, ditem);
         return DELETED_ITEM.equals(ditem.Name) ? null : ditem;
@@ -90,7 +86,8 @@ public class ClassificationManager implements ConfigManager {
      */
     public ID findItemByName(String name, Field field) {
         ID dataId = getUseClassification(field, false);
-        if (dataId == null) return null;
+        if (dataId == null)
+            return null;
 
         int openLevel = getOpenLevel(field);
 
@@ -118,7 +115,8 @@ public class ClassificationManager implements ConfigManager {
      */
     public int getOpenLevel(Field field) {
         ID dataId = getUseClassification(field, false);
-        if (dataId == null) return BAD_CLASSIFICATION;
+        if (dataId == null)
+            return BAD_CLASSIFICATION;
 
         final String ckey = "ClassificationLEVEL-" + dataId;
         Integer cLevel = (Integer) Application.getCommonsCache().getx(ckey);
@@ -153,10 +151,13 @@ public class ClassificationManager implements ConfigManager {
     public ID getUseClassification(Field field, boolean checkBad) {
         String classUse = EasyMetaFactory.valueOf(field).getExtraAttr(EasyFieldConfigProps.CLASSIFICATION_USE);
         ID dataId = ID.isId(classUse) ? ID.valueOf(classUse) : null;
-        if (dataId == null) return null;
+        if (dataId == null)
+            return null;
 
-        if (checkBad && getOpenLevel(field) == BAD_CLASSIFICATION) return null;
-        else return dataId;
+        if (checkBad && getOpenLevel(field) == BAD_CLASSIFICATION)
+            return null;
+        else
+            return dataId;
     }
 
     @Override
@@ -172,6 +173,7 @@ public class ClassificationManager implements ConfigManager {
     // Bean
     static class Item implements Serializable {
         private static final long serialVersionUID = -1903227875771376652L;
+
         Item(String name, String fullName, String code) {
             this.Name = name;
             this.FullName = fullName;

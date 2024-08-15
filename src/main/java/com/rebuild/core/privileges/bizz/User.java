@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.privileges.bizz;
 
@@ -30,7 +24,7 @@ public class User extends cn.devezhao.bizz.security.member.User {
     private CombinedRole combinedRole;
 
     public User(ID userId, String loginName, String email, String workphone,
-                String fullName, String avatarUrl, boolean disabled) {
+            String fullName, String avatarUrl, boolean disabled) {
         super(userId, loginName, disabled);
         this.email = email;
         this.workphone = workphone;
@@ -87,11 +81,14 @@ public class User extends cn.devezhao.bizz.security.member.User {
      */
     public boolean isAdmin() {
         if (getIdentity().equals(UserService.ADMIN_USER)
-                || getIdentity().equals(UserService.SYSTEM_USER)) return true;
+                || getIdentity().equals(UserService.SYSTEM_USER))
+            return true;
 
         Role role = getOwningRole();
-        if (role == null) return false;
-        if (role.getIdentity().equals(RoleService.ADMIN_ROLE)) return true;
+        if (role == null)
+            return false;
+        if (role.getIdentity().equals(RoleService.ADMIN_ROLE))
+            return true;
 
         return role instanceof CombinedRole && ((CombinedRole) role).getRoleAppends().contains(RoleService.ADMIN_ROLE);
     }

@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.utils;
 
@@ -68,7 +62,7 @@ public class OkHttpUtils {
                     .writeTimeout(60, TimeUnit.SECONDS)
                     .readTimeout(60, TimeUnit.SECONDS)
                     .retryOnConnectionFailure(true)
-                    .hostnameVerifier((s, sslSession) -> true)  // NOT SAFE!!!
+                    .hostnameVerifier((s, sslSession) -> true) // NOT SAFE!!!
                     .build();
             RB_CI = ComputerIdentifier.generateIdentifierKey();
         }
@@ -118,7 +112,8 @@ public class OkHttpUtils {
             return new String(b, StringUtils.defaultIfBlank(charset, AppUtils.UTF8));
         } finally {
             ms = System.currentTimeMillis() - ms;
-            if (ms > 3000) log.warn("Http GET `{}` time {}ms", url, ms);
+            if (ms > 3000)
+                log.warn("Http GET `{}` time {}ms", url, ms);
         }
     }
 
@@ -176,7 +171,8 @@ public class OkHttpUtils {
             return new String(b, StandardCharsets.UTF_8);
         } finally {
             ms = System.currentTimeMillis() - ms;
-            if (ms > 3000) log.warn("Http POST `{}` time {}ms", url, ms);
+            if (ms > 3000)
+                log.warn("Http POST `{}` time {}ms", url, ms);
         }
     }
 
@@ -234,7 +230,8 @@ public class OkHttpUtils {
     public static Request.Builder useHeaders(Request.Builder builder, Map<String, String> headers) {
         builder.addHeader(HttpHeaders.USER_AGENT, RB_UA);
         builder.addHeader(HttpHeaders.ACCEPT_LANGUAGE, RB_LANG);
-        if (RB_CI != null) builder.addHeader("X-RB-CI", RB_CI);
+        if (RB_CI != null)
+            builder.addHeader("X-RB-CI", RB_CI);
 
         if (headers != null && !headers.isEmpty()) {
             for (Map.Entry<String, String> e : headers.entrySet()) {

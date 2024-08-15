@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.api.user;
 
@@ -38,8 +32,8 @@ public class PageTokenVerify extends BaseApi {
 
         User user = Application.getUserStore().getUser(tokenUser);
         JSON ret = JSONUtils.toJSONObject(
-                new String[]{"user_id", "login_name", "full_name"},
-                new Object[]{user.getId(), user.getName(), user.getFullName()});
+                new String[] { "user_id", "login_name", "full_name" },
+                new Object[] { user.getId(), user.getName(), user.getFullName() });
         return formatSuccess(ret);
     }
 
@@ -65,7 +59,8 @@ public class PageTokenVerify extends BaseApi {
      */
     protected static ID verify(String ptoken) {
         ID user = (ID) Application.getCommonsCache().getx("RBPT." + ptoken);
-        if (user == null) return null;
+        if (user == null)
+            return null;
 
         // 自动续期
         Application.getCommonsCache().putx("RBPT." + ptoken, user, TOKEN_EXPIRES);

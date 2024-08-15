@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.service.dashboard;
 
@@ -56,7 +50,8 @@ public class ChartManager implements ConfigManager {
         if (o == null) {
             for (BuiltinChart ch : ChartsFactory.getBuiltinCharts()) {
                 if (chartid.equals(ch.getChartId())) {
-                    o = new Object[]{ch.getChartTitle(), ch.getChartType(), ch.getChartConfig(), UserService.SYSTEM_USER};
+                    o = new Object[] { ch.getChartTitle(), ch.getChartType(), ch.getChartConfig(),
+                            UserService.SYSTEM_USER };
                 }
             }
 
@@ -79,7 +74,7 @@ public class ChartManager implements ConfigManager {
      *
      * @param user
      * @param specEntity [指定实体的]
-     * @param onlySelf [自己的]
+     * @param onlySelf   [自己的]
      * @return
      */
     public JSONArray getChartList(ID user, String[] specEntity, boolean onlySelf) {
@@ -97,20 +92,24 @@ public class ChartManager implements ConfigManager {
         for (Object[] o : value) {
             ID createdBy = (ID) o[0];
             String belongEntity = (String) o[1];
-            if (!MetadataHelper.containsEntity(belongEntity)) continue;
+            if (!MetadataHelper.containsEntity(belongEntity))
+                continue;
 
             // 过滤实体
-            if (specEntity != null && !ArrayUtils.contains(specEntity, belongEntity)) continue;
+            if (specEntity != null && !ArrayUtils.contains(specEntity, belongEntity))
+                continue;
 
             Entity entity = MetadataHelper.getEntity(belongEntity);
 
             // 权限不允许
-            if (!Application.getPrivilegesManager().allowRead(user, entity.getEntityCode())) continue;
+            if (!Application.getPrivilegesManager().allowRead(user, entity.getEntityCode()))
+                continue;
 
-            boolean self = UserHelper.isSelf (user, createdBy);
+            boolean self = UserHelper.isSelf(user, createdBy);
             if (!self) {
                 // 只要自己的
-                if (onlySelf) continue;
+                if (onlySelf)
+                    continue;
 
                 JSONObject config = JSONUtils.wellFormat((String) o[2]) ? JSON.parseObject((String) o[2]) : null;
                 JSONObject chartOption = config == null ? null : config.getJSONObject("option");
@@ -130,10 +129,10 @@ public class ChartManager implements ConfigManager {
      * 丰富图表数据 title, type
      *
      * @param charts
-     * @param user [可选]
+     * @param user   [可选]
      */
     public void richingCharts(JSONArray charts, ID user) {
-        for (Iterator<Object> iter = charts.iterator(); iter.hasNext(); ) {
+        for (Iterator<Object> iter = charts.iterator(); iter.hasNext();) {
             JSONObject ch = (JSONObject) iter.next();
             ID chartId = ID.valueOf(ch.getString("chart"));
             ConfigBean e = getChart(chartId);
@@ -151,7 +150,8 @@ public class ChartManager implements ConfigManager {
                 if ("INDEX".equals(type)) {
                     JSONObject option = config.getJSONObject("option");
                     String c = option == null ? null : option.getString("useColor");
-                    if (StringUtils.isNotBlank(c)) ch.put("color", c);
+                    if (StringUtils.isNotBlank(c))
+                        ch.put("color", c);
                 }
 
                 if ("DataList".equals(type)) {

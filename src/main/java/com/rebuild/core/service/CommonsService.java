@@ -1,9 +1,3 @@
-/*!
-Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
-
-rebuild is dual-licensed under commercial and open source licenses (GPLv3).
-See LICENSE and COMMERCIAL in the project root for license information.
-*/
 
 package com.rebuild.core.service;
 
@@ -20,11 +14,16 @@ import org.springframework.util.Assert;
 
 /**
  * 基础 CRUD 服务，使用请注意：
- * <br>- 此类有事物
- * <br>- 此类不经过用户权限验证 {@link PrivilegesGuardInterceptor}
- * <br>- 此类不对多值字段进行处理 {@link BaseService}
- * <br>- 此类无任何系统规则，如默认值、重复检查、自动编号等
- * <br>- 有权限的实体使用此类需要指定 `strictMode=false`
+ * <br>
+ * - 此类有事物
+ * <br>
+ * - 此类不经过用户权限验证 {@link PrivilegesGuardInterceptor}
+ * <br>
+ * - 此类不对多值字段进行处理 {@link BaseService}
+ * <br>
+ * - 此类无任何系统规则，如默认值、重复检查、自动编号等
+ * <br>
+ * - 有权限的实体使用此类需要指定 `strictMode=false`
  *
  * @author Zixin (RB)
  * @since 11/06/2019
@@ -62,7 +61,8 @@ public class CommonsService extends InternalPersistService {
      * @return
      */
     public Record create(Record record, boolean strictMode) {
-        if (strictMode) tryIfHasPrivileges(record);
+        if (strictMode)
+            tryIfHasPrivileges(record);
         return super.create(record);
     }
 
@@ -72,7 +72,8 @@ public class CommonsService extends InternalPersistService {
      * @return
      */
     public Record update(Record record, boolean strictMode) {
-        if (strictMode) tryIfHasPrivileges(record);
+        if (strictMode)
+            tryIfHasPrivileges(record);
         return super.update(record);
     }
 
@@ -82,7 +83,8 @@ public class CommonsService extends InternalPersistService {
      * @return
      */
     public int delete(ID recordId, boolean strictMode) {
-        if (strictMode) tryIfHasPrivileges(recordId);
+        if (strictMode)
+            tryIfHasPrivileges(recordId);
         return super.delete(recordId);
     }
 
@@ -104,8 +106,10 @@ public class CommonsService extends InternalPersistService {
     public void createOrUpdate(Record[] records, boolean strictMode) {
         Assert.notNull(records, "[records] cannot be null");
         for (Record r : records) {
-            if (r.getPrimary() == null) create(r, strictMode);
-            else update(r, strictMode);
+            if (r.getPrimary() == null)
+                create(r, strictMode);
+            else
+                update(r, strictMode);
         }
     }
 
@@ -166,7 +170,8 @@ public class CommonsService extends InternalPersistService {
         }
 
         if (MetadataHelper.hasPrivilegesField(entity)) {
-            throw new PrivilegesException("Privileges/Business entity cannot use this class (methods) : " + entity.getName());
+            throw new PrivilegesException(
+                    "Privileges/Business entity cannot use this class (methods) : " + entity.getName());
         }
     }
 }
