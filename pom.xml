@@ -8,10 +8,10 @@
         <version>2.7.18</version>
         <relativePath/>
     </parent>
-    <groupId>com.summerflora</groupId>
-    <artifactId>summerflora</artifactId>
-    <version>1.0</version>
-    <name>summerflora</name>
+    <groupId>com.rebuild</groupId>
+    <artifactId>rebuild</artifactId>
+    <version>3.7.6</version>
+    <name>rebuild</name>
     <description>Building your business-systems freely!</description>
     <url>https://getrebuild.com/</url>
     <!-- UNCOMMENT USE TOMCAT -->
@@ -25,8 +25,7 @@
     </properties>
 
     <build>
-        <finalName>summerflora</finalName>
-        <directory>${user.home}/Desktop</directory> <!-- 输出目录设置为桌面 -->
+        <finalName>rebuild</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
