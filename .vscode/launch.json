@@ -1,0 +1,14 @@
+{
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Spring Boot-BootApplication<rebuild>",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "mainClass": "com.rebuild.core.BootApplication",
+      "projectName": "rebuild",
+      "args": "",
+      "envFile": "${workspaceFolder}/.env"
+    }
+  ]
+}
