@@ -1,4 +1,4 @@
- 
+
 /* eslint-disable react/no-string-refs */
 
 const wpc = window.__PageConfig
@@ -48,7 +48,7 @@ $(document).ready(() => {
 
 // 列表模式
 function _listmodeAction() {
- 
+
   if (!wpc.id) {
     $('.mode-select .btn').on('click', () => RbHighbar.create($L('系统内置实体暂不支持')))
     return

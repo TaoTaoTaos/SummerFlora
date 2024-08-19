@@ -1,120 +1,127 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <meta name="renderer" content="webkit" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta http-equiv="refresh" content="30" />
-    <link rel="shortcut icon" th:href="@{/assets/img/favicon.png}" />
-    <link rel="stylesheet" type="text/css" th:href="@{/assets/css/rb-base.css}" />
-    <base target="_blank" />
-    <title>夏花</title>
-    <style>
-      body,
-      html {
-        height: auto;
-        min-height: auto;
-      }
-      .error {
-        background-color: #ea4335;
-        color: #fff;
-        padding: 18px 0;
-      }
-      .error a {
-        color: #fff;
-        text-decoration: underline;
-      }
-    </style>
-  </head>
-  <body>
-    <div th:if="${!ok}" class="error">
-      <div class="container">
-        <h2 class="mt-0">[[${bundle.L('系统故障')}]]</h2>
-        <div th:utext="${bundle.L('服务未能正常启动，请通过快速检查排除故障，排除后请重启服务。')}"></div>
-      </div>
-    </div>
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="renderer" content="webkit" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta http-equiv="refresh" content="30" />
+  <link rel="shortcut icon" th:href="@{/assets/img/favicon.png}" />
+  <link rel="stylesheet" type="text/css" th:href="@{/assets/css/rb-base.css}" />
+  <base target="_blank" />
+  <title>夏花</title>
+  <style>
+    body,
+    html {
+      height: auto;
+      min-height: auto;
+    }
+
+    .error {
+      background-color: #ea4335;
+      color: #fff;
+      padding: 18px 0;
+    }
+
+    .error a {
+      color: #fff;
+      text-decoration: underline;
+    }
+  </style>
+</head>
+
+<body>
+  <div th:if="${!ok}" class="error">
     <div class="container">
-      <h5 class="text-bold mt-5 text-uppercase">[[${bundle.L('快速检查')}]]</h5>
+      <h2 class="mt-0">[[${bundle.L('系统故障')}]]</h2>
+      <div th:utext="${bundle.L('服务未能正常启动，请通过快速检查排除故障，排除后请重启服务。')}"></div>
+    </div>
+  </div>
+  <div class="container">
+    <h5 class="text-bold mt-5 text-uppercase">[[${bundle.L('快速检查')}]]</h5>
+    <table class="table table-bordered table-sm table-hover">
+      <tbody>
+        <tr>
+          <th width="30%">Status</th>
+          <td>
+            <span class="text-success" th:if="${ok}">OK</span>
+            <span class="text-danger" th:if="${!ok}">Startup failed</span>
+          </td>
+        </tr>
+        <tr th:each="s : ${status}">
+          <th>[[${s.name}]]</th>
+          <td>
+            <span class="text-success" th:if="${s.success}">OK</span>
+            <span class="text-danger" th:if="${!s.success}">[[${s.error}]]</span>
+          </td>
+        </tr>
+        <tr>
+          <th>Memory Usage (JVM)</th>
+          <td>[[${MemoryUsageJvm[1]}]]% ([[${MemoryUsageJvm[0]}]]MB)</td>
+        </tr>
+        <tr>
+          <th>Memory Usage</th>
+          <td>[[${MemoryUsage[1]}]]% ([[${MemoryUsage[0]}]]MB)</td>
+        </tr>
+        <tr>
+          <th>System Load</th>
+          <td>[[${SystemLoad}]]</td>
+        </tr>
+        <tr th:if="${DisksDesc != null}">
+          <th>Disk Usage</th>
+          <td>[[${DisksDesc}]]</td>
+        </tr>
+        <tr th:if="${T(com.rebuild.utils.OshiUtils).isDockerEnv()}">
+          <th>Docker Env</th>
+          <td>Yes</td>
+        </tr>
+      </tbody>
+    </table>
+    <th:block th:if="${isAdminVerified || !ok}">
+      <h5 class="text-bold mt-5 text-uppercase">[[${bundle.L('系统信息')}]]</h5>
       <table class="table table-bordered table-sm table-hover">
         <tbody>
           <tr>
-            <th width="30%">Status</th>
-            <td>
-              <span class="text-success" th:if="${ok}">OK</span>
-              <span class="text-danger" th:if="${!ok}">Startup failed</span>
-            </td>
-          </tr>
-          <tr th:each="s : ${status}">
-            <th>[[${s.name}]]</th>
-            <td>
-              <span class="text-success" th:if="${s.success}">OK</span>
-              <span class="text-danger" th:if="${!s.success}">[[${s.error}]]</span>
-            </td>
+            <th width="30%">Version</th>
+            <td>夏花1.0</td>
           </tr>
           <tr>
-            <th>Memory Usage (JVM)</th>
-            <td>[[${MemoryUsageJvm[1]}]]% ([[${MemoryUsageJvm[0]}]]MB)</td>
+            <th>OS</th>
+            <td>[[${T(org.apache.commons.lang.SystemUtils).OS_NAME}]]
+              ([[${T(org.apache.commons.lang.SystemUtils).OS_ARCH}]])</td>
           </tr>
           <tr>
-            <th>Memory Usage</th>
-            <td>[[${MemoryUsage[1]}]]% ([[${MemoryUsage[0]}]]MB)</td>
+            <th>JVM</th>
+            <td>[[${T(org.apache.commons.lang.SystemUtils).JAVA_VM_NAME}]]
+              ([[${T(org.apache.commons.lang.SystemUtils).JAVA_VERSION}]])</td>
           </tr>
           <tr>
-            <th>System Load</th>
-            <td>[[${SystemLoad}]]</td>
+            <th>Local IP</th>
+            <td>[[${T(com.rebuild.utils.OshiUtils).getLocalIp()}]]</td>
           </tr>
-          <tr th:if="${DisksDesc != null}">
-            <th>Disk Usage</th>
-            <td>[[${DisksDesc}]]</td>
+          <tr>
+            <th>System Time</th>
+            <td>[[${T(cn.devezhao.commons.CalendarUtils).now()}]]</td>
           </tr>
-          <tr th:if="${T(com.rebuild.utils.OshiUtils).isDockerEnv()}">
-            <th>Docker Env</th>
-            <td>Yes</td>
+          <tr>
+            <th>Startup Time</th>
+            <td>[[${T(com.rebuild.core.ServerStatus).STARTUP_TIME}]]</td>
+          </tr>
+          <tr>
+            <th>Data Directory</th>
+            <td>[[${T(com.rebuild.core.support.RebuildConfiguration).getFileOfData("/")}]]</td>
+          </tr>
+          <tr>
+            <th>Temp Directory</th>
+            <td>[[${T(org.apache.commons.io.FileUtils).getTempDirectoryPath()}]]</td>
           </tr>
         </tbody>
       </table>
-      <th:block th:if="${isAdminVerified || !ok}">
-        <h5 class="text-bold mt-5 text-uppercase">[[${bundle.L('系统信息')}]]</h5>
-        <table class="table table-bordered table-sm table-hover">
-          <tbody>
-            <tr>
-              <th width="30%">Version</th>
-              <td>[[${T(com.rebuild.core.Application).VER}]]</td>
-            </tr>
-            <tr>
-              <th>OS</th>
-              <td>[[${T(org.apache.commons.lang.SystemUtils).OS_NAME}]] ([[${T(org.apache.commons.lang.SystemUtils).OS_ARCH}]])</td>
-            </tr>
-            <tr>
-              <th>JVM</th>
-              <td>[[${T(org.apache.commons.lang.SystemUtils).JAVA_VM_NAME}]] ([[${T(org.apache.commons.lang.SystemUtils).JAVA_VERSION}]])</td>
-            </tr>
-            <tr>
-              <th>Local IP</th>
-              <td>[[${T(com.rebuild.utils.OshiUtils).getLocalIp()}]]</td>
-            </tr>
-            <tr>
-              <th>System Time</th>
-              <td>[[${T(cn.devezhao.commons.CalendarUtils).now()}]]</td>
-            </tr>
-            <tr>
-              <th>Startup Time</th>
-              <td>[[${T(com.rebuild.core.ServerStatus).STARTUP_TIME}]]</td>
-            </tr>
-            <tr>
-              <th>Data Directory</th>
-              <td>[[${T(com.rebuild.core.support.RebuildConfiguration).getFileOfData("/")}]]</td>
-            </tr>
-            <tr>
-              <th>Temp Directory</th>
-              <td>[[${T(org.apache.commons.io.FileUtils).getTempDirectoryPath()}]]</td>
-            </tr>
-          </tbody>
-        </table>
-      </th:block>
-      
-    </div>
-  </body>
+    </th:block>
+
+  </div>
+</body>
+
 </html>
 <!-- [[${SN}]] -->
