@@ -175,10 +175,7 @@ $(function () {
 
   // Theme
   $('.use-theme a').on('click', function () {
-    if (rb.commercial < 10) {
-      RbHighbar.error(WrapHtml($L(' 不支持选择主题功能 [()](')))
-      return
-    }
+   
 
     var theme = $(this).data('theme')
     $.get('/commons/theme/set-use-theme?theme=' + theme, function () {

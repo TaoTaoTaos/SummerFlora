@@ -123,9 +123,7 @@ class TriggerList extends ConfigList {
   }
 
   handleShowChain(id) {
-    if (rb.commercial < 10) {
-      return RbHighbar.error(WrapHtml($L(' 不支持此功能 [()](')))
-    }
+   
     RbModal.create(`trigger/trigger-chain?id=${id}`, $L('触发过程'), { urlOpenInNew: true })
   }
 }

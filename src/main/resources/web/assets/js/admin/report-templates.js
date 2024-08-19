@@ -379,11 +379,7 @@ class ReportEditor extends ConfigFormDlg {
     const file = this.__lastFile
     if (!file || !entity) return false
 
-    if (type === 4 && rb.commercial < 10) {
-      RbHighbar.error(WrapHtml($L(' 不支持 WORD 模板功能 [()](')))
-      this._clearParams()
-      return false
-    }
+    
 
     return `file=${$encode(file)}&entity=${entity}&type=${type}`
   }

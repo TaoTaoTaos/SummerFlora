@@ -492,10 +492,7 @@ class RbForm extends React.Component {
                 <a
                   className="dropdown-item bosskey-show"
                   onClick={() => {
-                    if (rb.commercial < 10) {
-                      return RbHighbar.error(WrapHtml($L(' 不支持此功能 [()](')))
-                    }
-
+                   
                     const fields = []
                     _ProTable.state.formFields.forEach((item) => {
                       if (item.readonly === false && !['IMAGE', 'FILE', 'AVATAR', 'SIGN'].includes(item.type)) {

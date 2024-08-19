@@ -234,9 +234,7 @@ class DlgRuleEdit extends RbFormHandler {
     }
     if (this.props.id) _data.id = this.props.id
 
-    if (rb.commercial < 1 && this.state.fillinBackend) {
-      return RbHighbar.error(WrapHtml($L(' 不支持使用后端回填 [()](')))
-    }
+   
 
     this.disabled(true)
     $.post('../auto-fillin-save', JSON.stringify(_data), (res) => {

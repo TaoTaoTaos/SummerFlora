@@ -298,10 +298,7 @@ $(document).ready(function () {
   })
 
   $('.J_cast-type').on('click', () => {
-    if (rb.commercial < 10) {
-      RbHighbar.error(WrapHtml($L(' 不支持此功能 [()](')))
-      return
-    }
+    
     renderRbcomp(<FieldTypeCast entity={wpc.entityName} field={wpc.fieldName} fromType={wpc.fieldType} />)
   })
 

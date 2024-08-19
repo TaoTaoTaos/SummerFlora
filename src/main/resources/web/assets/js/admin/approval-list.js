@@ -244,10 +244,7 @@ class ApprovalReferral extends RbModalHandler {
   }
 
   start() {
-    if (rb.commercial < 10) {
-      RbHighbar.error(WrapHtml($L(' 不支持批量转审功能 [()](')))
-      return
-    }
+    
 
     const post = {
       oldUser: this._UserSelector1.val()[0],
