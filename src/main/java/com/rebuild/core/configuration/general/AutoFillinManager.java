@@ -219,7 +219,7 @@ public class AutoFillinManager implements ConfigManager {
      * @return
      */
     public int fillinRecord(Record record) {
-        return fillinRecord(record, false);
+        return fillinRecord(record, true);
     }
 
     /**

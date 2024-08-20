@@ -1,5 +1,3 @@
- 
-
 const wpc = window.__PageConfig
 
 let contentComp = null
@@ -66,7 +64,7 @@ $(document).ready(() => {
       )
     })
   }
-   {
+  if (1) {
     $('.on-timers select').on('change', () => $setTimeout(evalTriggerTimes, 500, 'eval-trigger-times'))
     $('.on-timers input').on('input', () => $setTimeout(evalTriggerTimes, 500, 'eval-trigger-times'))
   }
@@ -131,10 +129,7 @@ $(document).ready(() => {
     $('.J_when input:checked').each(function () {
       when += ~~$(this).val()
     })
-    if ( ((when & 512) !== 0 || (when & 1024) !== 0 || (when & 2048) !== 0)) {
-      RbHighbar.error(WrapHtml($L(' 不支持审批提交时/审批驳回时/定时执行功能 [()](')))
-      return
-    }
+    
 
     const whenTimer = `${$('.J_whenTimer1').val() || 'D'}:${$('.J_whenTimer2').val() || 1}:${$('.J_startHour1').val() || 0}:${$('.J_startHour2').val() || 23}`
 
@@ -179,7 +174,7 @@ $(document).ready(() => {
     })
   })
 
-  if (1) {
+  if (LastLogsViewer.renderLog ) {
     $.get(`/admin/robot/trigger/last-logs?id=${wpc.configId}`, (res) => {
       const _data = res.data || []
       if (_data.length > 0) {
@@ -362,7 +357,7 @@ function _handle512Change() {
 // 立即执行
 function useExecManual() {
   $('.J_exec-manual').on('click', () => {
-    
+   
 
     RbAlert.create($L('将直接执行此触发器，数据过多耗时会较长，请耐心等待。是否继续？'), {
       onConfirm: function () {
