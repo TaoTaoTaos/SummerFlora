@@ -35,7 +35,7 @@ class UCenterBind extends RbFormHandler {
               <button className="btn btn-primary" type="button" onClick={() => this.bind()}>
                 {$L('绑定')}
               </button>
-              <a className="btn btn-link link ml-3" target="_blank" href="https://getrebuild.com/ucenter/signup">
+              <a className="btn btn-link link ml-3" target="_blank" href="https:// /ucenter/signup">
                 {$L('注册 REBUILD 云账号')}
               </a>
             </div>

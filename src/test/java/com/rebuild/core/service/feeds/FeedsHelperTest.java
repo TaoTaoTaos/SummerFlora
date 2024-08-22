@@ -47,7 +47,7 @@ class FeedsHelperTest extends TestSupport {
                 FeedsHelper.formatContent("123 @" + UserService.ADMIN_USER));
         System.out.println(
                 FeedsHelper.formatContent(
-                        "如遇问题请加 Q 群 819865721 咨询或 https://getrebuild.com/docs/1 2/ 查阅文档 https://getrebuild.com"));
+                        "如遇问题请加 Q 群 819865721 咨询或 https:// /docs/1 2/ 查阅文档 https:// "));
     }
 
     private ID createFeeds() {

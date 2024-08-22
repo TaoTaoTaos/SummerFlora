@@ -122,7 +122,7 @@ public class OshiUtils {
         final String[] FROMURLS = new String[] {
                 "https://www.baidu.com/",
                 "https://www.microsoft.com/",
-                "https://getrebuild.com/",
+                "https:// /",
         };
 
         for (String u : FROMURLS) {

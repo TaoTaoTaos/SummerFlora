@@ -158,7 +158,7 @@ class ReportEditor extends ConfigFormDlg {
               {this.state.uploadFileName && <u className="text-bold">{this.state.uploadFileName}</u>}
             </div>
             <div className="clearfix" />
-            <p className="form-text mt-0 mb-0 link" dangerouslySetInnerHTML={{ __html: $L('[如何编写模板文件](https://getrebuild.com/docs/admin/excel-admin)') }} />
+            <p className="form-text mt-0 mb-0 link" dangerouslySetInnerHTML={{ __html: $L('[如何编写模板文件](https:// /docs/admin/excel-admin)') }} />
 
             {(this.state.invalidVars || []).length > 0 && (
               <div className="invalid-vars mt-2 mr-3">
@@ -183,7 +183,7 @@ class ReportEditor extends ConfigFormDlg {
             <label className="custom-control custom-control-sm custom-checkbox custom-control-inline mb-0">
               <input className="custom-control-input" type="checkbox" value="pdf" />
               <span className="custom-control-label">PDF</span>
-              <a href="https://getrebuild.com/docs/admin/excel-admin#%E6%8A%A5%E8%A1%A8%E5%AF%BC%E5%87%BA%E6%A0%BC%E5%BC%8F" title={$L('查看帮助')} target="_blank">
+              <a href="https:// /docs/admin/excel-admin#%E6%8A%A5%E8%A1%A8%E5%AF%BC%E5%87%BA%E6%A0%BC%E5%BC%8F" title={$L('查看帮助')} target="_blank">
                 <i className="zmdi zmdi-help zicon down-1" />
               </a>
             </label>

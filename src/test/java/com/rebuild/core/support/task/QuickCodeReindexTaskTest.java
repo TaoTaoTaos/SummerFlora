@@ -30,10 +30,10 @@ public class QuickCodeReindexTaskTest extends TestSupport {
         // Phone, contains `-`
         Assertions.assertTrue("".equalsIgnoreCase(QuickCodeReindexTask.generateQuickCode("021-123-123")));
         // EMail, contains `@` and `.`
-        Assertions.assertTrue("".equalsIgnoreCase(QuickCodeReindexTask.generateQuickCode("1234@getrebuild.com")));
+        Assertions.assertTrue("".equalsIgnoreCase(QuickCodeReindexTask.generateQuickCode("1234@ ")));
         // URL
         Assertions.assertTrue(
-                "".equalsIgnoreCase(QuickCodeReindexTask.generateQuickCode("http://getrebuild.com/aswell")));
+                "".equalsIgnoreCase(QuickCodeReindexTask.generateQuickCode("http:// /aswell")));
 
         Assertions.assertTrue("".equalsIgnoreCase(QuickCodeReindexTask.generateQuickCode("54325432543")));
         Assertions.assertTrue("".equalsIgnoreCase(QuickCodeReindexTask.generateQuickCode("helloworld")));

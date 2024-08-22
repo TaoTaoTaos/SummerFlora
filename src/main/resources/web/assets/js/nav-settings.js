@@ -69,7 +69,7 @@ $(document).ready(() => {
       value = $val('.J_menuUrl')
       if (!value) {
         return RbHighbar.create($L('请输入外部地址'))
-      } else if (!($regex.isUrl(value) || $regex.isUrl(`https://getrebuild.com${value}`))) {
+      } else if (!($regex.isUrl(value) || $regex.isUrl(`https:// ${value}`))) {
         return RbHighbar.create($L('请输入有效的外部地址'))
       }
     }

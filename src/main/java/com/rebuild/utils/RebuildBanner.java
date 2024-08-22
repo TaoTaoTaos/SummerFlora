@@ -17,7 +17,7 @@ public class RebuildBanner {
             "\n  JVM     : " + SystemUtils.JAVA_VM_NAME + " (" + SystemUtils.JAVA_VERSION + ")" +
             "\n" +
             "\n  Report an issue :" +
-            "\n  https://getrebuild.com/report-issue?title=boot";
+            "\n  https:// /report-issue?title=boot";
 
     static final String FLAG_LINE = "####################################################################";
 

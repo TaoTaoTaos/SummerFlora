@@ -1,5 +1,5 @@
 /*!
-Copyright (c) REBUILD <https://getrebuild.com/> and its owners. All rights reserved.
+Copyright (c) REBUILD <https:// /> and its owners. All rights reserved.
 
 rebuild is dual-licensed under commercial and open source licenses (GPLv3).
 See LICENSE and COMMERCIAL in the project root for license information.
@@ -50,9 +50,12 @@ public class RebuildGuideController extends BaseController {
     @GetMapping("usermrg")
     public RespBody featUsermrg() {
         List<JSON> items = new ArrayList<>();
-        items.add(buildItem(Language.L("管理用户"), "admin/bizuser/users", Application.getUserStore().getAllUsers().length - 1));
-        items.add(buildItem(Language.L("管理部门"), "admin/bizuser/departments", Application.getUserStore().getAllDepartments().length));
-        items.add(buildItem(Language.L("角色权限"), "admin/bizuser/role-privileges", Application.getUserStore().getAllRoles().length));
+        items.add(buildItem(Language.L("管理用户"), "admin/bizuser/users",
+                Application.getUserStore().getAllUsers().length - 1));
+        items.add(buildItem(Language.L("管理部门"), "admin/bizuser/departments",
+                Application.getUserStore().getAllDepartments().length));
+        items.add(buildItem(Language.L("角色权限"), "admin/bizuser/role-privileges",
+                Application.getUserStore().getAllRoles().length));
         return RespBody.ok(items);
     }
 
@@ -60,7 +63,7 @@ public class RebuildGuideController extends BaseController {
     public RespBody featEntityMrg() {
         List<JSON> items = new ArrayList<>();
         items.add(buildItem(Language.L("业务实体"), "admin/entities", MetadataSorter.sortEntities().length - 4));
-        items.add(buildItem(Language.L("页面布局"), "https://getrebuild.com/docs/admin/entity/layout", -1));
+        items.add(buildItem(Language.L("页面布局"), "https:// /docs/admin/entity/layout", -1));
         items.add(buildItem(Language.L("触发器"), "admin/robot/triggers", count(EntityHelper.RobotTriggerConfig)));
         items.add(buildItem(Language.L("审批流程"), "admin/robot/approvals", count(EntityHelper.RobotApprovalConfig)));
         items.add(buildItem(Language.L("报表模板"), "admin/data/report-templates", count(EntityHelper.DataReportConfig)));
@@ -86,7 +89,8 @@ public class RebuildGuideController extends BaseController {
 
         final String key = "Guide-" + url;
         Object confirm = KVStorage.getCustomValue(key);
-        if (confirm != null) o.put("confirm", true);
+        if (confirm != null)
+            o.put("confirm", true);
         return o;
     }
 

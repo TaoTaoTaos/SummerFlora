@@ -136,7 +136,7 @@ public class ErrorPageView extends BaseController {
         }
 
         String reason = request.getParameter("title");
-        String url = "https://getrebuild.com/report-issue?title=";
+        String url = "https:// /report-issue?title=";
         if (tsid != null)
             url += tsid;
         if (StringUtils.isNotBlank(reason))

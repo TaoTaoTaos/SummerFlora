@@ -97,7 +97,7 @@ class RbWelcome extends React.Component {
     const commercialTip = (
       <div className="text-left link" style={{ lineHeight: 2 }}>
         <div>{WrapHtml($('.license').html())}</div>
-        <div className="text-bold">{WrapHtml($L('如果用于商业用途，请注意使用目的。访问 [REBUILD 官网](https://getrebuild.com/#pricing-plans) 了解更多信息。'))}</div>
+        <div className="text-bold">{WrapHtml($L('如果用于商业用途，请注意使用目的。访问 [REBUILD 官网](https:// /#pricing-plans) 了解更多信息。'))}</div>
 
         <div className="input-sn">
           <a
@@ -490,7 +490,7 @@ class ModelConf extends React.Component {
       <div className="rb-model">
         <h3>
           {$L('选择初始业务实体')}
-          <div className="link" dangerouslySetInnerHTML={{ __html: $L('你可以选择来自 [RB 仓库](https://getrebuild.com/market/go/1220-rb-store) 的业务实体使用，或在安装完成后自行添加') }} />
+          <div className="link" dangerouslySetInnerHTML={{ __html: $L('你可以选择来自 [RB 仓库](https:// /market/go/1220-rb-store) 的业务实体使用，或在安装完成后自行添加') }} />
         </h3>
 
         {DatabaseConf_mount ? (

@@ -177,7 +177,7 @@ public class NavBuilder extends NavManager {
         } else if ("URL".equals(type)) {
 
             // 替换 RBTOKEN https://juejin.cn/post/7045494433797652511
-            // https://getrebuild.com/docs/rbv/openapi/page-token-verify
+            // https:// /docs/rbv/openapi/page-token-verify
 
             if (value.contains("$RBTOKEN$") || value.contains("%24RBTOKEN%24")) {
 

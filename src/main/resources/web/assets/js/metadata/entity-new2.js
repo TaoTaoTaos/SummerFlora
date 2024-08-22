@@ -170,7 +170,7 @@ class EntityNew2 extends RbModalHandler {
                         <u className="text-bold">{$fileCutName(this.state.excelfile)}</u>
                       </div>
                     )}
-                    <p className="form-text link">{WrapHtml($L('[点击查看](https://getrebuild.com/docs/admin/entity/#%E4%BB%8E%20EXCEL%20%E5%AF%BC%E5%85%A5) 数据文件格式要求'))}</p>
+                    <p className="form-text link">{WrapHtml($L('[点击查看](https:// /docs/admin/entity/#%E4%BB%8E%20EXCEL%20%E5%AF%BC%E5%85%A5) 数据文件格式要求'))}</p>
                   </div>
                 </div>
                 <div className="form-group row">
@@ -206,7 +206,7 @@ class EntityNew2 extends RbModalHandler {
               </div>
             </div>
             <div className="mt-2 text-right hide">
-              <a href="https://getrebuild.com/market/go/1220-rb-store" className="link" target="_blank">
+              <a href="https:// /market/go/1220-rb-store" className="link" target="_blank">
                 {$L('提交数据到 RB 仓库')}
               </a>
             </div>

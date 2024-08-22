@@ -34,7 +34,7 @@ class LanguageTest extends TestSupport {
     void getMdLang() {
         System.out.println(Language.L("**加粗**"));
         System.out.println(Language.L("换行 [] 第二行"));
-        System.out.println(Language.L("这是一个 [链接](https://getrebuild.com/)"));
+        System.out.println(Language.L("这是一个 [链接](https:// /)"));
     }
 
     @Test
