@@ -10,7 +10,7 @@ db.CachePassword:
 # REBUILD
 rebuild:
   # Cloud Storage - Use https://www.qiniu.com/
-  StorageURL: //qn-cdn.getrebuild.com/
+  StorageURL: //qn-cdn. /
   StorageBucket: rb-cdn
   StorageApiKey: AES(zYkDunIsyaZd71rZoW1KPtJPIutYBsBqNaZxpE+4xNl9urgpG+Py0Q0w5m2+Z72e)
   StorageApiSecret: AES(Ke7e7qzT+5F2HC3C/89a5Aq+UopTPHygiSpPfnQjnSrpxgUtiSlauQbPnowtl+ew)
@@ -21,7 +21,7 @@ rebuild:
   # Mail - Use https://www.mysubmail.com/
   MailUser: 14022
   MailPassword: AES(vRnLDh4PVen2faMH+itQuFjzwBcWtCTO6qslkF36VAoKxKZT7YVYoWKjP8gPrEIS)
-  MailAddr: hi@smtp.getrebuild.com
+  MailAddr: hi@smtp. 
   MailName: REBUILD
 
 # DEV

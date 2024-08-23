@@ -79,7 +79,7 @@ public class UrlSafe extends BaseController {
         if (TRUSTED_URLS == null) {
             String s = CommonsUtils.getStringOfRes("trusted-urls.json");
             TRUSTED_URLS = JSON.parseArray(StringUtils.defaultIfBlank(s, JSONUtils.EMPTY_ARRAY_STR));
-            TRUSTED_URLS.add("getrebuild.com");
+            TRUSTED_URLS.add(" ");
         }
 
         for (Object t : TRUSTED_URLS) {

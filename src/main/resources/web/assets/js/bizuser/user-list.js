@@ -87,7 +87,7 @@ class UserImport extends RbModalHandler {
                 className="form-text mt-0 mb-0 link"
                 dangerouslySetInnerHTML={{
                   __html: $L(
-                    '请按照 [模板文件](https://getrebuild.com/docs/images/USERS_TEMPLATE.xls) 要求填写并上传，更多说明请 [参考文档](https://getrebuild.com/docs/admin/users#2.%20%E6%89%B9%E9%87%8F%E5%AF%BC%E5%85%A5)'
+                    '请按照 [模板文件](https:// /docs/images/USERS_TEMPLATE.xls) 要求填写并上传，更多说明请 [参考文档](https:// /docs/admin/users#2.%20%E6%89%B9%E9%87%8F%E5%AF%BC%E5%85%A5)'
                   ),
                 }}
               />

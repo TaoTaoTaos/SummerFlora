@@ -51,7 +51,7 @@ public class OpenApiSDK {
      * @param appSecret
      */
     public OpenApiSDK(String appId, String appSecret) {
-        this(appId, appSecret, "https://nightly.getrebuild.com/gw/api/");
+        this(appId, appSecret, "https://nightly. /gw/api/");
     }
 
     /**

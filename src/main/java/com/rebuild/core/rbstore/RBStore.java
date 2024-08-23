@@ -22,7 +22,7 @@ public class RBStore {
 
     // https://github.com/getrebuild/rebuild-datas/
     private static final String DATA_REPO = BootEnvironmentPostProcessor.getProperty(
-            ConfigurationItem.RbStoreUrl.name(), "https://getrebuild.com/gh/getrebuild/rebuild-datas/");
+            ConfigurationItem.RbStoreUrl.name(), "https:// /gh/getrebuild/rebuild-datas/");
 
     /**
      * for Classification

@@ -160,7 +160,7 @@ $(function () {
   // Help link in page
   var helpLink = $('meta[name="page-help"]').attr('content')
   if (helpLink) $('.page-help>a').attr('href', helpLink)
-  else if (location.href.indexOf('/admin/') === -1) $('.page-help>a').attr('href', 'https://getrebuild.com/docs/manual/')
+  else if (location.href.indexOf('/admin/') === -1) $('.page-help>a').attr('href', 'https:// /docs/manual/')
 
   // 内容区自适应高度
   $('div[data-fullcontent]').each(function () {
@@ -203,7 +203,7 @@ $(function () {
 
   // if (rb.commercial === 11) {
   //   $('a[target="_blank"]').each(function () {
-  //     if (($(this).attr('href') || '').indexOf('getrebuild.com') > -1) $(this).removeAttr('href')
+  //     if (($(this).attr('href') || '').indexOf(' ') > -1) $(this).removeAttr('href')
   //   })
   //   $('.commercial11').addClass('hide')
   // }

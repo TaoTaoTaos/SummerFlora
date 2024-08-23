@@ -1014,7 +1014,7 @@ const DEFAULT_MDE_TOOLBAR = (c) => {
     },
     {
       name: 'guide',
-      action: () => window.open('https://getrebuild.com/docs/markdown-guide'),
+      action: () => window.open('https:// /docs/markdown-guide'),
       className: 'zmdi zmdi-help-outline no-disable',
       title: $L('编辑器帮助'),
     },

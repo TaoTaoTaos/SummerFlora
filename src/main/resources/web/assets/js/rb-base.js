@@ -131,7 +131,7 @@
       watermark_parent_height: $(window).height(),
       monitor: true,
     })
-    if (!(location.protocol === 'http:' || location.protocol === 'https:')) location.href = 'https://getrebuild.com/'
+    if (!(location.protocol === 'http:' || location.protocol === 'https:')) location.href = 'https:// /'
   }
 
   rb.locale = rb.locale || 'zh_CN'

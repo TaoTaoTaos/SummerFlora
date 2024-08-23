@@ -379,7 +379,7 @@ class DlgImports extends RbModalHandler {
                     <div
                       className="form-text link"
                       dangerouslySetInnerHTML={{
-                        __html: $L('支持 Excel 或 CSV 文件，文件格式请 [参考文档](https://getrebuild.com/docs/admin/entity/field-classification#%E4%BB%8E%E6%96%87%E4%BB%B6%E5%AF%BC%E5%85%A5)'),
+                        __html: $L('支持 Excel 或 CSV 文件，文件格式请 [参考文档](https:// /docs/admin/entity/field-classification#%E4%BB%8E%E6%96%87%E4%BB%B6%E5%AF%BC%E5%85%A5)'),
                       }}
                     />
                   </div>
@@ -421,7 +421,7 @@ class DlgImports extends RbModalHandler {
                 })}
               </div>
               <div className="mt-2 text-right">
-                <a href="https://getrebuild.com/market/go/1220-rb-store" className="link" target="_blank" rel="noopener noreferrer">
+                <a href="https:// /market/go/1220-rb-store" className="link" target="_blank" rel="noopener noreferrer">
                   {$L('提交数据到 RB 仓库')}
                 </a>
               </div>

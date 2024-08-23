@@ -21,7 +21,7 @@ public enum ConfigurationItem {
     AppName("REBUILD"),
     LOGO,
     LOGOWhite,
-    HomeURL("https://getrebuild.com/"),
+    HomeURL("https://getrebuil.com/"),
     PageFooter,
 
     // 云存储
