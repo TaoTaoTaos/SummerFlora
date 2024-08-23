@@ -1,4 +1,4 @@
- 
+
 
 const userId = window.__PageConfig.recordId
 
@@ -259,10 +259,7 @@ class DlgEnableUser extends RbModalHandler {
     }
     if (this._roleAppends) {
       data.roleAppends = this._roleAppends.val().join(',')
-      if (data.roleAppends && rb.commercial < 1) {
-        RbHighbar.error(WrapHtml($L(' 不支持附加角色功能 [()](')))
-        return
-      }
+
     }
 
     const $btn = $(this._btns).find('.btn').button('loading')

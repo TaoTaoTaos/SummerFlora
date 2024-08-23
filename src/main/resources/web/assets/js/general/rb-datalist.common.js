@@ -1,4 +1,4 @@
- 
+
 /* global FieldValueSet, ListAdvFilter */
 // 列表公共操作
 
@@ -284,9 +284,9 @@ class BatchOperator extends RbFormHandler {
 
   // 子类复写
 
-  renderOperator() {}
+  renderOperator() { }
 
-  handleConfirm() {}
+  handleConfirm() { }
 
   handleCancel() {
     if (!this._taskid) {
@@ -681,7 +681,7 @@ class BatchApprove extends BatchOperator {
   }
 
   handleConfirm() {
-   
+
 
     if (!this.state.approveState) return RbHighbar.create($L('请选择审批结果'))
 
@@ -1086,7 +1086,7 @@ class RbList extends React.Component {
       protocolFilter: this.props.protocolFilter || wpc.protocolFilter,
       sort: fieldSort,
       reload: reload,
-      statsField: wpc.statsField === true ,
+      statsField: wpc.statsField === true,
     }
     this.__lastQueryEntry = query
 
@@ -1208,7 +1208,7 @@ class RbList extends React.Component {
     // 分页组件
     if (this._Pagination) {
       this._Pagination.setState({ selectedTotal: chkSelected }, () => {
-        if (wpc.statsField !== true || rb.commercial < 10) return
+
 
         if (chkSelected > 1) {
           const ids = this.getSelectedIds(true)
@@ -1372,7 +1372,7 @@ class RbList extends React.Component {
 
   // 组件渲染后调用
   // eslint-disable-next-line no-unused-vars
-  static renderAfter(list) {}
+  static renderAfter(list) { }
 }
 
 // 分页组件
@@ -1475,7 +1475,7 @@ class RbListPagination extends React.Component {
                 </RF>
               )
             }}>
-            
+
           </a>
         )}
       </div>

@@ -1,4 +1,4 @@
- 
+
 /* global FIELD_TYPES */
 
 const wpc = window.__PageConfig
@@ -70,10 +70,7 @@ $(document).ready(() => {
   })
 
   $('.J_add-refform').on('click', () => {
-    if (rb.commercial < 1) {
-      RbHighbar.error(WrapHtml($L(' 不支持引用表单功能 [()](')))
-      return
-    }
+
 
     $('.nav-tabs-classic a[href="#form-design"]').tab('show')
     render_item({ fieldName: REFFORM_LINE, fieldLabel: '', colspan: 4 })
@@ -194,11 +191,7 @@ $(document).ready(() => {
   })()
 
   $('.nav-tabs-classic a[href="#adv-control"]').on('click', (e) => {
-    if (rb.commercial < 1) {
-      e.preventDefault()
-      RbHighbar.error(WrapHtml($L(' 不支持高级控制功能 [()](')))
-      return false
-    }
+
 
     // 只显示布局的
     const shows = []
@@ -593,7 +586,7 @@ class DlgEditRefform extends DlgEditField {
   }
 
   _loadFormsAttr(init) {
-    if (rb.commercial < 1) return
+
     const f = init ? this.props.reffield : this.state.reffield
     if (f) {
       const e = _ValidFields[f].displayTypeRef[0]

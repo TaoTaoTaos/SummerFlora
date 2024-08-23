@@ -1,4 +1,4 @@
- 
+
 
 $(document).ready(() => {
   const entity = $urlp('entity')
@@ -28,10 +28,7 @@ $(document).ready(() => {
     .disableSelection()
 
   const $btn = $('.J_save').on('click', () => {
-    if (rb.commercial < 1) {
-      RbHighbar.error(WrapHtml($L(' 不支持此功能 [()](')))
-      return
-    }
+
 
     const config = { items: [] }
     $('.set-items > span').each(function () {

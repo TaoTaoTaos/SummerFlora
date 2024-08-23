@@ -1,4 +1,4 @@
- 
+
 
 // eslint-disable-next-line no-undef, no-unused-vars
 window.clickIcon = function (icon) {
@@ -49,21 +49,7 @@ $(document).ready(() => {
     extConfig.enableRecordMerger = $val('#enableRecordMerger')
 
     // v3.6
-    if (rb.commercial < 10) {
-      const checkAdv = ['detailsNotEmpty', 'detailsGlobalRepeat', 'detailsShowAt2', 'detailsCopiable', 'repeatFieldsCheckMode', 'disabledViewEditable', 'enableRecordMerger']
-      let needRbv = false
-      for (let i = 0; i < checkAdv.length; i++) {
-        if ($val(`#${checkAdv[i]}`)) {
-          needRbv = true
-          break
-        }
-      }
 
-      if (needRbv) {
-        RbHighbar.error(WrapHtml($L(' 不支持高级选项 [()](')))
-        return
-      }
-    }
 
     extConfig = wpc.extConfig ? { ...wpc.extConfig, ...extConfig } : extConfig
     if (!$same(extConfig, wpc.extConfig)) data.extConfig = extConfig

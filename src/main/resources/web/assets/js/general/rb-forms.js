@@ -1678,10 +1678,7 @@ class RbFormImage extends RbFormElement {
   _fileClick(e) {
     if (this._captureType) {
       $stopEvent(e, true)
-      if (rb.commercial < 1) {
-        RbHighbar.error(WrapHtml($L(' 不支持此功能 [()](')))
-        return
-      }
+     
 
       const w = $(window).width() <= 1280 ? 768 : 1024
       renderRbcomp(

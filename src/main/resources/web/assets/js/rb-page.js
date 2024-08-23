@@ -1,4 +1,4 @@
- 
+
 /* eslint-disable no-unused-vars */
 /* !!! KEEP IT ES5 COMPATIBLE !!! */
 
@@ -53,7 +53,7 @@ $(function () {
     $unhideDropdown($hasNotification).on('shown.bs.dropdown', _loadMessages)
     setTimeout(_checkMessage, 2000)
     // NEED: service-worker.js
-    document.addEventListener('notificationclick', function () {})
+    document.addEventListener('notificationclick', function () { })
   }
 
   var $hasUser = $('.J_top-user')
@@ -175,7 +175,7 @@ $(function () {
 
   // Theme
   $('.use-theme a').on('click', function () {
-   
+
 
     var theme = $(this).data('theme')
     $.get('/commons/theme/set-use-theme?theme=' + theme, function () {
@@ -427,8 +427,8 @@ var _showNotification = function (state) {
       n.onclick = function () {
         location.href = rb.baseUrl + '/notifications'
       }
-      n.onclose = function () {}
-      n.onerror = function () {}
+      n.onclose = function () { }
+      n.onerror = function () { }
     } else {
       _Notification.requestPermission()
     }

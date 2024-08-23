@@ -1,4 +1,4 @@
- 
+
 
 // eslint-disable-next-line no-undef
 RbForm.postAfter = function (data) {
@@ -26,7 +26,7 @@ $(document).ready(() => {
     $('.J_copy-role').on('click', () => renderRbcomp(<CopyRoleTo roleId={roleId} />))
 
     $('.nav-tabs li:eq(2)').removeClass('hide')
-    renderRbcomp(<MemberList id={roleId} />, 'tab-members', function () {})
+    renderRbcomp(<MemberList id={roleId} />, 'tab-members', function () { })
   }
 
   // ENTITY
@@ -74,10 +74,7 @@ $(document).ready(() => {
   }
 
   $('#priv-entity tbody td>a.cp').on('click', function () {
-    if (rb.commercial < 1) {
-      RbHighbar.error(WrapHtml($L(' 不支持自定义权限功能 [()](')))
-      return
-    }
+
 
     const entity = $(this).parent().parent().find('.name>a').data('entity')
     const action = $(this).prev().data('action')

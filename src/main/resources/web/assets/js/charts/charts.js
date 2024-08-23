@@ -1,4 +1,4 @@
- 
+
 
 // in `chart-design`
 const __PREVIEW = !!(window.__PageConfig || {}).chartConfig
@@ -131,10 +131,7 @@ class BaseChart extends React.Component {
   }
 
   export() {
-    if (rb.commercial < 1) {
-      RbHighbar.error(WrapHtml($L(' 不支持此功能 [()](')))
-      return
-    }
+
 
     if (this._echarts) {
       const base64 = this._echarts.getDataURL({

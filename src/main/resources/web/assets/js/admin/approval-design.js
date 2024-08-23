@@ -1,4 +1,4 @@
- 
+
 
 const wpc = window.__PageConfig
 let fieldsCache
@@ -891,16 +891,7 @@ class ApproverNodeConfig extends StartNodeConfig {
       return
     }
 
-    if (rb.commercial < 1) {
-      if (d.allowReferral || d.allowCountersign || d.allowBatch) {
-        RbHighbar.error(WrapHtml($L(' 不支持转审/加签/批量审批功能 [()](')))
-        return
-      }
-      if (~~expiresAuto.expiresAuto > 0) {
-        RbHighbar.error(WrapHtml($L(' 不支持限时审批功能 [()](')))
-        return
-      }
-    }
+
 
     typeof this.props.call === 'function' && this.props.call(d)
     this.cancel()
