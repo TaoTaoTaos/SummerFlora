@@ -1,3 +1,9 @@
+/*!
+Copyright (c) REBUILD <https://getrebuild.com/> and/or its owners. All rights reserved.
+
+rebuild is dual-licensed under commercial and open source licenses (GPLv3).
+See LICENSE and COMMERCIAL in the project root for license information.
+*/
 
 package com.rebuild.utils;
 
@@ -71,14 +77,17 @@ public class ImageView2 {
 
         BufferedImage bi = ImageIO.read(img);
         if (bi == null) {
-            log.debug("Unsupportted image type : {}", img);
+            log.debug("Unsupported image type: {}", img);
             return null;
         }
 
         int wh = getWidth();
         Thumbnails.Builder<BufferedImage> builder = Thumbnails.of(bi);
-        if (bi.getWidth() > wh) {
-            builder.size(wh, wh);
+
+        if (bi.getWidth() > wh || bi.getHeight() > wh) {
+            // 设置宽度并保持比例
+            builder.size(wh, wh)
+                    .keepAspectRatio(true); // 保持原始比例
         } else {
             builder.scale(1.0);
         }

@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
   <head>
     <th:block th:replace="~{/_include/header}" />
-    <meta name="page-help" content="https:// /docs/admin/entity/layout#%E5%88%97%E8%A1%A8%E9%A1%B5%E9%9D%A2" />
+    <meta name="page-help" content="https://getrebuild.com/docs/admin/entity/layout#%E5%88%97%E8%A1%A8%E9%A1%B5%E9%9D%A2" />
     <title>[[${bundle.L('高级配置')}]]</title>
     <link rel="stylesheet" type="text/css" th:href="@{/assets/css/entity-advanced.css}" />
   </head>
@@ -36,7 +36,91 @@
           <div class="page-head-title">[[${bundle.L('高级配置')}]]</div>
         </div>
         <div class="main-content container-fluid pt-1">
-         
+          <div th:if="${useListMode}" class="card">
+            <div class="card-header">
+              [[${bundle.L('列表模式')}]]
+              <sup class="rbv"></sup>
+              <i class="support-plat2 mdi mdi-monitor mt-1" th:title="${bundle.L('PC 端适用')}"></i>
+            </div>
+            <div class="card-body mode-select">
+              <div class="row">
+                <div class="col">
+                  <div class="row ph">
+                    <div class="col-2 p-0">
+                      <div class="block"></div>
+                    </div>
+                    <div class="col-10 p-0">
+                      <div class="block" style="height: 10%"></div>
+                      <div class="block" style="height: 90%">
+                        <div class="block-item mt-1"></div>
+                        <div class="block-item"></div>
+                        <div class="block-item"></div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="text-center">
+                    <h5 class="font-weight-bold">[[${bundle.L('标准模式')}]]</h5>
+                    <div class="btn-group">
+                      <button class="btn btn-secondary J_mode-select" type="button" data-mode="1">[[${bundle.L('使用')}]]</button>
+                      <button class="btn btn-secondary J_mode1-option w-auto" type="button"><i class="icon zmdi zmdi-settings"></i></button>
+                    </div>
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="row ph">
+                    <div class="col-3 p-0">
+                      <div class="block">
+                        <div class="block-item mt-1"></div>
+                        <div class="block-item"></div>
+                        <div class="block-item"></div>
+                      </div>
+                    </div>
+                    <div class="col-9 p-0">
+                      <div class="block"></div>
+                    </div>
+                  </div>
+                  <div class="text-center">
+                    <h5 class="font-weight-bold">[[${bundle.L('详情模式')}]]</h5>
+                    <div class="btn-group">
+                      <button class="btn btn-secondary J_mode-select" type="button" data-mode="2">[[${bundle.L('使用')}]]</button>
+                      <button class="btn btn-secondary J_mode2-option w-auto" type="button"><i class="icon zmdi zmdi-settings"></i></button>
+                    </div>
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="row ph">
+                    <div class="col-2 p-0">
+                      <div class="block"></div>
+                    </div>
+                    <div class="col-10 p-0">
+                      <div class="block">
+                        <div class="block-item3" style="margin-left: 3%">
+                          <i class="mdi mdi-image-outline"></i>
+                          <div class="block-item"></div>
+                        </div>
+                        <div class="block-item3">
+                          <i class="mdi mdi-image-outline"></i>
+                          <div class="block-item"></div>
+                        </div>
+                        <div class="block-item3">
+                          <i class="mdi mdi-image-outline"></i>
+                          <div class="block-item"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="text-center">
+                    <h5 class="font-weight-bold">[[${bundle.L('卡片模式')}]]</h5>
+                    <div class="btn-group">
+                      <button class="btn btn-secondary J_mode-select" type="button" data-mode="3">[[${bundle.L('使用')}]]</button>
+                      <button class="btn btn-secondary J_mode3-option w-auto" type="button"><i class="icon zmdi zmdi-settings"></i></button>
+                    </div>
+                  </div>
+                </div>
+                <div class="col"></div>
+              </div>
+            </div>
+          </div>
           <div class="card">
             <div class="card-header">[[${bundle.L('删除实体')}]]</div>
             <div class="card-body">
@@ -65,7 +149,7 @@
           <div class="card bosskey-show">
             <div class="card-header">[[${bundle.L('导出实体')}]]</div>
             <div class="card-body">
-              <p class="link" th:utext="${bundle.L('将实体的元数据导出，方便与其他实例间共享。你也可以将导出文件发布到 [RB 仓库](https:// /market/go/1220-rb-store)。')}"></p>
+              <p class="link" th:utext="${bundle.L('将实体的元数据导出，方便与其他实例间共享。你也可以将导出文件发布到 [RB 仓库](https://getrebuild.com/market/go/1220-rb-store)。')}"></p>
               <div>
                 <a th:href="|../entity-export?id=${entityMetaId}|" target="_blank" class="btn btn-primary"><i class="zmdi zmdi-cloud-download icon"></i> [[${bundle.L('导出')}]]</a>
               </div>

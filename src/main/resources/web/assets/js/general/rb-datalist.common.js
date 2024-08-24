@@ -1209,7 +1209,7 @@ class RbList extends React.Component {
     if (this._Pagination) {
       this._Pagination.setState({ selectedTotal: chkSelected }, () => {
 
-
+    if (wpc.statsField !== true || rb.commercial < 10) return
         if (chkSelected > 1) {
           const ids = this.getSelectedIds(true)
           const qurey = {
@@ -1218,7 +1218,7 @@ class RbList extends React.Component {
             fields: [],
             statsField: true,
           }
-
+          
           $.post(`/app/${this._entity}/data-list-stats`, JSON.stringify(qurey), (res) => {
             this._Pagination.setState({ rowsStats: res.data || [] })
             if (res.error_code !== 0) RbHighbar.error(res.error_msg)

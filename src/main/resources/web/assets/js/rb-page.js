@@ -324,9 +324,7 @@ var _initNav = function () {
     })
   }
 
-  setTimeout(function () {
-    $('sup.rbv').attr('title', $L('增值功能'))
-  }, 400)
+ 
 
   // Active Outer-URL Nav
   var urls = location.href.split('/')

@@ -293,7 +293,7 @@ $(document).ready(function () {
           }
         })
       },
-      countdown: 5,
+      countdown: 1,
     })
   })
 
