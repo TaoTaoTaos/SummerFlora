@@ -46,36 +46,7 @@ $(document).ready(() => {
   })
 })
 
-// 列表模式
-function _listmodeAction() {
 
-  if (!wpc.id) {
-    $('.mode-select .btn').on('click', () => RbHighbar.create($L('系统内置实体暂不支持')))
-    return
-  }
-
-  if (wpc.extConfig && wpc.extConfig.advListMode) {
-    $('.mode-select .btn[data-mode=' + wpc.extConfig.advListMode + ']')
-      .addClass('active')
-      .text($L('当前模式'))
-  }
-
-  $('.mode-select .J_mode-select').on('click', function () {
-    const $btn = $(this)
-    RbAlert.create($L('确认切换到此列表模式？'), {
-      onConfirm: function () {
-        this.disabled(true)
-        const mode = $btn.data('mode')
-        modeSave({ advListMode: mode }, () => location.reload())
-      },
-    })
-  })
-
-  // Mode's Option
-  $('.mode-select .J_mode1-option').on('click', () => renderDlgcomp(<DlgMode1Option />, '_DlgMode1Option'))
-  $('.mode-select .J_mode2-option').on('click', () => renderDlgcomp(<DlgMode2Option />, '_DlgMode2Option'))
-  $('.mode-select .J_mode3-option').on('click', () => renderDlgcomp(<DlgMode3Option />, '_DlgMode3Option'))
-}
 
 function modeSave(newOption, next) {
   const extConfig = wpc.extConfig ? { ...wpc.extConfig, ...newOption } : { ...newOption }

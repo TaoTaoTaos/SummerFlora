@@ -134,9 +134,7 @@ class ReportEditor extends ConfigFormDlg {
                 </label>
                 <label className="custom-control custom-control-sm custom-radio custom-control-inline mb-0">
                   <input className="custom-control-input J_word4" type="radio" value="4" name="reportType" onChange={() => this.checkTemplate()} />
-                  <span className="custom-control-label">
-                    WORD <sup className="rbv" />
-                  </span>
+                  
                 </label>
               </div>
             </div>
@@ -158,7 +156,7 @@ class ReportEditor extends ConfigFormDlg {
               {this.state.uploadFileName && <u className="text-bold">{this.state.uploadFileName}</u>}
             </div>
             <div className="clearfix" />
-            <p className="form-text mt-0 mb-0 link" dangerouslySetInnerHTML={{ __html: $L('[如何编写模板文件](https:// /docs/admin/excel-admin)') }} />
+           
 
             {(this.state.invalidVars || []).length > 0 && (
               <div className="invalid-vars mt-2 mr-3">
