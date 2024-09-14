@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
   <head>
     <th:block th:replace="~{/_include/header}" />
-    <meta name="page-help" content="https:// /docs/admin/syscfg" />
+   
     <title>[[${bundle.L('通用配置')}]]</title>
     <style>
       .syscfg a.img-thumbnail {
@@ -121,19 +121,28 @@
                         <td>[[${bundle.L('主页地址/域名')}]]</td>
                         <td data-id="HomeURL" th:data-value="${HomeURL}" th:data-form-text="${bundle.L('所有外部链接将以此作为前缀')}">[[${HomeURL}]]</td>
                       </tr>
-                      
+                      <tr>
+                        <td>[[${bundle.L('默认语言')}]] <sup class="rbv"></sup></td>
+                        <td th:data-id="${commercial > 1 ? 'DefaultLanguage' : ''}" th:data-value="${DefaultLanguage}" id="_DefaultLanguage">[[${DefaultLanguage}]]</td>
+                      </tr>
                       <tr>
                         <td>[[${bundle.L('页脚')}]]</td>
                         <td
                           data-id="PageFooter"
                           th:data-value="${PageFooter}"
                           data-optional="true"
-                          th:data-form-text="${bundle.L('仅适用于外部页面，支持 [MD 语法](https:// /docs/markdown-guide#%E5%9F%BA%E6%9C%AC%E8%AF%AD%E6%B3%95)')}"
+                          th:data-form-text="${bundle.L('仅适用于外部页面，支持 [MD 语法]')}"
                         >
                           <pre class="unstyle text-break">[[${PageFooter ?:bundle.L('无')}]]</pre>
                         </td>
                       </tr>
-                     
+                      <tr>
+                        <td>
+                          [[${bundle.L('登录页每日一图')}]]
+                          <i class="support-plat2 mdi mdi-monitor mt-0" th:title="${bundle.L('PC 端适用')}"></i>
+                        </td>
+                        <td data-id="LiveWallpaper" th:data-value="${LiveWallpaper}">[[${LiveWallpaper ? bundle.L('是') : bundle.L('否')}]]</td>
+                      </tr>
                       <tr>
                         <td>
                           [[${bundle.L('自定义登录页图')}]]
@@ -152,7 +161,10 @@
                   <h5>[[${bundle.L('安全使用')}]]</h5>
                   <table class="table">
                     <tbody>
-                     
+                      <tr>
+                        <td width="40%">[[${bundle.L('显示页面水印')}]] <sup class="rbv"></sup></td>
+                        <td th:data-id="${commercial > 1 ? 'MarkWatermark' : ''}" th:data-value="${MarkWatermark}">[[${MarkWatermark ? bundle.L('是') : bundle.L('否')}]]</td>
+                      </tr>
                       <tr>
                         <td>[[${bundle.L('允许分享文件')}]]</td>
                         <td data-id="FileSharable" th:data-value="${FileSharable}">[[${FileSharable ? bundle.L('是') : bundle.L('否')}]]</td>
@@ -174,8 +186,50 @@
                         </td>
                       </tr>
                       <tr>
-                   
+                        <td>[[${bundle.L('登录密码过期时间')}]] <sup class="rbv"></sup></td>
+                        <td th:data-id="${commercial > 0 ? 'PasswordExpiredDays' : ''}" th:data-value="${PasswordExpiredDays}">
+                          <th:block th:if="${PasswordExpiredDays == '0'}">[[${bundle.L('不启用')}]]</th:block>
+                          <th:block th:if="${PasswordExpiredDays != '0'}">[[${PasswordExpiredDays}]] [[${bundle.L('天')}]]</th:block>
+                        </td>
+                      </tr>
                      
+                      <tr>
+                        <td>[[${bundle.L('允许使用时间')}]] <sup class="rbv"></sup></td>
+                        <td
+                          th:data-id="${commercial > 1 ? 'AllowUsesTime' : ''}"
+                          th:data-value="${AllowUsesTime}"
+                          data-optional="true"
+                          th:data-form-text="${bundle.L('仅指定时间可使用，每个时间一行，如 `10` `9-18` 等')}"
+                        >
+                          <pre class="unstyle">[[${AllowUsesTime ?:bundle.L('不限')}]]</pre>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>[[${bundle.L('允许使用 IP')}]] <sup class="rbv"></sup></td>
+                        <td
+                          th:data-id="${commercial > 1 ? 'AllowUsesIp' : ''}"
+                          th:data-value="${AllowUsesIp}"
+                          data-optional="true"
+                          th:data-form-text="${bundle.L('仅指定 IP 可使用，每个 IP 一行，如 `192.168.*` `192.168.10.*` 等')}"
+                        >
+                          <pre class="unstyle">[[${AllowUsesIp ?:bundle.L('不限')}]]</pre>
+                        </td>
+                      </tr>
+                      <tr class="bosskey-show">
+                        <td>[[${bundle.L('同一用户允许多地登录')}]] <sup class="rbv"></sup></td>
+                        <td th:data-id="${commercial > 0 ? 'MultipleSessions' : ''}" th:data-value="${MultipleSessions}">[[${MultipleSessions ? bundle.L('是') : bundle.L('否')}]]</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <h5>[[${bundle.L('数据安全')}]]</h5>
+                  <table class="table">
+                    <tbody>
+                      <tr>
+                        <td width="40%">[[${bundle.L('数据自动备份')}]]</td>
+                        <td data-id="DBBackupsEnable" th:data-value="${DBBackupsEnable}" th:data-form-text="${bundle.L('每日 0 点备份到数据目录，请预留足够磁盘空间')}">
+                          [[${DBBackupsEnable ? bundle.L('是') : bundle.L('否')}]]
+                        </td>
+                      </tr>
                       <tr>
                         <td>[[${bundle.L('备份保留时间')}]]</td>
                         <td data-id="DBBackupsKeepingDays" th:data-value="${DBBackupsKeepingDays}">[[${DBBackupsKeepingDays}]] [[${bundle.L('天')}]]</td>
@@ -202,9 +256,28 @@
                         <td data-id="PortalUploadMaxSize" th:data-value="${PortalUploadMaxSize}" data-optional="true">[[${PortalUploadMaxSize}]] MB</td>
                       </tr>
                       <tr>
-                        
+                        <td>[[${bundle.L('文档预览服务地址')}]] <sup class="rbv"></sup></td>
+                        <td th:data-id="${commercial > 1 ? 'PortalOfficePreviewUrl' : ''}" th:data-value="${PortalOfficePreviewUrl}" data-optional="true">
+                          [[${PortalOfficePreviewUrl ?:bundle.L('默认')}]]
+                        </td>
+                      </tr>
+                      <tr class="bosskey-show">
+                        <td>[[${bundle.L('百度地图 AK')}]] <sup class="rbv"></sup></td>
+                        <td th:data-id="${commercial > 1 ? 'PortalBaiduMapAk' : ''}" th:data-value="${PortalBaiduMapAk}" data-optional="true">[[${PortalBaiduMapAk ?:bundle.L('默认')}]]</td>
+                      </tr>
+                    
                       <tr>
-                       
+                        <td>[[${bundle.L('手机版菜单样式')}]] <sup class="rbv"></sup></td>
+                        <td th:data-id="${commercial > 1 ? 'MobileNavStyle' : ''}" th:data-value="${MobileNavStyle}" data-optional="true" id="_MobileNavStyle">[[${MobileNavStyle}]]</td>
+                      </tr>
+                      <tr>
+                        <td>[[${bundle.L('APP 安装包')}]] <sup class="rbv"></sup></td>
+                        <td class="td-MobileAppPath">
+                          <a class="J_MobileAppPath hide-empty mr-1 link" target="_blank" href="../h5app-download">[[${MobileAppPath}]]</a>
+                          <input type="file" class="hide J_MobileAppPath" accept=".apk" />
+                          <button class="btn btn-light btn-sm J_MobileAppPath" type="button"><i class="icon zmdi zmdi-upload"></i> [[${bundle.L('上传')}]]<span></span></button>
+                          <button class="btn btn-light w-auto btn-sm J_MobileAppPath-del hide" type="button" th:title="${bundle.L('删除')}"><i class="icon zmdi zmdi-delete"></i></button>
+                        </td>
                       </tr>
                     </tbody>
                   </table>
@@ -217,7 +290,50 @@
                 </div>
               </div>
             </div>
-            
+            <div class="col-lg-3 col-12 col-right-compact">
+              <div class="card">
+                <div class="card-header card-header-divider">[[${bundle.L('版本与授权')}]]</div>
+                <div class="card-body">
+                  <p class="mb-1">[[${bundle.L('系统版本')}]]<a class="link ml-1" target="_blank" th:href="|https://getrebuild.com/download?v=${Version}|">[[${Version}]]</a></p>
+                  <p class="mb-1">[[${bundle.L('授权类型')}]]<a class="link ml-1" target="_blank" th:href="|https://getrebuild.com/authority?sn=${SN}|">[[${LicenseType}]]</a></p>
+                  <p th:if="${VN != null}" class="mb-2">
+                    [[${bundle.L('支持服务码')}]]<span class="ml-1">[[${VN}]]</span>
+                    <a th:if="${VNExpires}" class="badge badge-danger up-2 badge-pill" th:href="'https://getrebuild.com/buy-license?type=10fw&vn=' + ${VN}" target="_blank">
+                      <i class="mdi mdi-information-variant"></i>[[${bundle.L('已过期 [点击续费]')}]]
+                    </a>
+                  </p>
+                  <ul style="line-height: 2">
+                    <li><a class="link" target="_blank" th:href="@{/error/server-status}">[[${bundle.L('系统状态')}]]</a></li>
+                  
+                  </ul>
+                 
+                </div>
+              </div>
+              <div class="card mt-3 J_maintenanceMode">
+                <div class="card-body pt-4">
+                  <button class="btn btn-danger btn-lg w-100 btn-outline">
+                    <i class="mdi mdi-message-alert-outline icon fs-18"></i>
+                    [[${bundle.L('开启维护计划')}]]
+                  </button>
+                  <div class="note">
+                    <dl class="mb-0 mt-1" style="line-height: 1.7">
+                      <dt>[[${bundle.L('计划维护时间')}]]</dt>
+                      <dd></dd>
+                      <dt>[[${bundle.L('维护原因')}]]</dt>
+                      <dd></dd>
+                    </dl>
+                  </div>
+                </div>
+              </div>
+              <div class="card mt-3 J_cloudAccount hide">
+               
+               
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
     <th:block th:replace="~{/_include/footer}" />
     <script>
       window.__PageConfig = {

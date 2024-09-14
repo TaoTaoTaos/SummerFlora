@@ -984,7 +984,7 @@ class CCNodeConfig extends StartNodeConfig {
       accounts: this._UserSelector2.getSelected(),
     }
 
-    if (d.accounts.length > 1 && rb.commercial < 1) {
+    if (d.accounts.length > 1 ) {
       RbHighbar.error(WrapHtml($L(' 不支持抄送给外部人员功能 [()](')))
       return
     }

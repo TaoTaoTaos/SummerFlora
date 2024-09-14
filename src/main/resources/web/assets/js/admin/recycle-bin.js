@@ -60,13 +60,7 @@ class DataList extends React.Component {
 
     $('.J_restore').on('click', () => this.restore())
     $('.J_details').on('click', () => this.showDetails())
-    if (rb.commercial < 1) {
-      $('.J_restore, .J_details')
-        .off('click')
-        .on('click', () => {
-          RbHighbar.error(WrapHtml($L(' 不支持此功能 [()](')))
-        })
-    }
+   
   }
 
   queryList() {

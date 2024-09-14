@@ -59,7 +59,6 @@ $(document).ready(() => {
       $mm.find('.note').show()
     } else {
       $mm.find('.btn').on('click', () => {
-        if (rb.commercial < 1) return RbHighbar.error(WrapHtml($L(' 不支持开启维护计划功能 [()](')))
         renderRbcomp(<DlgMM />)
       })
     }
@@ -271,10 +270,7 @@ class DlgMM extends RbAlert {
 // ~~ App
 
 $(document).ready(() => {
-  if (rb.commercial < 1) {
-    $('button.J_MobileAppPath').attr('disabled', true)
-    return
-  }
+  
 
   const renderMobileAppPath = function (key) {
     const file = $fileCutName(key)

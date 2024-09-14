@@ -1,7 +1,7 @@
 <th:block xmlns:th="http://www.thymeleaf.org">
   <div class="rb-left-sidebar v2">
     <div class="left-sidebar-wrapper">
-      <a class="left-sidebar-toggle">SUMMERFLORA</a>
+      <a class="left-sidebar-toggle">REBUILD</a>
       <div class="left-sidebar-spacer">
         <div class="left-sidebar-scroll rb-scroller">
           <div class="left-sidebar-content">
@@ -10,7 +10,33 @@
               <li th:class="${active == 'systems'} ? 'active'">
                 <a th:href="@{/admin/systems}"><i class="icon mdi mdi-cog"></i><span>[[${bundle.L('通用配置')}]]</span></a>
               </li>
-             
+              <li class="parent">
+                <a><i class="icon mdi mdi-integrated-circuit-chip"></i><span>[[${bundle.L('服务集成')}]]</span></a>
+                <ul class="sub-menu">
+                  <li class="title">[[${bundle.L('服务集成')}]]</li>
+                  <li class="nav-items">
+                    <div class="rb-scroller">
+                      <div class="content">
+                        <ul>
+                          <li th:class="${active == 'integration-storage'} ? 'active'">
+                            <a th:href="@{/admin/integration/storage}"><span>[[${bundle.L('云存储')}]]</span></a>
+                          </li>
+                          <li th:class="${active == 'integration-submail'} ? 'active'">
+                            <a th:href="@{/admin/integration/submail}"><span>[[${bundle.L('邮件与短信')}]]</span></a>
+                          </li>
+                          <li th:class="${active == 'integration-wxwork'} ? 'active'">
+                            <a th:href="@{/admin/integration/wxwork}"><span>[[${bundle.L('企业微信')}]]</span> <sup class="rbv"></sup></a>
+                          </li>
+                          <li th:class="${active == 'integration-dingtalk'} ? 'active'">
+                            <a th:href="@{/admin/integration/dingtalk}"><span>[[${bundle.L('钉钉')}]]</span> <sup class="rbv"></sup></a>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </li>
+              <li th:class="${active == 'apis-manager'} ? 'active'">
                 <a th:href="@{/admin/apis-manager}"><i class="icon mdi mdi-api"></i><span>[[${bundle.L('API 密钥')}]]</span></a>
               </li>
               <li class="divider">[[${bundle.L('业务实体')}]]</li>
@@ -38,9 +64,16 @@
               <li th:class="${active == 'data-imports'} ? 'active'">
                 <a th:href="@{/admin/data/data-imports}"><i class="icon mdi mdi-database-import"></i><span>[[${bundle.L('数据导入')}]]</span></a>
               </li>
-              
-             
-              
+              <li th:class="${active == 'extforms'} ? 'active'">
+                <a th:href="@{/admin/extforms}"><i class="icon mdi mdi-format-list-group-plus"></i><span>[[${bundle.L('外部表单')}]]</span> <sup class="rbv"></sup></a>
+              </li>
+              <li class="divider">[[${bundle.L('更多功能')}]]</li>
+              <li th:class="${active == 'projects'} ? 'active'">
+                <a th:href="@{/admin/projects}"><i class="icon mdi mdi-shape-outline"></i><span>[[${bundle.L('项目')}]]</span></a>
+              </li>
+              <li th:class="${active == 'frontjs-code'} ? 'active'">
+                <a th:href="@{/admin/frontjs-code}"><i class="icon mdi mdi-language-javascript"></i><span>FrontJS</span> <sup class="rbv"></sup></a>
+              </li>
               <li class="divider">[[${bundle.L('用户')}]]</li>
               <li th:class="${active == 'users'} ? 'active'">
                 <a th:href="@{/admin/bizuser/users}"><i class="icon mdi mdi-account-multiple"></i><span>[[${bundle.L('部门用户')}]]</span></a>
@@ -48,7 +81,9 @@
               <li th:class="${active == 'role-privileges'} ? 'active'">
                 <a th:href="@{/admin/bizuser/role-privileges}"><i class="icon mdi mdi-account-lock"></i><span>[[${bundle.L('角色权限')}]]</span></a>
               </li>
-              
+              <li th:class="${active == 'teams'} ? 'active'">
+                <a th:href="@{/admin/bizuser/teams}"><i class="icon mdi mdi-briefcase-account"></i><span>[[${bundle.L('团队')}]]</span></a>
+              </li>
               <li class="divider">[[${bundle.L('审计')}]]</li>
               <li th:class="${active == 'login-logs'} ? 'active'">
                 <a th:href="@{/admin/audit/login-logs}"><i class="icon mdi mdi-login"></i><span>[[${bundle.L('登录日志')}]]</span></a>

@@ -115,9 +115,7 @@ $(document).ready(() => {
 const _clickPriv = function (elements, action) {
   if (action === 'Z' && elements.hasClass('R0')) {
     const isRbv = elements.parent().prev().find('.rbv')[0]
-    if (isRbv && rb.commercial < 1) {
-      return RbHighbar.error(WrapHtml($L(' 不支持此功能 [()](')))
-    }
+    
   }
 
   if (action === 'C' || action === 'Z') {

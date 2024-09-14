@@ -1209,7 +1209,7 @@ class RbList extends React.Component {
     if (this._Pagination) {
       this._Pagination.setState({ selectedTotal: chkSelected }, () => {
 
-    if (wpc.statsField !== true || rb.commercial < 10) return
+    if (wpc.statsField !== true ) return
         if (chkSelected > 1) {
           const ids = this.getSelectedIds(true)
           const qurey = {
