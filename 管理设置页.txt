@@ -25,10 +25,10 @@
                             <a th:href="@{/admin/integration/submail}"><span>[[${bundle.L('邮件与短信')}]]</span></a>
                           </li>
                           <li th:class="${active == 'integration-wxwork'} ? 'active'">
-                            <a th:href="@{/admin/integration/wxwork}"><span>[[${bundle.L('企业微信')}]]</span> <sup class="rbv"></sup></a>
+                            <a th:href="@{/admin/integration/wxwork}"><span>[[${bundle.L('企业微信')}]]</span>  </a>
                           </li>
                           <li th:class="${active == 'integration-dingtalk'} ? 'active'">
-                            <a th:href="@{/admin/integration/dingtalk}"><span>[[${bundle.L('钉钉')}]]</span> <sup class="rbv"></sup></a>
+                            <a th:href="@{/admin/integration/dingtalk}"><span>[[${bundle.L('钉钉')}]]</span>  </a>
                           </li>
                         </ul>
                       </div>
@@ -56,7 +56,7 @@
                 <a th:href="@{/admin/robot/triggers}"><i class="icon mdi mdi-cogs"></i><span>[[${bundle.L('触发器')}]]</span></a>
               </li>
               <li th:class="${active == 'robot-sop'} ? 'active'" th:classappend="bosskey-show">
-                <a th:href="@{/admin/robot/sops}"><i class="icon mdi mdi-timelapse"></i><span>[[${bundle.L('业务进度')}]]</span> <sup class="rbv"></sup></a>
+                <a th:href="@{/admin/robot/sops}"><i class="icon mdi mdi-timelapse"></i><span>[[${bundle.L('业务进度')}]]</span>  </a>
               </li>
               <li th:class="${active == 'report-templates'} ? 'active'">
                 <a th:href="@{/admin/data/report-templates}"><i class="icon mdi mdi-microsoft-excel"></i><span>[[${bundle.L('报表模板')}]]</span></a>

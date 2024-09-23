@@ -207,7 +207,7 @@ class TriggerEdit extends ConfigFormDlg {
             allowClear: false,
             templateResult: function (s) {
               if (Object.keys(RBV_TRIGGERS).includes(s.id)) {
-                return $(`<span>${s.text} <sup class="rbv"></sup></span>`)
+                return $(`<span>${s.text}  </span>`)
               } else {
                 return s.text
               }

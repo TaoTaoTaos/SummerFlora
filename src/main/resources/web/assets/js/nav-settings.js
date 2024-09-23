@@ -161,7 +161,7 @@ $(document).ready(() => {
             })
 
           $('<div class="dropdown-divider"></div>').prependTo($menu)
-          $(`<a class="dropdown-item">${$L('配置顶部菜单')} <sup class="rbv"></sup></a>`)
+          $(`<a class="dropdown-item">${$L('配置顶部菜单')}  </a>`)
             .prependTo($menu)
             .on('click', () => {
               
